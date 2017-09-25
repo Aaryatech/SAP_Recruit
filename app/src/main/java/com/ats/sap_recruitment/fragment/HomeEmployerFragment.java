@@ -42,9 +42,10 @@ public class HomeEmployerFragment extends Fragment {
 
     @OnClick(R.id.llEmprViewPost)
     public void viewPostedJob() {
-//        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-//        ft.replace(R.id.content_frame, new ViewJobFragment(), "HomeEmplr");
-//        ft.commit();
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, new ViewAllPostFragment());
+        ft.addToBackStack("View All Post");
+        ft.commit();
 
     }
 
