@@ -286,38 +286,53 @@
                             android:textColor="@color/colorText2"
                             android:textSize="18sp" />
 
-
-                        <TextView
-                            android:id="@+id/tvEmplrJobId"
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:text="Job Id : 111"
-                            android:textColor="@color/colorText2" />
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/tvEmplrJobLocation"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:text="Type : Full Time"
-                            android:textColor="@color/colorText2" />
+                            <TextView
+                                android:id="@+id/tvEmplrJobId"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:padding="5dp"
+                                android:text="#111"
+                                android:textColor="@color/colorText2" />
 
-                        <TextView
-                            android:id="@+id/tvEmplrLocation"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:text="Job Location : Pune"
-                            android:textColor="@color/colorText2" />
+                            <TextView
+                                android:id="@+id/tvEmplrJobLocation"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:padding="5dp"
+                                android:text="Full Time"
+                                android:textColor="@color/colorText2" />
+                        </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/tvEmplrDuration"
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:text="Job Duration :  1 - 2 Year"
-                            android:textColor="@color/colorText2" />
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tvEmplrLocation"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:padding="5dp"
+                                android:text="Pune"
+                                android:textColor="@color/colorText2" />
+
+                            <TextView
+                                android:id="@+id/tvEmplrDuration"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:padding="5dp"
+                                android:text="1 - 2 Year"
+                                android:textColor="@color/colorText2" />
+                        </LinearLayout>
 
 
                     </LinearLayout>
@@ -332,7 +347,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="100dp"
+                            android:layout_height="70dp"
                             android:layout_weight="2.4"
                             android:background="@drawable/custom_layout_border"
                             android:gravity="center"
