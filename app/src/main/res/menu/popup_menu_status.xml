@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/NA"
+        android:title="NA" />
+
+    <item
+        android:id="@+id/Poor"
+        android:title="Poor" />
+
+    <item
+        android:id="@+id/Average"
+        android:title="Average" />
+
+    <item
+        android:id="@+id/Strong"
+        android:title="Strong" />
+
+</menu>

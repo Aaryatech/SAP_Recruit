@@ -1,0 +1,48 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ats.sap_recruitment.fragment.TestFeedbackFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textTestFeedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp">
+
+                <EditText
+                    android:id="@+id/edTestFeedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    android:background="@android:drawable/editbox_background_normal"
+                    android:gravity="start"
+                    android:hint="write your feedback"
+                    android:maxLines="5"
+                    android:textColorHint="@color/colorText2" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/btnFeedback"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/custom_layout_border"
+                android:text="Submit"
+                android:textColor="@color/colorWhite"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

@@ -1,0 +1,97 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ats.sap_recruitment.fragment.TestResultFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:gravity="center"
+                    android:id="@+id/tvResultHead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Congratulations"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorText2"
+                    android:textSize="33sp"
+                    android:textStyle="bold" />
+
+               <!-- <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:src="@mipmap/test_star" />-->
+                <RatingBar
+                    android:id="@+id/rtbResult"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:max="3"
+                    android:isIndicator="true"
+                    android:rating="4"
+                    android:numStars="5" />
+
+                <TextView
+                    android:id="@+id/tvResultScore"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="70%"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorText2"
+                    android:textSize="53sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginTop="50dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:textSize="15sp"
+                    android:id="@+id/btnResultFeedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_layout_border"
+                    android:text="Test Feedback"
+                    android:textColor="@color/colorWhite" />
+
+                <Button
+                    android:textSize="15sp"
+                    android:id="@+id/btnResultNoThanks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_layout_border"
+                    android:text="No Thanks"
+                    android:textColor="@color/colorWhite" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

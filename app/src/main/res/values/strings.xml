@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">SAP_Recruitment</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="match_pf">Match Profile</string>
+    <string name="interested_pf">Interested Profile </string>
+
+</resources>
