@@ -33,6 +33,7 @@ public class ViewPostJobAdapter extends RecyclerView.Adapter<ViewPostJobAdapter.
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_all_post, parent, false);
         MyViewHolder viewHolder = new MyViewHolder(view);
         return viewHolder;
@@ -75,6 +76,7 @@ public class ViewPostJobAdapter extends RecyclerView.Adapter<ViewPostJobAdapter.
                         return false;
                     }
                 });
+                popupMenu.show();
             }
         });
 
@@ -83,7 +85,7 @@ public class ViewPostJobAdapter extends RecyclerView.Adapter<ViewPostJobAdapter.
 
     @Override
     public int getItemCount() {
-        return 0;
+        return dataset.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

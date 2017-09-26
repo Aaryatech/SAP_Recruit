@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ public class ViewAllPostFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private static RecyclerView.Adapter adapter;
     private static ArrayList<JobPost> data = new ArrayList<>();
+    private static String TAG = "ViewAllPostFragment";
 
     public ViewAllPostFragment() {
 
@@ -39,11 +41,16 @@ public class ViewAllPostFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_view_all_post, container, false);
         ButterKnife.bind(this, v);
 
-        data.add(new JobPost(111, "Pune", "Experience SAP Developer(ABAP)", "2-3 Year", "Full Time"));
-        data.add(new JobPost(112, "Mumbai", "Experience SAP Developer(ABAP)", "1-3 Year", "Full Time"));
-        data.add(new JobPost(113, "Banglore", "Experience SAP Developer(BASIS)", "1-2 Year", "Part Time"));
-        data.add(new JobPost(114, "Mumbai", "Experience SAP Developer(OS)", "2-3 Year", "Full Time"));
-        data.add(new JobPost(115, "Mumbai", "Experience SAP Developer(BASIS)", "2-3 Year", "Full Time"));
+        data.clear();
+        data.add(new JobPost(111, "Pune", "Experience SAP Developer(ABAP)", "1-2 Year", "Full Time"));
+        data.add(new JobPost(110, "Mumbai", "Experience SAP Developer(ABAP)", "1-3 Year", "Full Time"));
+        data.add(new JobPost(109, "Banglore", "Experience SAP Developer(BASIS)", "1-2 Year", "Part Time"));
+        data.add(new JobPost(108, "Mumbai", "Experience SAP Developer(OS)", "2-3 Year", "Full Time"));
+        data.add(new JobPost(107, "Mumbai", "Experience SAP Developer(BASIS)", "2-3 Year", "Full Time"));
+        data.add(new JobPost(106, "Pune", "Experience SAP Developer(OS)", "2-3 Year", "Full Time"));
+        data.add(new JobPost(105, "Pune", "Experience SAP Developer(ABAP)", "1-3 Year", "Part Time"));
+
+        Log.e(TAG, "onCreateView: " + data);
 
         adapter = new ViewPostJobAdapter(data, getContext());
         rc_view_list_post.setAdapter(adapter);

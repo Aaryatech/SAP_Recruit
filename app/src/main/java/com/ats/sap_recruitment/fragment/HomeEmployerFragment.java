@@ -4,6 +4,7 @@ package com.ats.sap_recruitment.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ public class HomeEmployerFragment extends Fragment {
     LinearLayout llEmprViewPost;
     @BindView(R.id.llEmprMatchProfile)
     LinearLayout llEmprMatchProfile;
+    private static String TAG = "HomeEmployerFragment";
 
     public HomeEmployerFragment() {
 
@@ -42,6 +44,8 @@ public class HomeEmployerFragment extends Fragment {
 
     @OnClick(R.id.llEmprViewPost)
     public void viewPostedJob() {
+
+        Log.e(TAG, "viewPostedJob: method");
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, new ViewAllPostFragment());
         ft.addToBackStack("View All Post");
