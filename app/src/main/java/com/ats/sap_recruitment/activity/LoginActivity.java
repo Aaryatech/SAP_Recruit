@@ -1,6 +1,6 @@
 package com.ats.sap_recruitment.activity;
 
-import android.app.ProgressDialog;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -21,6 +21,7 @@ import com.ats.sap_recruitment.retroInt.APIInterface;
 import com.ats.sap_recruitment.utils.Constants;
 import com.google.gson.Gson;
 
+import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -81,14 +82,8 @@ public class LoginActivity extends AppCompatActivity {
                     edPassword.requestFocus();
                 } else {
 
-//                    final ProgressDialog progressBar = new ProgressDialog(LoginActivity.this);
-//                    progressBar.setCancelable(false);
-//                    progressBar.setMessage("please wait....");
-//                    progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-//                    progressBar.setProgress(0);
-//                    progressBar.setMax(100);
-//                    progressBar.show();
-//                    progressBar.setCancelable(false);
+                    final AlertDialog dialog = new SpotsDialog(LoginActivity.this);
+                    dialog.show();
 
                     Call<LoginBean> loginBeanCall = apiInterface.getLoginDetails("get_login", edUsername.getText().toString(), edPassword.getText().toString());
                     loginBeanCall.enqueue(new Callback<LoginBean>() {
@@ -98,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
                             LoginBean loginBean = response.body();
                             Log.e(TAG, "onResponse: btnSignIn.setOnClickListener" + loginBean);
                             if (loginBean != null) {
-                               // progressBar.dismiss();
+                                dialog.dismiss();
                                 if (loginBean.getStatus().equals("success")) {
                                     SharedPreferences pref = getApplicationContext().getSharedPreferences(Constants.myPref, MODE_PRIVATE);
                                     SharedPreferences.Editor editor = pref.edit();
@@ -111,19 +106,20 @@ public class LoginActivity extends AppCompatActivity {
                                     finish();
 
                                 } else {
+                                    dialog.dismiss();
                                     Toast.makeText(LoginActivity.this, "Invalid User", Toast.LENGTH_SHORT).show();
                                 }
 
 
                             } else {
-                               // progressBar.dismiss();
+                                dialog.dismiss();
                                 Toast.makeText(LoginActivity.this, "Response Timeout, try again ", Toast.LENGTH_SHORT).show();
                             }
                         }
 
                         @Override
                         public void onFailure(Call<LoginBean> call, Throwable t) {
-                            Log.e(TAG, "onFailure: "+ t.getMessage() );
+                            Log.e(TAG, "onFailure: " + t.getMessage());
                             Toast.makeText(LoginActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
                         }
                     });

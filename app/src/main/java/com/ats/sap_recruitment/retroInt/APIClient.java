@@ -16,7 +16,6 @@ public class APIClient {
     private static Retrofit retrofit;
 
     public static Retrofit getClient() {
-
         Gson gson = new GsonBuilder().setLenient().create();
 
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();

@@ -6,13 +6,13 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.ats.sap_recruitment.R;
+import com.ats.sap_recruitment.utils.CustomViewPager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 public class MacthProfileFragment extends Fragment {
 
     @BindView(R.id.vpMatchProfile)
-    ViewPager vpMatchProfile;
+    CustomViewPager vpMatchProfile;
     @BindView(R.id.sliding_tabs)
     TabLayout slidingTab;
 
@@ -34,14 +34,30 @@ public class MacthProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.fragment_macth_profile, container, false);
         ButterKnife.bind(this, v);
+
+        vpMatchProfile.setPagingEnabled(true);
         MatchProfilePagerAdapter adapter = new MatchProfilePagerAdapter(getContext(), getChildFragmentManager());
         vpMatchProfile.setAdapter(adapter);
         slidingTab.setupWithViewPager(vpMatchProfile);
+
+//        slidingTab.addOnTabSelectedListener(
+//                new TabLayout.ViewPagerOnTabSelectedListener(vpMatchProfile) {
+//                    @Override
+//                    public void onTabSelected(TabLayout.Tab tab) {
+//                        super.onTabSelected(tab);
+//                        int numTab = tab.getPosition();
+//                        Log.e("In Tab listener", "onTabSelected: " + tab.getPosition()
+//                        );
+//                    }
+//                });
+
+
         slidingTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 Log.e("Selected tab", "onTabSelected: " + tab.getPosition());
-                vpMatchProfile.setCurrentItem(tab.getPosition());
+                int position = tab.getPosition();
+                new MatchProfilePagerAdapter(getContext(), getChildFragmentManager()).getItem(position);
             }
 
             @Override
@@ -55,6 +71,7 @@ public class MacthProfileFragment extends Fragment {
                 vpMatchProfile.setCurrentItem(tab.getPosition());
             }
         });
+
         return v;
     }
 
@@ -68,6 +85,7 @@ public class MacthProfileFragment extends Fragment {
             mContext = context;
         }
 
+
         // This determines the fragment for each tab
         @Override
         public Fragment getItem(int position) {
@@ -77,6 +95,7 @@ public class MacthProfileFragment extends Fragment {
                 return new InterestedProfileViewFragment();
             }
         }
+
 
         // This determines the number of tabs
         @Override
