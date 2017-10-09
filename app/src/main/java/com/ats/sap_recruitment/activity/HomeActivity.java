@@ -46,11 +46,11 @@ public class HomeActivity extends AppCompatActivity
 
     // public static boolean isAtEmployerHome = true, isAtHome = false, isAtUpdateProfile = false, isAtBasis = false, isAtAssesmentHistory = false, isAtTermsCond = false, isAtPreparatio = false, isAtAssesmentStart = false, isAtAssesmentSummary = false, isAtTestResult = false, isAtAbap = false, isAtFunctional = false, isAtTestFeedback = false, isAtPersonalProfile = false, isAtEduProfile = false, isAtViewJob = false;
     public static TextView tvTitle;
+    public static TimerCounter counter;
+    public static CounterClass counterClass;
     Timer mTimer;
     TimerTask mTimerTask;
     int count = 0;
-    public static TimerCounter counter;
-    public static CounterClass counterClass;
     Handler handler;
     Runnable runnable;
 
@@ -96,13 +96,13 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         if (savedInstanceState == null) {
-//            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//            ft.replace(R.id.content_frame, new HomeFragment(), "Home");
-//            ft.commit();
-
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, new HomeEmployerFragment(), "HomeEmployer");
+            ft.replace(R.id.content_frame, new HomeFragment(), "Home");
             ft.commit();
+
+//            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//            ft.replace(R.id.content_frame, new HomeEmployerFragment(), "HomeEmployer");
+//            ft.commit();
         }
 
     }

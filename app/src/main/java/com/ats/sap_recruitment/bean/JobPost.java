@@ -1,10 +1,4 @@
 package com.ats.sap_recruitment.bean;
-/*
- * @author Datta Hujare, Nasik
- * @company Spokeinfotech
- * @since 25/9/17 6:16 PM
- * @project name SAP_Recruitment
- */
 
 public class JobPost {
     int jobId;
