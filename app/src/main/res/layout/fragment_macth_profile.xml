@@ -10,14 +10,21 @@
         style="@style/SlidingTabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_bg_confirm"
+        android:background="@mipmap/action_bar"
         app:tabMode="fixed"
         app:tabTextAppearance="@style/MyTabLayoutTextAppearance" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vpMatchProfile"
+
+    <com.ats.sap_recruitment.utils.CustomViewPager
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:id="@+id/vpMatchProfile"
+        android:layout_height="match_parent">
+
+    </com.ats.sap_recruitment.utils.CustomViewPager>
+    <!--<android.support.v4.view.ViewPager-->
+       <!---->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" />-->
 
 
 </FrameLayout>

@@ -12,15 +12,15 @@ import retrofit2.http.POST;
 public interface APIInterface {
 
     @FormUrlEncoded
-    @POST("get_login")
+    @POST("Ser_authen/get_login")
     Call<LoginBean> getLoginDetails(@Field("frm_mode") String frm_mode, @Field("user_mobile") String user_mobile, @Field("user_password") String user_password);
 
     @FormUrlEncoded
-    @POST("get_personal")
+    @POST("Ser_profile/get_personal")
     Call<PersonProfile> getPersonalDetail(@Field("frm_mode") String frm_mode, @Field("user_type") String user_type, @Field("user_id") String user_id);
 
     @FormUrlEncoded
-    @POST("get_education")
+    @POST("Ser_profile/get_education")
     Call<EducationalProfile> getEducationalDetails(@Field("frm_mode") String frm_mode, @Field("user_type") String user_type, @Field("user_id") String user_id);
 
 }

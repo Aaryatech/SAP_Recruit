@@ -1,15 +1,16 @@
 
 package com.ats.sap_recruitment.bean;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class EducationalProfile {
 
     @SerializedName("per_profile")
     @Expose
-    private List<EduPerProfile> perProfile = null;
+    private List<EduPerProfile> perProfile;
 
     public List<EduPerProfile> getPerProfile() {
         return perProfile;

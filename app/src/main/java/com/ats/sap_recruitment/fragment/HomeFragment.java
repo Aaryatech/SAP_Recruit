@@ -17,8 +17,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ats.sap_recruitment.R;
+import com.ats.sap_recruitment.bean.EduPerProfile;
 import com.ats.sap_recruitment.bean.EducationalProfile;
 import com.ats.sap_recruitment.bean.LoginBean;
+import com.ats.sap_recruitment.bean.PerProfile;
 import com.ats.sap_recruitment.bean.PersonProfile;
 import com.ats.sap_recruitment.retroInt.APIClient;
 import com.ats.sap_recruitment.retroInt.APIInterface;
@@ -43,6 +45,7 @@ public class HomeFragment extends Fragment {
     private LinearLayout llTestHistory;
     LoginBean loginBean;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
+    String userId = "NA", userType = "NA";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,6 +66,8 @@ public class HomeFragment extends Fragment {
         loginBean = gson.fromJson(json, LoginBean.class);
 
         if (loginBean != null) {
+            userId = loginBean.getUserId();
+            userType = loginBean.getUserType();
             Log.e(TAG, "onCreateView: Login Details: " + loginBean);
             Log.e(TAG, "onCreateView: User Id: " + loginBean.getUserId());
             Log.e(TAG, "onCreateView: User Type: " + loginBean.getUserType());
@@ -157,14 +162,25 @@ public class HomeFragment extends Fragment {
         personProfileCall.enqueue(new Callback<PersonProfile>() {
             @Override
             public void onResponse(Call<PersonProfile> call, Response<PersonProfile> response) {
-
+                dialog.dismiss();
                 if (response.body() != null) {
-                    dialog.dismiss();
+
                     PersonProfile personProfile = response.body();
                     Log.e(TAG, "onResponse: getProfileDetails" + personProfile.getPerProfile());
-
+                    if (personProfile.getPerProfile().size() > 0) {
+                        PerProfile perProfile = personProfile.getPerProfile().get(0);
+                        Log.e(TAG, "onResponse: perProfile Data " + perProfile);
+                        if (perProfile != null) {
+                            tvPersonName.setText(perProfile.getProfFname() + " " + perProfile.getProfMname() + " " + perProfile.getProfLname());
+                            String exp = perProfile.getProfWExpYear() + " " + perProfile.getProfWExpMonth();
+                            Log.e(TAG, "onResponse: Experience" + exp);
+                            if (exp.equalsIgnoreCase(" ")) {
+                                tvPersonExp.setText("Fresher");
+                            } else
+                                tvPersonExp.setText(exp);
+                        }
+                    }
                 } else {
-                    dialog.dismiss();
                     Log.e(TAG, "onResponse: getProfileDetails " + response.body());
                     Toast.makeText(getActivity().getApplicationContext(), "No personal Detail Updated Since", Toast.LENGTH_SHORT).show();
                 }
@@ -172,6 +188,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(Call<PersonProfile> call, Throwable t) {
+                dialog.dismiss();
                 Log.e(TAG, "onFailure:getProfileDetails" + t.getMessage());
 
             }
@@ -180,15 +197,36 @@ public class HomeFragment extends Fragment {
 
 
     public void getEducationalDetails() {
+        final AlertDialog dialog = new SpotsDialog(getActivity());
+        dialog.show();
+
         Call<EducationalProfile> educationalProfileCall = apiInterface.getEducationalDetails("get_education", loginBean.getUserType(), loginBean.getUserId());
         educationalProfileCall.enqueue(new Callback<EducationalProfile>() {
             @Override
             public void onResponse(Call<EducationalProfile> call, Response<EducationalProfile> response) {
+                dialog.dismiss();
                 Log.e(TAG, "onResponse: " + response.body());
+                if (response.body() != null) {
+                    EducationalProfile educationalProfile = response.body();
+                    Log.e(TAG, "onResponse: Educational Profile " + educationalProfile);
+                    if (educationalProfile.getPerProfile().size() > 0) {
+                        EduPerProfile eduPerProfile = educationalProfile.getPerProfile().get(0);
+                        Log.e(TAG, "onResponse: " + eduPerProfile);
+                        if (eduPerProfile != null) {
+                            tvPersonDegree.setText(eduPerProfile.getProfEduCourseDetail());
+                        }
+                    }
+
+                } else {
+                    Log.e(TAG, "onResponse: " + response.body());
+                    Toast.makeText(getActivity(), "No Educational details Updated Since", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onFailure(Call<EducationalProfile> call, Throwable t) {
+                dialog.dismiss();
+                Log.e(TAG, "onFailure: getEducationalDetails" + t.getMessage());
 
             }
         });
