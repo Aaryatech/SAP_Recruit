@@ -88,7 +88,7 @@ public class UpdateProfileFragment extends Fragment {
         perProfile = gson.fromJson(json, PerProfile.class);
         if (perProfile != null) {
             tvName.setText(perProfile.getProfFname() + " " + perProfile.getProfMname() + " " + perProfile.getProfLname());
-            String exp = perProfile.getProfWExpYear() + " " + perProfile.getProfWExpMonth();
+            String exp = perProfile.getProfWExpYear() + " year " + perProfile.getProfWExpMonth() + " month";
 
             if (exp.equalsIgnoreCase(" "))
                 tvExp.setText("Fresher");

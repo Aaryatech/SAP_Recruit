@@ -78,22 +78,22 @@ public class HomeFragment extends Fragment {
             Toast.makeText(getActivity(), "No Login Details found", Toast.LENGTH_SHORT).show();
         }
 
-        ivProfileImage =  view.findViewById(R.id.ivUserProfilePic);
-        tvPersonName =  view.findViewById(R.id.tvHomeUserName);
-        tvPersonDegree =  view.findViewById(R.id.tvHomeUserDegree);
-        tvPersonExp =  view.findViewById(R.id.tvHomeUserExperience);
-        tvProfileStatus =  view.findViewById(R.id.tvHomeProfileStatusPercent);
-        tvProfileLastUpdate =  view.findViewById(R.id.tvHomeProfileLastUpdate);
+        ivProfileImage = view.findViewById(R.id.ivUserProfilePic);
+        tvPersonName = view.findViewById(R.id.tvHomeUserName);
+        tvPersonDegree = view.findViewById(R.id.tvHomeUserDegree);
+        tvPersonExp = view.findViewById(R.id.tvHomeUserExperience);
+        tvProfileStatus = view.findViewById(R.id.tvHomeProfileStatusPercent);
+        tvProfileLastUpdate = view.findViewById(R.id.tvHomeProfileLastUpdate);
         tvTestLastDate = view.findViewById(R.id.tvHomeLastTestDate);
-        tvTestScore =  view.findViewById(R.id.tvHomeTestScore);
-        tvLabelStatus =  view.findViewById(R.id.tvHomeProfileStatus);
-        tvLabelCompleted =  view.findViewById(R.id.tvHomeProfileCompleted);
-        tvLabelScore =  view.findViewById(R.id.tvLabelScore);
-        tvLabelLastProfile =  view.findViewById(R.id.tvHomeProfileLastUpdate);
-        tvLabelLastTest =  view.findViewById(R.id.tvHomeLastTestDate);
-        tvLabelRating =  view.findViewById(R.id.tvLabelRating);
-        tvNotifyHead =  view.findViewById(R.id.tvNotifyHead);
-        tvNotifyText =  view.findViewById(R.id.tvNotifyText);
+        tvTestScore = view.findViewById(R.id.tvHomeTestScore);
+        tvLabelStatus = view.findViewById(R.id.tvHomeProfileStatus);
+        tvLabelCompleted = view.findViewById(R.id.tvHomeProfileCompleted);
+        tvLabelScore = view.findViewById(R.id.tvLabelScore);
+        tvLabelLastProfile = view.findViewById(R.id.tvHomeProfileLastUpdate);
+        tvLabelLastTest = view.findViewById(R.id.tvHomeLastTestDate);
+        tvLabelRating = view.findViewById(R.id.tvLabelRating);
+        tvNotifyHead = view.findViewById(R.id.tvNotifyHead);
+        tvNotifyText = view.findViewById(R.id.tvNotifyText);
 
         tvPersonName.setTypeface(myTypeface);
         tvPersonDegree.setTypeface(myTypeface);
@@ -175,7 +175,7 @@ public class HomeFragment extends Fragment {
                         Log.e(TAG, "onResponse: perProfile Data " + perProfile);
                         if (perProfile != null) {
                             tvPersonName.setText(perProfile.getProfFname() + " " + perProfile.getProfMname() + " " + perProfile.getProfLname());
-                            String exp = perProfile.getProfWExpYear() + " " + perProfile.getProfWExpMonth();
+                            String exp = perProfile.getProfWExpYear() + " year " + perProfile.getProfWExpMonth() + " month";
                             Log.e(TAG, "onResponse: Experience" + exp);
                             if (exp.equalsIgnoreCase(" "))
                                 tvPersonExp.setText("Fresher");

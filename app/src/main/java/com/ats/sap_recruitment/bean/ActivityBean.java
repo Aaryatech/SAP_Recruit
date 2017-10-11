@@ -9,7 +9,7 @@ public class ActivityBean {
 
     @SerializedName("activities")
     @Expose
-    private List<Activity> activities = null;
+    private List<Activity> activities;
 
     public List<Activity> getActivities() {
         return activities;

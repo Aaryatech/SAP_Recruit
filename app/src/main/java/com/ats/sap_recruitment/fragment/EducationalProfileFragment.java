@@ -3,11 +3,13 @@ package com.ats.sap_recruitment.fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,16 +20,23 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.ats.sap_recruitment.R;
-import com.ats.sap_recruitment.activity.HomeActivity;
+import com.ats.sap_recruitment.bean.EduPerProfile;
+import com.ats.sap_recruitment.utils.Constants;
+import com.google.gson.Gson;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.ats.sap_recruitment.activity.HomeActivity.tvTitle;
 
 public class EducationalProfileFragment extends Fragment {
 
+    private static final String TAG = "EducationalProfile";
     private EditText edCourse, edSpecialisation, edInstitute, edPassYear, edGrade, edMiscSkills;
     private TextInputLayout textCourse, textSpecialisation, textInstitute, textPassYear, textGrade, textSkills;
     private RadioButton rbBachelor, rbMaster, rbDoctorate;
     private TextView tvLabelEdu;
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+    Gson gson;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,6 +48,7 @@ public class EducationalProfileFragment extends Fragment {
 
         tvTitle.setText("SAP Profile - Educational");
         tvTitle.setTypeface(myTypeface);
+
 
         edCourse = view.findViewById(R.id.edCourseDetails);
         edSpecialisation = view.findViewById(R.id.edSpecialisation);
@@ -77,8 +87,20 @@ public class EducationalProfileFragment extends Fragment {
         rbBachelor.setTypeface(myTypeface);
         rbMaster.setTypeface(myTypeface);
         rbDoctorate.setTypeface(myTypeface);
-
         tvLabelEdu.setTypeface(myTypeface);
+
+
+        pref = getActivity().getApplicationContext().getSharedPreferences(Constants.myPref, MODE_PRIVATE);
+        gson = new Gson();
+        String json = pref.getString("eduPerProfile", "");
+        EduPerProfile eduPerProfile = gson.fromJson(json, EduPerProfile.class);
+
+        if (eduPerProfile != null) {
+            Log.e(TAG, "onCreateView: Educational Profile  " + eduPerProfile);
+            setBinData(eduPerProfile);
+        } else
+            Log.e(TAG, "onCreateView: No educational details found yet");
+
 
         edCourse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +124,20 @@ public class EducationalProfileFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void setBinData(EduPerProfile eduPerProfile) {
+        String eduHighest = eduPerProfile.getProfEduHighest();
+        if (eduHighest.equalsIgnoreCase("0")) {
+            rbBachelor.setChecked(true);
+        }
+        edCourse.setText(eduPerProfile.getProfEduCourseDetail());
+        //specialization remaining
+        edInstitute.setText(eduPerProfile.getProfEduUniversity());
+        edPassYear.setText(eduPerProfile.getProfEduPassingYear());
+        edGrade.setText(eduPerProfile.getProfEduGradeRange());
+        edMiscSkills.setText(eduPerProfile.getProfEduMiscSkillDetails());
+
     }
 
 
