@@ -1,6 +1,7 @@
 package com.ats.sap_recruitment.fragment;
 
 
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,7 +14,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ats.sap_recruitment.R;
+import com.ats.sap_recruitment.bean.EduPerProfile;
+import com.ats.sap_recruitment.bean.PerProfile;
+import com.ats.sap_recruitment.utils.Constants;
+import com.google.gson.Gson;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.ats.sap_recruitment.activity.HomeActivity.tvTitle;
 
 /**
@@ -21,6 +27,8 @@ import static com.ats.sap_recruitment.activity.HomeActivity.tvTitle;
  */
 public class UpdateProfileFragment extends Fragment {
 
+    PerProfile perProfile;
+    EduPerProfile eduPerProfile;
     private Button btnBasis, btnAbap, btnFunctional;
     private LinearLayout llBasis, llAbap, llFunctional;
     private Button btnPersonalProfile, btnEduProfile;
@@ -38,16 +46,16 @@ public class UpdateProfileFragment extends Fragment {
         tvTitle.setText("Update Profile");
         tvTitle.setTypeface(myTypefaceBold);
 
-        tvName = (TextView) view.findViewById(R.id.tvProfileName);
-        tvDegree = (TextView) view.findViewById(R.id.tvProfileDegree);
-        tvExp = (TextView) view.findViewById(R.id.tvProfileExp);
-        tvPersonal = (TextView) view.findViewById(R.id.tvLabelPersonalPro);
-        tvEdu = (TextView) view.findViewById(R.id.tvLabelEduPro);
-        tvSAP = (TextView) view.findViewById(R.id.tvLabelSAP);
-        tvSAPText = (TextView) view.findViewById(R.id.tvLabelSAPText);
-        tvBasis = (TextView) view.findViewById(R.id.tvLabelBasis);
-        tvAbap = (TextView) view.findViewById(R.id.tvLabelAbap);
-        tvFunctional = (TextView) view.findViewById(R.id.tvLabelFunctional);
+        tvName = view.findViewById(R.id.tvProfileName);
+        tvDegree = view.findViewById(R.id.tvProfileDegree);
+        tvExp = view.findViewById(R.id.tvProfileExp);
+        tvPersonal = view.findViewById(R.id.tvLabelPersonalPro);
+        tvEdu = view.findViewById(R.id.tvLabelEduPro);
+        tvSAP = view.findViewById(R.id.tvLabelSAP);
+        tvSAPText = view.findViewById(R.id.tvLabelSAPText);
+        tvBasis = view.findViewById(R.id.tvLabelBasis);
+        tvAbap = view.findViewById(R.id.tvLabelAbap);
+        tvFunctional = view.findViewById(R.id.tvLabelFunctional);
 
         tvName.setTypeface(myTypeface);
         tvDegree.setTypeface(myTypeface);
@@ -61,18 +69,39 @@ public class UpdateProfileFragment extends Fragment {
         tvFunctional.setTypeface(myTypefaceBold);
 
 
-        btnBasis = (Button) view.findViewById(R.id.btnEditBasis);
-        btnAbap = (Button) view.findViewById(R.id.btnEditABAP);
-        btnFunctional = (Button) view.findViewById(R.id.btnEditFunctional);
-        btnPersonalProfile = (Button) view.findViewById(R.id.btnPersonalProfile);
-        btnEduProfile = (Button) view.findViewById(R.id.btnEducationalProfile);
+        btnBasis = view.findViewById(R.id.btnEditBasis);
+        btnAbap = view.findViewById(R.id.btnEditABAP);
+        btnFunctional = view.findViewById(R.id.btnEditFunctional);
+        btnPersonalProfile = view.findViewById(R.id.btnPersonalProfile);
+        btnEduProfile = view.findViewById(R.id.btnEducationalProfile);
 
 
-        llBasis = (LinearLayout) view.findViewById(R.id.llUpdateBasis);
-        llAbap = (LinearLayout) view.findViewById(R.id.llUpdateAbap);
-        llFunctional = (LinearLayout) view.findViewById(R.id.llUpdateFunctional);
+        llBasis = view.findViewById(R.id.llUpdateBasis);
+        llAbap = view.findViewById(R.id.llUpdateAbap);
+        llFunctional = view.findViewById(R.id.llUpdateFunctional);
 
 
+        SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences(Constants.myPref, MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        Gson gson = new Gson();
+        String json = pref.getString("perProfile", "");
+        perProfile = gson.fromJson(json, PerProfile.class);
+        if (perProfile != null) {
+            tvName.setText(perProfile.getProfFname() + " " + perProfile.getProfMname() + " " + perProfile.getProfLname());
+            String exp = perProfile.getProfWExpYear() + " " + perProfile.getProfWExpMonth();
+
+            if (exp.equalsIgnoreCase(" "))
+                tvExp.setText("Fresher");
+            else
+                tvExp.setText(exp);
+        }
+
+
+        String json2 = pref.getString("eduPerProfile", "");
+        eduPerProfile = gson.fromJson(json2, EduPerProfile.class);
+        if (eduPerProfile != null) {
+            tvDegree.setText(eduPerProfile.getProfEduCourseDetail());
+        }
 
        /* cdPersonal = (CircleDisplay) view.findViewById(R.id.circleDisplayPersonal);
         cdPersonal.setAnimDuration(3000);

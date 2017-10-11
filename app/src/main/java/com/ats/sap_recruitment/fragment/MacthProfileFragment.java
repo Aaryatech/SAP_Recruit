@@ -6,13 +6,14 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.ats.sap_recruitment.R;
-import com.ats.sap_recruitment.utils.CustomViewPager;
+
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,7 +22,7 @@ import butterknife.ButterKnife;
 public class MacthProfileFragment extends Fragment {
 
     @BindView(R.id.vpMatchProfile)
-    CustomViewPager vpMatchProfile;
+    ViewPager vpMatchProfile;
     @BindView(R.id.sliding_tabs)
     TabLayout slidingTab;
 
@@ -35,7 +36,7 @@ public class MacthProfileFragment extends Fragment {
         final View v = inflater.inflate(R.layout.fragment_macth_profile, container, false);
         ButterKnife.bind(this, v);
 
-        vpMatchProfile.setPagingEnabled(true);
+        //vpMatchProfile.setPagingEnabled(true);
         MatchProfilePagerAdapter adapter = new MatchProfilePagerAdapter(getContext(), getChildFragmentManager());
         vpMatchProfile.setAdapter(adapter);
         slidingTab.setupWithViewPager(vpMatchProfile);

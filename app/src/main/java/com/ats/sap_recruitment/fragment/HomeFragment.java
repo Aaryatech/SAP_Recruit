@@ -39,13 +39,16 @@ import static com.ats.sap_recruitment.activity.HomeActivity.tvTitle;
 public class HomeFragment extends Fragment {
 
     private static final String TAG = "HomeFragment";
+    LoginBean loginBean;
+    APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
+    String userId = "NA", userType = "NA";
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+    Gson gson;
     private TextView tvPersonName, tvPersonDegree, tvPersonExp, tvProfileStatus, tvProfileLastUpdate, tvTestLastDate, tvTestScore, tvLabelStatus, tvLabelCompleted, tvLabelScore, tvLabelLastProfile, tvLabelLastTest, tvLabelRating, tvNotifyHead, tvNotifyText;
     private Button btnProfileUpdate, btnTest;
     private ImageView ivProfileImage;
     private LinearLayout llTestHistory;
-    LoginBean loginBean;
-    APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
-    String userId = "NA", userType = "NA";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,22 +78,22 @@ public class HomeFragment extends Fragment {
             Toast.makeText(getActivity(), "No Login Details found", Toast.LENGTH_SHORT).show();
         }
 
-        ivProfileImage = (ImageView) view.findViewById(R.id.ivUserProfilePic);
-        tvPersonName = (TextView) view.findViewById(R.id.tvHomeUserName);
-        tvPersonDegree = (TextView) view.findViewById(R.id.tvHomeUserDegree);
-        tvPersonExp = (TextView) view.findViewById(R.id.tvHomeUserExperience);
-        tvProfileStatus = (TextView) view.findViewById(R.id.tvHomeProfileStatusPercent);
-        tvProfileLastUpdate = (TextView) view.findViewById(R.id.tvHomeProfileLastUpdate);
-        tvTestLastDate = (TextView) view.findViewById(R.id.tvHomeLastTestDate);
-        tvTestScore = (TextView) view.findViewById(R.id.tvHomeTestScore);
-        tvLabelStatus = (TextView) view.findViewById(R.id.tvHomeProfileStatus);
-        tvLabelCompleted = (TextView) view.findViewById(R.id.tvHomeProfileCompleted);
-        tvLabelScore = (TextView) view.findViewById(R.id.tvLabelScore);
-        tvLabelLastProfile = (TextView) view.findViewById(R.id.tvHomeProfileLastUpdate);
-        tvLabelLastTest = (TextView) view.findViewById(R.id.tvHomeLastTestDate);
-        tvLabelRating = (TextView) view.findViewById(R.id.tvLabelRating);
-        tvNotifyHead = (TextView) view.findViewById(R.id.tvNotifyHead);
-        tvNotifyText = (TextView) view.findViewById(R.id.tvNotifyText);
+        ivProfileImage =  view.findViewById(R.id.ivUserProfilePic);
+        tvPersonName =  view.findViewById(R.id.tvHomeUserName);
+        tvPersonDegree =  view.findViewById(R.id.tvHomeUserDegree);
+        tvPersonExp =  view.findViewById(R.id.tvHomeUserExperience);
+        tvProfileStatus =  view.findViewById(R.id.tvHomeProfileStatusPercent);
+        tvProfileLastUpdate =  view.findViewById(R.id.tvHomeProfileLastUpdate);
+        tvTestLastDate = view.findViewById(R.id.tvHomeLastTestDate);
+        tvTestScore =  view.findViewById(R.id.tvHomeTestScore);
+        tvLabelStatus =  view.findViewById(R.id.tvHomeProfileStatus);
+        tvLabelCompleted =  view.findViewById(R.id.tvHomeProfileCompleted);
+        tvLabelScore =  view.findViewById(R.id.tvLabelScore);
+        tvLabelLastProfile =  view.findViewById(R.id.tvHomeProfileLastUpdate);
+        tvLabelLastTest =  view.findViewById(R.id.tvHomeLastTestDate);
+        tvLabelRating =  view.findViewById(R.id.tvLabelRating);
+        tvNotifyHead =  view.findViewById(R.id.tvNotifyHead);
+        tvNotifyText =  view.findViewById(R.id.tvNotifyText);
 
         tvPersonName.setTypeface(myTypeface);
         tvPersonDegree.setTypeface(myTypeface);
@@ -109,13 +112,13 @@ public class HomeFragment extends Fragment {
         tvNotifyHead.setTypeface(myTypefaceBold);
 
 
-        btnProfileUpdate = (Button) view.findViewById(R.id.btnHomeProfileUpdate);
-        btnTest = (Button) view.findViewById(R.id.btnHomeTest);
+        btnProfileUpdate = view.findViewById(R.id.btnHomeProfileUpdate);
+        btnTest = view.findViewById(R.id.btnHomeTest);
 
         btnTest.setTypeface(myTypefaceBold);
         btnProfileUpdate.setTypeface(myTypefaceBold);
 
-        llTestHistory = (LinearLayout) view.findViewById(R.id.llHomeTestScore);
+        llTestHistory = view.findViewById(R.id.llHomeTestScore);
 
         getProfileDetails();
         getEducationalDetails();
@@ -174,10 +177,18 @@ public class HomeFragment extends Fragment {
                             tvPersonName.setText(perProfile.getProfFname() + " " + perProfile.getProfMname() + " " + perProfile.getProfLname());
                             String exp = perProfile.getProfWExpYear() + " " + perProfile.getProfWExpMonth();
                             Log.e(TAG, "onResponse: Experience" + exp);
-                            if (exp.equalsIgnoreCase(" ")) {
+                            if (exp.equalsIgnoreCase(" "))
                                 tvPersonExp.setText("Fresher");
-                            } else
+                            else
                                 tvPersonExp.setText(exp);
+
+
+                            pref = getActivity().getApplicationContext().getSharedPreferences(Constants.myPref, MODE_PRIVATE);
+                            editor = pref.edit();
+                            gson = new Gson();
+                            String json = gson.toJson(perProfile);
+                            editor.putString("perProfile", json);
+                            editor.apply();
                         }
                     }
                 } else {
@@ -214,6 +225,14 @@ public class HomeFragment extends Fragment {
                         Log.e(TAG, "onResponse: " + eduPerProfile);
                         if (eduPerProfile != null) {
                             tvPersonDegree.setText(eduPerProfile.getProfEduCourseDetail());
+
+                            pref = getActivity().getApplicationContext().getSharedPreferences(Constants.myPref, MODE_PRIVATE);
+                            editor = pref.edit();
+                            gson = new Gson();
+                            String json = gson.toJson(eduPerProfile);
+                            editor.putString("eduPerProfile", json);
+                            editor.apply();
+
                         }
                     }
 
