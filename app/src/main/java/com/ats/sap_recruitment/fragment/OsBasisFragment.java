@@ -21,11 +21,11 @@ import com.ats.sap_recruitment.R;
 
 import static com.ats.sap_recruitment.activity.HomeActivity.tvTitle;
 
-public class BasisFragment extends Fragment {
+public class OsBasisFragment extends Fragment {
 
     private LinearLayout llLinux, llLinuxData, llHpux, llHpuxData, llAix, llAixData, llSolaris, llSolarisData, llWindows, llWindowsData;
-    private TextView statusStrong, statusAverage, statusPoor, statusNA;
-    private CheckBox cbLinux;
+    private TextView statusAct1, statusAct2, statusAct3, statusAct4, statusAct5;
+    private CheckBox cbLinux, cbHpux, cbAix, cbSolarise, cbWindows;
     private TextView tvHead, tvHeadLinux, tvHeadHpux, tvHeadAix, tvHeadSolaris, tvHeadWindows;
     private EditText edMonth, edYear;
 
@@ -33,34 +33,41 @@ public class BasisFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_basis, container, false);
+        View view = inflater.inflate(R.layout.fragment_os_basis, container, false);
 
         Typeface myTypeface = Typeface.createFromAsset(getContext().getAssets(), "Free_Serif.ttf");
 
         tvTitle.setText("SAP Profile - Basis OS");
         tvTitle.setTypeface(myTypeface);
 
-        llLinux = (LinearLayout) view.findViewById(R.id.llLinux);
-        llLinuxData = (LinearLayout) view.findViewById(R.id.llLinuxData);
+        llLinux = view.findViewById(R.id.llLinux);
+        llLinuxData = view.findViewById(R.id.llLinuxData);
 
-        llHpux = (LinearLayout) view.findViewById(R.id.llHpux);
-        llHpuxData = (LinearLayout) view.findViewById(R.id.llHpuxData);
+        llHpux = view.findViewById(R.id.llHpux);
+        llHpuxData = view.findViewById(R.id.llHpuxData);
 
-        llAix = (LinearLayout) view.findViewById(R.id.llAix);
-        llAixData = (LinearLayout) view.findViewById(R.id.llAixData);
+        llAix = view.findViewById(R.id.llAix);
+        llAixData = view.findViewById(R.id.llAixData);
 
-        llSolaris = (LinearLayout) view.findViewById(R.id.llSolaris);
-        llSolarisData = (LinearLayout) view.findViewById(R.id.llSolarisData);
+        llSolaris = view.findViewById(R.id.llSolaris);
+        llSolarisData = view.findViewById(R.id.llSolarisData);
 
-        llWindows = (LinearLayout) view.findViewById(R.id.llWindows);
-        llWindowsData = (LinearLayout) view.findViewById(R.id.llWindowsData);
+        llWindows = view.findViewById(R.id.llWindows);
+        llWindowsData = view.findViewById(R.id.llWindowsData);
 
-        statusStrong = (TextView) view.findViewById(R.id.statusStrong);
-        statusAverage = (TextView) view.findViewById(R.id.statusAverage);
-        statusPoor = (TextView) view.findViewById(R.id.statusPoor);
-        statusNA = (TextView) view.findViewById(R.id.statusNA);
+        statusAct1 = view.findViewById(R.id.statusAct1);
+        statusAct2 = view.findViewById(R.id.statusAct2);
+        statusAct3 = view.findViewById(R.id.statusAct3);
+        statusAct4 = view.findViewById(R.id.statusAct4);
+        statusAct5 = view.findViewById(R.id.statusAct5);
 
-        cbLinux = (CheckBox) view.findViewById(R.id.cbLinux);
+
+        cbLinux = view.findViewById(R.id.cbLinux);
+        cbHpux = view.findViewById(R.id.cbHpux);
+        cbAix = view.findViewById(R.id.cbAix);
+        cbSolarise = view.findViewById(R.id.cbSolaris);
+        cbWindows = view.findViewById(R.id.cbWindows);
+
 
         edMonth = view.findViewById(R.id.edBasisMonth);
         edYear = view.findViewById(R.id.edBasisYear);
@@ -101,41 +108,84 @@ public class BasisFragment extends Fragment {
                         @Override
                         public boolean onMenuItemClick(MenuItem menuItem) {
                             if (menuItem.getTitle().equals("Strong")) {
-                                statusStrong.setVisibility(View.VISIBLE);
-                                statusAverage.setVisibility(View.GONE);
-                                statusPoor.setVisibility(View.GONE);
-                                statusNA.setVisibility(View.GONE);
+                                statusAct1.setVisibility(View.VISIBLE);
+                                statusAct1.setText("Strong");
+                                statusAct1.setTextColor(getResources().getColor(R.color.colorWhite));
+                                statusAct1.setBackgroundColor(getResources().getColor(R.color.color_bg_strong));
                             } else if (menuItem.getTitle().equals("Average")) {
-                                statusAverage.setVisibility(View.VISIBLE);
-                                statusStrong.setVisibility(View.GONE);
-                                statusPoor.setVisibility(View.GONE);
-                                statusNA.setVisibility(View.GONE);
+                                statusAct1.setVisibility(View.VISIBLE);
+                                statusAct1.setText("Average");
+                                statusAct1.setTextColor(getResources().getColor(R.color.colorWhite));
+                                statusAct1.setBackgroundColor(getResources().getColor(R.color.color_bg_average));
                             } else if (menuItem.getTitle().equals("Poor")) {
-                                statusPoor.setVisibility(View.VISIBLE);
-                                statusStrong.setVisibility(View.GONE);
-                                statusAverage.setVisibility(View.GONE);
-                                statusNA.setVisibility(View.GONE);
+
+                                statusAct1.setVisibility(View.VISIBLE);
+                                statusAct1.setText("Poor");
+                                statusAct1.setTextColor(getResources().getColor(R.color.colorText2));
+                                statusAct1.setBackgroundColor(getResources().getColor(R.color.color_bg_poor));
                             } else if (menuItem.getTitle().equals("NA")) {
-                                statusNA.setVisibility(View.VISIBLE);
-                                statusStrong.setVisibility(View.GONE);
-                                statusAverage.setVisibility(View.GONE);
-                                statusPoor.setVisibility(View.GONE);
+                                statusAct1.setVisibility(View.VISIBLE);
+                                statusAct1.setText("NA");
+                                statusAct1.setTextColor(getResources().getColor(R.color.colorText3));
+                                statusAct1.setBackgroundColor(getResources().getColor(R.color.color_bg_na));
                             } else {
-                                statusStrong.setVisibility(View.GONE);
-                                statusAverage.setVisibility(View.GONE);
-                                statusPoor.setVisibility(View.GONE);
-                                statusNA.setVisibility(View.GONE);
+                                statusAct1.setVisibility(View.GONE);
                             }
                             return true;
                         }
                     });
                     popup.show();
                 } else {
-                    statusStrong.setVisibility(View.GONE);
-                    statusAverage.setVisibility(View.GONE);
-                    statusPoor.setVisibility(View.GONE);
-                    statusNA.setVisibility(View.GONE);
+                    statusAct1.setVisibility(View.GONE);
                 }
+            }
+        });
+
+        cbHpux.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (b) {
+                    PopupMenu popup = new PopupMenu(getContext(), cbHpux);
+                    popup.getMenuInflater()
+                            .inflate(R.menu.popup_menu_status, popup.getMenu());
+
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            if (menuItem.getTitle().equals("Strong")) {
+                                statusAct2.setVisibility(View.VISIBLE);
+                                statusAct2.setText("Strong");
+                                statusAct2.setTextColor(getResources().getColor(R.color.colorWhite));
+                                statusAct2.setBackgroundColor(getResources().getColor(R.color.color_bg_strong));
+                            } else if (menuItem.getTitle().equals("Average")) {
+                                statusAct2.setVisibility(View.VISIBLE);
+                                statusAct2.setText("Average");
+                                statusAct2.setTextColor(getResources().getColor(R.color.colorWhite));
+                                statusAct2.setBackgroundColor(getResources().getColor(R.color.color_bg_average));
+                            } else if (menuItem.getTitle().equals("Poor")) {
+
+                                statusAct2.setVisibility(View.VISIBLE);
+                                statusAct2.setText("Poor");
+                                statusAct2.setTextColor(getResources().getColor(R.color.colorText2));
+                                statusAct2.setBackgroundColor(getResources().getColor(R.color.color_bg_poor));
+                            } else if (menuItem.getTitle().equals("NA")) {
+                                statusAct2.setVisibility(View.VISIBLE);
+                                statusAct2.setText("NA");
+                                statusAct2.setTextColor(getResources().getColor(R.color.colorText3));
+                                statusAct2.setBackgroundColor(getResources().getColor(R.color.color_bg_na));
+                            } else {
+                                statusAct2.setVisibility(View.GONE);
+                            }
+                            return true;
+                        }
+                    });
+                    popup.show();
+                } else {
+                    statusAct2.setVisibility(View.GONE);
+                }
+
+
             }
         });
 

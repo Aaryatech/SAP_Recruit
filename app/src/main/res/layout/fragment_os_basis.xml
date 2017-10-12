@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ats.sap_recruitment.fragment.BasisFragment">
+    tools:context="com.ats.sap_recruitment.fragment.OsBasisFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -115,7 +115,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Text " />
+                        android:text="select choice" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -125,7 +125,7 @@
                         android:gravity="end">
 
                         <TextView
-                            android:id="@+id/statusStrong"
+                            android:id="@+id/statusAct1"
                             android:layout_width="70dp"
                             android:layout_height="wrap_content"
                             android:background="@color/color_bg_strong"
@@ -133,39 +133,6 @@
                             android:padding="5dp"
                             android:text="Strong"
                             android:textColor="@color/colorWhite"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:id="@+id/statusAverage"
-                            android:layout_width="70dp"
-                            android:layout_height="wrap_content"
-                            android:background="@color/color_bg_average"
-                            android:gravity="center"
-                            android:padding="5dp"
-                            android:text="Average"
-                            android:textColor="@color/colorWhite"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:id="@+id/statusPoor"
-                            android:layout_width="70dp"
-                            android:layout_height="wrap_content"
-                            android:background="@color/color_bg_poor"
-                            android:gravity="center"
-                            android:padding="5dp"
-                            android:text="Poor"
-                            android:textColor="@color/colorText2"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:id="@+id/statusNA"
-                            android:layout_width="70dp"
-                            android:layout_height="wrap_content"
-                            android:background="@color/color_bg_na"
-                            android:gravity="center"
-                            android:padding="5dp"
-                            android:text="NA"
-                            android:textColor="#9e9d9d"
                             android:visibility="gone" />
 
                     </RelativeLayout>
@@ -240,16 +207,6 @@
                     android:textColor="@color/colorText2"
                     android:textSize="22sp" />
 
-                <!--   <TextView
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:layout_weight="3"
-                       android:background="@mipmap/bg_strong"
-                       android:gravity="center"
-                       android:padding="5dp"
-                       android:text="Strong"
-                       android:textColor="@color/colorWhite" />-->
-
             </LinearLayout>
 
             <LinearLayout
@@ -262,66 +219,42 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal">
 
                     <CheckBox
+                        android:id="@+id/cbHpux"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Text" />
+                        android:layout_weight="1"
+                        android:text="select choice" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_weight="2.5"
+                        android:gravity="end">
+
+                        <TextView
+                            android:id="@+id/statusAct2"
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:background="@color/color_bg_strong"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="Strong"
+                            android:textColor="@color/colorWhite"
+                            android:visibility="gone" />
+
+                    </RelativeLayout>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
 
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Text" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Text" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Text" />
-                </LinearLayout>
             </LinearLayout>
 
 
@@ -344,16 +277,6 @@
                     android:textColor="@color/colorText2"
                     android:textSize="22sp" />
 
-                <!--  <TextView
-                      android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:layout_weight="3"
-                      android:background="@mipmap/bg_average"
-                      android:gravity="center"
-                      android:padding="5dp"
-                      android:text="Average"
-                      android:textColor="@color/colorWhite" />-->
-
             </LinearLayout>
 
             <LinearLayout
@@ -362,70 +285,44 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorWhite"
                 android:orientation="vertical">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal">
 
                     <CheckBox
+                        android:id="@+id/cbAix"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Text" />
+                        android:layout_weight="1"
+                        android:text="select choice" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_weight="2.5"
+                        android:gravity="end">
+
+                        <TextView
+                            android:id="@+id/statusAct3"
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:background="@color/color_bg_strong"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="Strong"
+                            android:textColor="@color/colorWhite"
+                            android:visibility="gone" />
+
+                    </RelativeLayout>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Text" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Text" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Text" />
-                </LinearLayout>
             </LinearLayout>
 
 
@@ -448,16 +345,6 @@
                     android:textColor="@color/colorText2"
                     android:textSize="22sp" />
 
-                <!-- <TextView
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:layout_weight="3"
-                     android:background="@mipmap/bg_poor"
-                     android:gravity="center"
-                     android:padding="5dp"
-                     android:text="Poor"
-                     android:textColor="@color/colorText2" />-->
-
             </LinearLayout>
 
             <LinearLayout
@@ -466,70 +353,44 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorWhite"
                 android:orientation="vertical">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal">
 
                     <CheckBox
+                        android:id="@+id/cbSolaris"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Text" />
+                        android:layout_weight="1"
+                        android:text="select choice" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_weight="2.5"
+                        android:gravity="end">
+
+                        <TextView
+                            android:id="@+id/statusAct4"
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:background="@color/color_bg_strong"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="Strong"
+                            android:textColor="@color/colorWhite"
+                            android:visibility="gone" />
+
+                    </RelativeLayout>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Text" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Text" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Text" />
-                </LinearLayout>
             </LinearLayout>
 
 
@@ -552,16 +413,6 @@
                     android:textColor="@color/colorText2"
                     android:textSize="22sp" />
 
-                <!--  <TextView
-                      android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:layout_weight="3"
-                      android:background="@mipmap/bg_na"
-                      android:gravity="center"
-                      android:padding="5dp"
-                      android:text="NA"
-                      android:textColor="#9e9d9d" />-->
-
             </LinearLayout>
 
             <LinearLayout
@@ -574,65 +425,39 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal">
 
                     <CheckBox
+                        android:id="@+id/cbWindows"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Text" />
-                </LinearLayout>
+                        android:layout_weight="1"
+                        android:text="select choice" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Text" />
-                </LinearLayout>
+                        android:layout_gravity="end"
+                        android:layout_weight="2.5"
+                        android:gravity="end">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
+                        <TextView
+                            android:id="@+id/statusAct5"
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:background="@color/color_bg_strong"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="Strong"
+                            android:textColor="@color/colorWhite"
+                            android:visibility="gone" />
 
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Text" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Text" />
+                    </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>
 

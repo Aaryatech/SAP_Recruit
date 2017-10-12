@@ -22,7 +22,7 @@ import com.ats.sap_recruitment.fragment.ABAPFragment;
 import com.ats.sap_recruitment.fragment.AssesmentHistoryFragment;
 import com.ats.sap_recruitment.fragment.AssesmentStartFragment;
 import com.ats.sap_recruitment.fragment.AssesmentSummaryFragment;
-import com.ats.sap_recruitment.fragment.BasisFragment;
+import com.ats.sap_recruitment.fragment.OsBasisFragment;
 import com.ats.sap_recruitment.fragment.EducationalProfileFragment;
 import com.ats.sap_recruitment.fragment.FunctionalFragment;
 import com.ats.sap_recruitment.fragment.HomeEmployerFragment;
@@ -194,7 +194,7 @@ public class HomeActivity extends AppCompatActivity
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment, "AssessmentStart");
             ft.commit();
-        } else if (updateFragment instanceof BasisFragment && updateFragment.isVisible() || updateFragment instanceof ABAPFragment && updateFragment.isVisible() || updateFragment instanceof FunctionalFragment && updateFragment.isVisible() || updateFragment instanceof PersonalProfileFragment && updateFragment.isVisible() || updateFragment instanceof EducationalProfileFragment && updateFragment.isVisible()) {
+        } else if (updateFragment instanceof OsBasisFragment && updateFragment.isVisible() || updateFragment instanceof ABAPFragment && updateFragment.isVisible() || updateFragment instanceof FunctionalFragment && updateFragment.isVisible() || updateFragment instanceof PersonalProfileFragment && updateFragment.isVisible() || updateFragment instanceof EducationalProfileFragment && updateFragment.isVisible()) {
             Fragment fragment = new UpdateProfileFragment();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment, "HomeFragment");

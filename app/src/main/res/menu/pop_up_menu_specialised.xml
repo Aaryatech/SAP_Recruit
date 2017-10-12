@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/special_os"
+        android:title="OS" />
+    <item
+        android:id="@+id/special_db"
+        android:title="DB" />
+    <item
+        android:id="@+id/special_sap_prod"
+        android:title="SAP Product" />
+
+</menu>

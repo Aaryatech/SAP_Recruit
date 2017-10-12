@@ -6,7 +6,9 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -154,10 +156,32 @@ public class UpdateProfileFragment extends Fragment {
         btnBasis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment fragment = new BasisFragment();
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.content_frame, fragment, "UpdateProfile");
-                ft.commit();
+
+                PopupMenu popupMenu = new PopupMenu(getContext(), btnBasis);
+                popupMenu.getMenuInflater().inflate(R.menu.pop_up_menu_specialised, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        switch (item.getItemId()) {
+                            case R.id.special_os:
+                                Fragment fragment = new OsBasisFragment();
+                                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                                ft.replace(R.id.content_frame, fragment, "UpdateProfile");
+                                ft.commit();
+                                break;
+                            case R.id.special_db:
+                                break;
+                            case R.id.special_sap_prod:
+                                break;
+
+                        }
+
+
+                        return false;
+                    }
+                });
+                popupMenu.show();
             }
         });
 
@@ -185,7 +209,7 @@ public class UpdateProfileFragment extends Fragment {
         llBasis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment fragment = new BasisFragment();
+                Fragment fragment = new OsBasisFragment();
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, fragment, "UpdateProfile");
                 ft.commit();

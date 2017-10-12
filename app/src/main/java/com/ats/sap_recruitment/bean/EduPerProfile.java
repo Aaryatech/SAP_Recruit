@@ -14,6 +14,9 @@ public class EduPerProfile {
     @SerializedName("prof_edu_university")
     @Expose
     private String profEduUniversity;
+    @SerializedName("prof_specilalzation")
+    @Expose
+    private String profSpecilalzation;
     @SerializedName("prof_edu_passing_year")
     @Expose
     private String profEduPassingYear;
@@ -72,12 +75,21 @@ public class EduPerProfile {
         this.profEduMiscSkillDetails = profEduMiscSkillDetails;
     }
 
+    public String getProfSpecilalzation() {
+        return profSpecilalzation;
+    }
+
+    public void setProfSpecilalzation(String profSpecilalzation) {
+        this.profSpecilalzation = profSpecilalzation;
+    }
+
     @Override
     public String toString() {
         return "EduPerProfile{" +
                 "profEduHighest='" + profEduHighest + '\'' +
                 ", profEduCourseDetail='" + profEduCourseDetail + '\'' +
                 ", profEduUniversity='" + profEduUniversity + '\'' +
+                ", profSpecilalzation='" + profSpecilalzation + '\'' +
                 ", profEduPassingYear='" + profEduPassingYear + '\'' +
                 ", profEduGradeRange='" + profEduGradeRange + '\'' +
                 ", profEduMiscSkillDetails='" + profEduMiscSkillDetails + '\'' +

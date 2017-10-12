@@ -30,13 +30,13 @@ import static com.ats.sap_recruitment.activity.HomeActivity.tvTitle;
 public class EducationalProfileFragment extends Fragment {
 
     private static final String TAG = "EducationalProfile";
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+    Gson gson;
     private EditText edCourse, edSpecialisation, edInstitute, edPassYear, edGrade, edMiscSkills;
     private TextInputLayout textCourse, textSpecialisation, textInstitute, textPassYear, textGrade, textSkills;
     private RadioButton rbBachelor, rbMaster, rbDoctorate;
     private TextView tvLabelEdu;
-    SharedPreferences pref;
-    SharedPreferences.Editor editor;
-    Gson gson;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -132,7 +132,7 @@ public class EducationalProfileFragment extends Fragment {
             rbBachelor.setChecked(true);
         }
         edCourse.setText(eduPerProfile.getProfEduCourseDetail());
-        //specialization remaining
+        edSpecialisation.setText(eduPerProfile.getProfSpecilalzation());
         edInstitute.setText(eduPerProfile.getProfEduUniversity());
         edPassYear.setText(eduPerProfile.getProfEduPassingYear());
         edGrade.setText(eduPerProfile.getProfEduGradeRange());
