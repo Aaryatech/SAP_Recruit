@@ -23,7 +23,7 @@
                     android:id="@+id/tvLabelBasisHead"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Core Basis - OS Experience"
+                    android:text="Core Basis - Experience"
                     android:textColor="@color/colorText2"
                     android:textSize="22sp" />
 
@@ -285,6 +285,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorWhite"
                 android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -337,9 +338,9 @@
                 android:padding="10dp">
 
                 <TextView
+                    android:id="@+id/tvHeadSolaris"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tvHeadSolaris"
                     android:layout_weight="1"
                     android:text="Solaris"
                     android:textColor="@color/colorText2"
@@ -353,6 +354,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorWhite"
                 android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -405,9 +407,9 @@
                 android:padding="10dp">
 
                 <TextView
+                    android:id="@+id/tvHeadWindows"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tvHeadWindows"
                     android:layout_weight="1"
                     android:text="Windows"
                     android:textColor="@color/colorText2"

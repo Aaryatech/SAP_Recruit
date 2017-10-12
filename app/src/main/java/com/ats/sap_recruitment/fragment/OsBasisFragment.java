@@ -28,6 +28,7 @@ public class OsBasisFragment extends Fragment {
     private CheckBox cbLinux, cbHpux, cbAix, cbSolarise, cbWindows;
     private TextView tvHead, tvHeadLinux, tvHeadHpux, tvHeadAix, tvHeadSolaris, tvHeadWindows;
     private EditText edMonth, edYear;
+    private String selectedSpecialised;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,8 +37,10 @@ public class OsBasisFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_os_basis, container, false);
 
         Typeface myTypeface = Typeface.createFromAsset(getContext().getAssets(), "Free_Serif.ttf");
+        Bundle bundle = getArguments();
+        selectedSpecialised = bundle.getString("selectedItem");
 
-        tvTitle.setText("SAP Profile - Basis OS");
+        tvTitle.setText("SAP Profile - Basis");
         tvTitle.setTypeface(myTypeface);
 
         llLinux = view.findViewById(R.id.llLinux);
@@ -94,6 +97,8 @@ public class OsBasisFragment extends Fragment {
         llAixData.setVisibility(View.GONE);
         llSolarisData.setVisibility(View.GONE);
         llWindowsData.setVisibility(View.GONE);
+
+        tvHead.setText("Core Basis - " + selectedSpecialised + " Experience");
 
 
         cbLinux.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
