@@ -23,25 +23,29 @@ public class FunctionalFragment extends Fragment {
     private LinearLayout llHead1, llHead1Data, llHead2, llHead2Data, llHead3, llHead3Data, llHead4, llHead4Data;
     private TextView tvHead;
     private EditText edYear, edMonth;
+    private String selectedSpecialised;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_functional, container, false);
         Typeface myTypeface = Typeface.createFromAsset(getContext().getAssets(), "Free_Serif.ttf");
+        Bundle bundle = getArguments();
+        selectedSpecialised = bundle.getString("selectedItem");
+
         tvTitle.setText("SAP Profile - Functional");
         tvTitle.setTypeface(myTypeface);
 
 
-        llHead1 = (LinearLayout) view.findViewById(R.id.llHead1);
-        llHead2 = (LinearLayout) view.findViewById(R.id.llHead2);
-        llHead3 = (LinearLayout) view.findViewById(R.id.llHead3);
-        llHead4 = (LinearLayout) view.findViewById(R.id.llHead4);
+        llHead1 = view.findViewById(R.id.llHead1);
+        llHead2 = view.findViewById(R.id.llHead2);
+        llHead3 = view.findViewById(R.id.llHead3);
+        llHead4 = view.findViewById(R.id.llHead4);
 
-        llHead1Data = (LinearLayout) view.findViewById(R.id.llHead1Data);
-        llHead2Data = (LinearLayout) view.findViewById(R.id.llHead2Data);
-        llHead3Data = (LinearLayout) view.findViewById(R.id.llHead3Data);
-        llHead4Data = (LinearLayout) view.findViewById(R.id.llHead4Data);
+        llHead1Data = view.findViewById(R.id.llHead1Data);
+        llHead2Data = view.findViewById(R.id.llHead2Data);
+        llHead3Data = view.findViewById(R.id.llHead3Data);
+        llHead4Data = view.findViewById(R.id.llHead4Data);
 
         llHead1Data.setVisibility(View.GONE);
         llHead2Data.setVisibility(View.GONE);
@@ -56,6 +60,8 @@ public class FunctionalFragment extends Fragment {
         tvHead.setTypeface(myTypeface);
         edMonth.setTypeface(myTypeface);
         edYear.setTypeface(myTypeface);
+
+        tvHead.setText("Functional - " + selectedSpecialised + " Experience");
 
         llHead1.setOnClickListener(new View.OnClickListener() {
             @Override

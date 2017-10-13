@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ats.sap_recruitment.R;
-import com.ats.sap_recruitment.activity.HomeActivity;
 
 import static com.ats.sap_recruitment.activity.HomeActivity.tvTitle;
 
@@ -24,6 +23,7 @@ public class ABAPFragment extends Fragment {
     private LinearLayout llHead1, llHead1Data, llHead2, llHead2Data, llHead3, llHead3Data, llHead4, llHead4Data;
     private TextView tvHead;
     private EditText edMonth, edYear;
+    private String selectedSpecialised;
 
 
     @Override
@@ -33,19 +33,22 @@ public class ABAPFragment extends Fragment {
 
         Typeface myTypeface = Typeface.createFromAsset(getContext().getAssets(), "Free_Serif.ttf");
 
+        Bundle bundle = getArguments();
+        selectedSpecialised = bundle.getString("selectedItem");
+
         tvTitle.setText("SAP Profile - ABAP");
         tvTitle.setTypeface(myTypeface);
 
 
-        llHead1 = (LinearLayout) view.findViewById(R.id.llAbapHead1);
-        llHead2 = (LinearLayout) view.findViewById(R.id.llAbapHead2);
-        llHead3 = (LinearLayout) view.findViewById(R.id.llAbapHead3);
-        llHead4 = (LinearLayout) view.findViewById(R.id.llAbapHead4);
+        llHead1 = view.findViewById(R.id.llAbapHead1);
+        llHead2 = view.findViewById(R.id.llAbapHead2);
+        llHead3 = view.findViewById(R.id.llAbapHead3);
+        llHead4 = view.findViewById(R.id.llAbapHead4);
 
-        llHead1Data = (LinearLayout) view.findViewById(R.id.llAbapHead1Data);
-        llHead2Data = (LinearLayout) view.findViewById(R.id.llAbapHead2Data);
-        llHead3Data = (LinearLayout) view.findViewById(R.id.llAbapHead3Data);
-        llHead4Data = (LinearLayout) view.findViewById(R.id.llAbapHead4Data);
+        llHead1Data = view.findViewById(R.id.llAbapHead1Data);
+        llHead2Data = view.findViewById(R.id.llAbapHead2Data);
+        llHead3Data = view.findViewById(R.id.llAbapHead3Data);
+        llHead4Data = view.findViewById(R.id.llAbapHead4Data);
 
         llHead1Data.setVisibility(View.GONE);
         llHead2Data.setVisibility(View.GONE);
@@ -54,6 +57,8 @@ public class ABAPFragment extends Fragment {
 
         tvHead = view.findViewById(R.id.tvHeadAbap);
         tvHead.setTypeface(myTypeface);
+
+        tvHead.setText("ABAP - " + selectedSpecialised + " Experience");
 
         edMonth = view.findViewById(R.id.edAbapMonth);
         edYear = view.findViewById(R.id.edAbapYear);

@@ -41,14 +41,35 @@ public class UpdateProfileFragment extends Fragment {
 
     PerProfile perProfile;
     EduPerProfile eduPerProfile;
+    ArrayList<String> arrayBasisList = new ArrayList<>();
+    ArrayList<String> arrayABAPList = new ArrayList<>();
+    ArrayList<String> arrayFunctionalList = new ArrayList<>();
     private Button btnBasis, btnAbap, btnFunctional;
     private LinearLayout llBasis, llAbap, llFunctional, llLsvBasis, llLsvABAP, llLsvFuctional;
     private Button btnPersonalProfile, btnEduProfile;
     private TextView tvPersonal, tvEdu, tvSAP, tvSAPText, tvBasis, tvAbap, tvFunctional, tvName, tvDegree, tvExp;
     private ListView lsvBasis, lsvABAP, lsvFunctional;
-    ArrayList<String> arrayBasisList = new ArrayList<>();
-    ArrayList<String> arrayABAPList = new ArrayList<>();
-    ArrayList<String> arrayFunctionalList = new ArrayList<>();
+
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null)
+            return;
+
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            view = listAdapter.getView(i, view, listView);
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -131,7 +152,6 @@ public class UpdateProfileFragment extends Fragment {
             else
                 tvExp.setText(exp);
         }
-
 
         String json2 = pref.getString("eduPerProfile", "");
         eduPerProfile = gson.fromJson(json2, EduPerProfile.class);
@@ -216,68 +236,14 @@ public class UpdateProfileFragment extends Fragment {
 //            }
 //        });
 
-        btnAbap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Fragment fragment = new ABAPFragment();
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.content_frame, fragment, "UpdateProfile");
-                ft.commit();
-            }
-        });
-
-
-        btnFunctional.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Fragment fragment = new FunctionalFragment();
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.content_frame, fragment, "UpdateProfile");
-                ft.commit();
-            }
-        });
-
-
-        llAbap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (llLsvABAP.getVisibility() == View.GONE) {
-                    llLsvABAP.setVisibility(View.VISIBLE);
-                } else {
-                    llLsvABAP.setVisibility(View.GONE);
-                }
-//                Fragment fragment = new ABAPFragment();
-//                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-//                ft.replace(R.id.content_frame, fragment, "UpdateProfile");
-//                ft.commit();
-            }
-        });
-
-
-        llFunctional.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (llLsvFuctional.getVisibility() == View.GONE) {
-                    llLsvFuctional.setVisibility(View.VISIBLE);
-                } else {
-                    llLsvFuctional.setVisibility(View.GONE);
-                }
-
-//                Fragment fragment = new FunctionalFragment();
-//                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-//                ft.replace(R.id.content_frame, fragment, "UpdateProfile");
-//                ft.commit();
-            }
-        });
-
         lsvBasis.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String selectedItem = arrayBasisList.get(i);
                 Bundle bundle = new Bundle();
                 bundle.putString("selectedItem", selectedItem);
-                Fragment fragment = new OsBasisFragment();
+                //Fragment fragment = new OsBasisFragment();
+                Fragment fragment = new BasisFragment();
                 fragment.setArguments(bundle);
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, fragment, "UpdateProfile");
@@ -285,28 +251,40 @@ public class UpdateProfileFragment extends Fragment {
 
             }
         });
+
+        lsvABAP.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String selectedItem = arrayABAPList.get(i);
+                Bundle bundle = new Bundle();
+                bundle.putString("selectedItem", selectedItem);
+                Fragment fragment = new ABAPFragment();
+                fragment.setArguments(bundle);
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, fragment, "UpdateProfile");
+                ft.commit();
+
+            }
+        });
+
+        lsvFunctional.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                String selectedItem = arrayFunctionalList.get(i);
+                Bundle bundle = new Bundle();
+                bundle.putString("selectedItem", selectedItem);
+                Fragment fragment = new FunctionalFragment();
+                fragment.setArguments(bundle);
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, fragment, "UpdateProfile");
+                ft.commit();
+
+            }
+        });
+
+
         return view;
-    }
-
-    public static void setListViewHeightBasedOnChildren(ListView listView) {
-        ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter == null)
-            return;
-
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
-        int totalHeight = 0;
-        View view = null;
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            view = listAdapter.getView(i, view, listView);
-            if (i == 0)
-                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
-
-            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += view.getMeasuredHeight();
-        }
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
     }
 
     @OnClick(R.id.llUpdateBasis)
@@ -327,6 +305,7 @@ public class UpdateProfileFragment extends Fragment {
                 }
             };
             lsvBasis.setAdapter(arrayAdapter);
+            lsvBasis.requestFocus();
             setListViewHeightBasedOnChildren(lsvBasis);
         } else {
             llLsvBasis.setVisibility(View.GONE);
@@ -337,5 +316,73 @@ public class UpdateProfileFragment extends Fragment {
     @OnClick(R.id.btnEditBasis)
     public void getEditBasis() {
         getBasisSelected();
+    }
+
+    @OnClick(R.id.llUpdateAbap)
+    public void getAbapSelected() {
+
+        if (llLsvABAP.getVisibility() == View.GONE) {
+            llLsvABAP.setVisibility(View.VISIBLE);
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, arrayABAPList) {
+                @NonNull
+                @Override
+                public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                    String selected = arrayABAPList.get(position);
+                    LayoutInflater inflater1 = getActivity().getLayoutInflater();
+                    View view1 = inflater1.inflate(R.layout.list_view_specialisation, null);
+                    TextView textView = view1.findViewById(R.id.tvLsvSpecialTest);
+                    textView.setText(selected);
+
+                    return view1;
+                }
+            };
+            lsvABAP.setAdapter(arrayAdapter);
+            lsvABAP.requestFocus();
+            setListViewHeightBasedOnChildren(lsvABAP);
+
+        } else {
+            llLsvABAP.setVisibility(View.GONE);
+        }
+
+    }
+
+    @OnClick(R.id.btnEditABAP)
+    public void getEditABAP() {
+        getAbapSelected();
+    }
+
+    @OnClick(R.id.llUpdateFunctional)
+    public void getFuctionalSeleccted() {
+
+        if (llLsvFuctional.getVisibility() == View.GONE) {
+            llLsvFuctional.setVisibility(View.VISIBLE);
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, arrayFunctionalList) {
+                @NonNull
+                @Override
+                public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                    String selected = arrayFunctionalList.get(position);
+                    LayoutInflater inflater1 = getActivity().getLayoutInflater();
+                    View view1 = inflater1.inflate(R.layout.list_view_specialisation, null);
+                    TextView textView = view1.findViewById(R.id.tvLsvSpecialTest);
+                    textView.setText(selected);
+
+                    return view1;
+                }
+            };
+            lsvFunctional.setAdapter(arrayAdapter);
+            lsvFunctional.requestFocus();
+            setListViewHeightBasedOnChildren(lsvFunctional);
+
+
+        } else {
+            llLsvFuctional.setVisibility(View.GONE);
+        }
+
+    }
+
+    @OnClick(R.id.btnEditFunctional)
+
+    public void getEditFunctional() {
+        getFuctionalSeleccted();
     }
 }
