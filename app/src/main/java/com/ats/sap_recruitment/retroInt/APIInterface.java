@@ -1,5 +1,6 @@
 package com.ats.sap_recruitment.retroInt;
 
+import com.ats.sap_recruitment.bean.Categories;
 import com.ats.sap_recruitment.bean.EducationalProfile;
 import com.ats.sap_recruitment.bean.LoginBean;
 import com.ats.sap_recruitment.bean.PersonProfile;
@@ -22,5 +23,9 @@ public interface APIInterface {
     @FormUrlEncoded
     @POST("Ser_profile/get_education")
     Call<EducationalProfile> getEducationalDetails(@Field("frm_mode") String frm_mode, @Field("user_type") String user_type, @Field("user_id") String user_id);
+
+    @FormUrlEncoded
+    @POST("Ser_specilization/get_categories")
+    Call<Categories> getSpecialisedCategories(@Field("frm_mode") String frm_mode, @Field("user_type") String user_type, @Field("user_id") String user_id);
 
 }

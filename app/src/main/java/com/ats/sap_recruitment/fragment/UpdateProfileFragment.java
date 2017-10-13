@@ -1,6 +1,7 @@
 package com.ats.sap_recruitment.fragment;
 
 
+import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +23,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ats.sap_recruitment.R;
+import com.ats.sap_recruitment.bean.Categories;
 import com.ats.sap_recruitment.bean.EduPerProfile;
+import com.ats.sap_recruitment.bean.LoginBean;
+import com.ats.sap_recruitment.bean.MainCat;
 import com.ats.sap_recruitment.bean.PerProfile;
+import com.ats.sap_recruitment.bean.SubCat;
+import com.ats.sap_recruitment.bean.SubSubCat;
+import com.ats.sap_recruitment.retroInt.APIClient;
+import com.ats.sap_recruitment.retroInt.APIInterface;
 import com.ats.sap_recruitment.utils.Constants;
 import com.google.gson.Gson;
 
@@ -30,6 +39,10 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dmax.dialog.SpotsDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.ats.sap_recruitment.activity.HomeActivity.tvTitle;
@@ -39,16 +52,28 @@ import static com.ats.sap_recruitment.activity.HomeActivity.tvTitle;
  */
 public class UpdateProfileFragment extends Fragment {
 
-    PerProfile perProfile;
-    EduPerProfile eduPerProfile;
-    ArrayList<String> arrayBasisList = new ArrayList<>();
-    ArrayList<String> arrayABAPList = new ArrayList<>();
-    ArrayList<String> arrayFunctionalList = new ArrayList<>();
+    private PerProfile perProfile;
+    private EduPerProfile eduPerProfile;
+    private LoginBean loginBean;
+    private String userId = "NA";
+    private String usrType = "NA";
+    private ArrayList<String> arrayBasisList = new ArrayList<>();
+    private ArrayList<String> arrayABAPList = new ArrayList<>();
+    private ArrayList<String> arrayFunctionalList = new ArrayList<>();
     private Button btnBasis, btnAbap, btnFunctional;
     private LinearLayout llBasis, llAbap, llFunctional, llLsvBasis, llLsvABAP, llLsvFuctional;
     private Button btnPersonalProfile, btnEduProfile;
     private TextView tvPersonal, tvEdu, tvSAP, tvSAPText, tvBasis, tvAbap, tvFunctional, tvName, tvDegree, tvExp;
     private ListView lsvBasis, lsvABAP, lsvFunctional;
+    private APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
+    private ArrayList<MainCat> mainCatArrayList = new ArrayList<>();
+    private ArrayList<SubCat> subCatBasisArrayList = new ArrayList<>();
+    private ArrayList<SubSubCat> subSubBasisCatArrayList = new ArrayList<>();
+    public static final String TAG = "UpdateProfileFragment";
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+    private Gson gson;
+
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
@@ -80,6 +105,7 @@ public class UpdateProfileFragment extends Fragment {
 
         Typeface myTypeface = Typeface.createFromAsset(getContext().getAssets(), "Free_Serif.ttf");
         Typeface myTypefaceBold = Typeface.createFromAsset(getContext().getAssets(), "Free_Serif.ttf");
+
 
         tvTitle.setText("Update Profile");
         tvTitle.setTypeface(myTypefaceBold);
@@ -124,23 +150,10 @@ public class UpdateProfileFragment extends Fragment {
         llLsvABAP = view.findViewById(R.id.llLsvABAP);
         llLsvFuctional = view.findViewById(R.id.llLsvFuctional);
 
-//        ArrayList for Basis Specialisation
-        arrayBasisList.add("OS");
-        arrayBasisList.add("DB");
-        arrayBasisList.add("SAP Product");
 
-//        ArrayList for Basis Specialisation
-
-        arrayABAPList.add("SampleABAP");
-        arrayABAPList.add("TestABAP");
-
-//         ArrayList for Basis Specialisation
-        arrayFunctionalList.add("SampleFunctional");
-        arrayFunctionalList.add("TestFunctional");
-
-        SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences(Constants.myPref, MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        Gson gson = new Gson();
+        pref = getActivity().getApplicationContext().getSharedPreferences(Constants.myPref, MODE_PRIVATE);
+        editor = pref.edit();
+        gson = new Gson();
         String json = pref.getString("perProfile", "");
         perProfile = gson.fromJson(json, PerProfile.class);
         if (perProfile != null) {
@@ -152,12 +165,34 @@ public class UpdateProfileFragment extends Fragment {
             else
                 tvExp.setText(exp);
         }
-
         String json2 = pref.getString("eduPerProfile", "");
         eduPerProfile = gson.fromJson(json2, EduPerProfile.class);
         if (eduPerProfile != null) {
             tvDegree.setText(eduPerProfile.getProfEduCourseDetail());
         }
+
+        String json3 = pref.getString("loginBean", "");
+        loginBean = gson.fromJson(json3, LoginBean.class);
+        if (loginBean != null) {
+            userId = loginBean.getUserId();
+            usrType = loginBean.getUserType();
+        }
+
+
+        getAllCategories();
+        //        ArrayList for Basis Specialisation
+//        arrayBasisList.add("OS");
+//        arrayBasisList.add("DB");
+//        arrayBasisList.add("SAP Product");
+
+//        ArrayList for Basis Specialisation
+
+        arrayABAPList.add("SampleABAP");
+        arrayABAPList.add("TestABAP");
+
+//         ArrayList for Basis Specialisation
+        arrayFunctionalList.add("SampleFunctional");
+        arrayFunctionalList.add("TestFunctional");
 
        /* cdPersonal = (CircleDisplay) view.findViewById(R.id.circleDisplayPersonal);
         cdPersonal.setAnimDuration(3000);
@@ -240,8 +275,10 @@ public class UpdateProfileFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String selectedItem = arrayBasisList.get(i);
+                String basis = "BASIS";
                 Bundle bundle = new Bundle();
                 bundle.putString("selectedItem", selectedItem);
+                bundle.putString("BASIS", basis);
                 //Fragment fragment = new OsBasisFragment();
                 Fragment fragment = new BasisFragment();
                 fragment.setArguments(bundle);
@@ -256,8 +293,10 @@ public class UpdateProfileFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String selectedItem = arrayABAPList.get(i);
+                String abap = "ABAP";
                 Bundle bundle = new Bundle();
                 bundle.putString("selectedItem", selectedItem);
+                bundle.putString("ABAP", abap);
                 Fragment fragment = new ABAPFragment();
                 fragment.setArguments(bundle);
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
@@ -272,8 +311,10 @@ public class UpdateProfileFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 String selectedItem = arrayFunctionalList.get(i);
+                String functional = "Functional";
                 Bundle bundle = new Bundle();
                 bundle.putString("selectedItem", selectedItem);
+                bundle.putString("Functional", functional);
                 Fragment fragment = new FunctionalFragment();
                 fragment.setArguments(bundle);
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
@@ -384,5 +425,61 @@ public class UpdateProfileFragment extends Fragment {
 
     public void getEditFunctional() {
         getFuctionalSeleccted();
+    }
+
+    public void getAllCategories() {
+        final AlertDialog dialog = new SpotsDialog(getActivity());
+        dialog.show();
+        Call<Categories> categoriesCall = apiInterface.getSpecialisedCategories("get_specilic", usrType, userId);
+        categoriesCall.enqueue(new Callback<Categories>() {
+            @Override
+            public void onResponse(Call<Categories> call, Response<Categories> response) {
+                dialog.dismiss();
+                Log.e(TAG, "onResponse: Category Data" + response.body());
+                if (response.body() != null) {
+                    Categories categories = response.body();
+
+                    pref = getActivity().getApplicationContext().getSharedPreferences(Constants.myPref, MODE_PRIVATE);
+                    editor = pref.edit();
+                    gson = new Gson();
+                    String json = gson.toJson(categories);
+                    editor.putString("categories", json);
+                    editor.apply();
+
+                    Log.e(TAG, "onResponse: category Data : " + categories);
+
+                    for (int i = 0; i < categories.getMainCats().size(); i++) {
+                        Log.e(TAG, "onResponse: MainCategory : " + categories.getMainCats().get(i));
+                        mainCatArrayList.add(categories.getMainCats().get(i));
+                    }
+
+                    if (!mainCatArrayList.isEmpty()) {
+                        for (int i = 0; i < mainCatArrayList.size(); i++) {
+                            MainCat mainCat = mainCatArrayList.get(i);
+                            Log.e(TAG, "onResponse: size of array" + mainCat.getSubCats().size());
+                            if (mainCat.getProfCatName().equalsIgnoreCase("Basis")) {
+                                for (int j = 0; j < mainCat.getSubCats().size(); j++) {
+                                    subCatBasisArrayList.add(j, mainCat.getSubCats().get(j));
+                                    Log.e(TAG, "onResponse: SubCat List : " + subCatBasisArrayList);
+                                }
+                            }
+                        }
+                    }
+                    if (!subCatBasisArrayList.isEmpty()) {
+                        for (int i = 0; i < subCatBasisArrayList.size(); i++) {
+                            arrayBasisList.add(i, subCatBasisArrayList.get(i).getProfCatName());
+                        }
+                    }
+                } else {
+                    Log.e(TAG, "onResponse: Category Data Not Found");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Categories> call, Throwable t) {
+                dialog.dismiss();
+                Log.e(TAG, "onFailure: Errot Occur in getAllCategories :  " + t.getMessage());
+            }
+        });
     }
 }

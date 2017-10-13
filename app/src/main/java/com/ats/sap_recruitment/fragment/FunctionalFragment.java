@@ -5,30 +5,51 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ats.sap_recruitment.R;
+import com.ats.sap_recruitment.adpter.FunctionalDataAdapter;
+
+import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static com.ats.sap_recruitment.activity.HomeActivity.tvTitle;
 
 public class FunctionalFragment extends Fragment {
 
-    private LinearLayout llHead1, llHead1Data, llHead2, llHead2Data, llHead3, llHead3Data, llHead4, llHead4Data;
-    private TextView tvHead;
-    private EditText edYear, edMonth;
+    @BindView(R.id.rcl_view_functional)
+    RecyclerView rclFunctional;
+    @BindView(R.id.edFunctionalMonth)
+    EditText edFunctionalMonth;
+    @BindView(R.id.edFunctionalYear)
+    EditText edFunctionalYear;
+    @BindView(R.id.tvHeadFunctional)
+    TextView tvHeadFunctional;
+    private static RecyclerView.Adapter adapter;
+    private static ArrayList<String> data = new ArrayList<>();
+    private static String TAG = "FunctionalFragment";
+    private RecyclerView.LayoutManager layoutManager;
+
+
     private String selectedSpecialised;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_functional, container, false);
+        ButterKnife.bind(this, view);
+
         Typeface myTypeface = Typeface.createFromAsset(getContext().getAssets(), "Free_Serif.ttf");
         Bundle bundle = getArguments();
         selectedSpecialised = bundle.getString("selectedItem");
@@ -37,76 +58,18 @@ public class FunctionalFragment extends Fragment {
         tvTitle.setTypeface(myTypeface);
 
 
-        llHead1 = view.findViewById(R.id.llHead1);
-        llHead2 = view.findViewById(R.id.llHead2);
-        llHead3 = view.findViewById(R.id.llHead3);
-        llHead4 = view.findViewById(R.id.llHead4);
+        data.clear();
+        data.add("Test");
+        data.add("Normal");
+        data.add("Sample");
 
-        llHead1Data = view.findViewById(R.id.llHead1Data);
-        llHead2Data = view.findViewById(R.id.llHead2Data);
-        llHead3Data = view.findViewById(R.id.llHead3Data);
-        llHead4Data = view.findViewById(R.id.llHead4Data);
+        adapter = new FunctionalDataAdapter(data, getContext());
+        rclFunctional.setAdapter(adapter);
 
-        llHead1Data.setVisibility(View.GONE);
-        llHead2Data.setVisibility(View.GONE);
-        llHead3Data.setVisibility(View.GONE);
-        llHead4Data.setVisibility(View.GONE);
-
-        tvHead = view.findViewById(R.id.tvHeadFunctional);
-
-        edMonth = view.findViewById(R.id.edFunctionalMonth);
-        edYear = view.findViewById(R.id.edFunctionalYear);
-
-        tvHead.setTypeface(myTypeface);
-        edMonth.setTypeface(myTypeface);
-        edYear.setTypeface(myTypeface);
-
-        tvHead.setText("Functional - " + selectedSpecialised + " Experience");
-
-        llHead1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (llHead1Data.getVisibility() == View.GONE) {
-                    llHead1Data.setVisibility(View.VISIBLE);
-                } else {
-                    llHead1Data.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        llHead2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (llHead2Data.getVisibility() == View.GONE) {
-                    llHead2Data.setVisibility(View.VISIBLE);
-                } else {
-                    llHead2Data.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        llHead3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (llHead3Data.getVisibility() == View.GONE) {
-                    llHead3Data.setVisibility(View.VISIBLE);
-                } else {
-                    llHead3Data.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        llHead4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (llHead4Data.getVisibility() == View.GONE) {
-                    llHead4Data.setVisibility(View.VISIBLE);
-                } else {
-                    llHead4Data.setVisibility(View.GONE);
-                }
-            }
-        });
-
+        rclFunctional.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(getContext());
+        rclFunctional.setLayoutManager(layoutManager);
+        rclFunctional.setItemAnimator(new DefaultItemAnimator());
         return view;
     }
 

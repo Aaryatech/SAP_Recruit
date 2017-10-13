@@ -16,42 +16,38 @@ import com.ats.sap_recruitment.R;
 
 import java.util.ArrayList;
 
-/**
- * Created by datta on 13/10/17.
- */
-
-public class BasisDataAdapter extends RecyclerView.Adapter<BasisDataAdapter.MyViewHolder> {
+public class AbapDataAdapter extends RecyclerView.Adapter<AbapDataAdapter.MyViewHolder> {
 
     ArrayList<String> dataset;
-    private Context context;
+    Context context;
 
-    public BasisDataAdapter(ArrayList<String> dataset, Context context) {
+    public AbapDataAdapter(ArrayList<String> dataset, Context context) {
         this.dataset = dataset;
         this.context = context;
     }
 
     @Override
-
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcl_view_basis_layout, parent, false);
-        MyViewHolder viewHolder = new MyViewHolder(view);
-        return viewHolder;
+        MyViewHolder myViewHolder = new MyViewHolder(view);
+        return myViewHolder;
     }
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        TextView tvHeadRclBasis = holder.tvHeadRclBasis;
+        TextView tvHeadRclAbap = holder.tvHeadRclAbap;
         final CheckBox cbRclSelect = holder.cbRclSelect;
-        LinearLayout llRclBasis = holder.llRclBasis;
-        final LinearLayout llRclBasisData = holder.llRclBasisData;
+        LinearLayout llRclAbap = holder.llRclAbap;
+        final LinearLayout llRclAbapData = holder.llRclAbapData;
         final TextView tvRclStatusCode = holder.tvRclStatusCode;
 
-        tvHeadRclBasis.setText(dataset.get(position).toString());
-        tvHeadRclBasis.setOnClickListener(new View.OnClickListener() {
+        tvHeadRclAbap.setText(dataset.get(position).toString());
+
+        tvHeadRclAbap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (llRclBasisData.getVisibility() == View.GONE) {
-                    llRclBasisData.setVisibility(View.VISIBLE);
+                if (llRclAbapData.getVisibility() == View.GONE) {
+                    llRclAbapData.setVisibility(View.VISIBLE);
 
                     cbRclSelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
@@ -100,7 +96,7 @@ public class BasisDataAdapter extends RecyclerView.Adapter<BasisDataAdapter.MyVi
                     });
 
                 } else {
-                    llRclBasisData.setVisibility(View.GONE);
+                    llRclAbapData.setVisibility(View.GONE);
                 }
             }
         });
@@ -113,21 +109,18 @@ public class BasisDataAdapter extends RecyclerView.Adapter<BasisDataAdapter.MyVi
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-
-        TextView tvHeadRclBasis;
+        TextView tvHeadRclAbap;
         CheckBox cbRclSelect;
-        LinearLayout llRclBasis;
-        LinearLayout llRclBasisData;
+        LinearLayout llRclAbap;
+        LinearLayout llRclAbapData;
         TextView tvRclStatusCode;
-
 
         public MyViewHolder(View itemView) {
             super(itemView);
-
-            this.tvHeadRclBasis = itemView.findViewById(R.id.tvRclBasisHead);
+            this.tvHeadRclAbap = itemView.findViewById(R.id.tvRclBasisHead);
             this.cbRclSelect = itemView.findViewById(R.id.cbRclSelect);
-            this.llRclBasis = itemView.findViewById(R.id.llRclBasis);
-            this.llRclBasisData = itemView.findViewById(R.id.llRclBasisData);
+            this.llRclAbap = itemView.findViewById(R.id.llRclBasis);
+            this.llRclAbapData = itemView.findViewById(R.id.llRclBasisData);
             this.tvRclStatusCode = itemView.findViewById(R.id.tvRclStatusCode);
         }
     }

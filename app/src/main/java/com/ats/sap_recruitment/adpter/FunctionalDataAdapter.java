@@ -1,5 +1,6 @@
 package com.ats.sap_recruitment.adpter;
 
+
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,42 +17,39 @@ import com.ats.sap_recruitment.R;
 
 import java.util.ArrayList;
 
-/**
- * Created by datta on 13/10/17.
- */
-
-public class BasisDataAdapter extends RecyclerView.Adapter<BasisDataAdapter.MyViewHolder> {
+public class FunctionalDataAdapter extends RecyclerView.Adapter<FunctionalDataAdapter.MyViewHolder> {
 
     ArrayList<String> dataset;
-    private Context context;
+    Context context;
 
-    public BasisDataAdapter(ArrayList<String> dataset, Context context) {
+    public FunctionalDataAdapter(ArrayList<String> dataset, Context context) {
         this.dataset = dataset;
         this.context = context;
     }
 
     @Override
-
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rcl_view_basis_layout, parent, false);
-        MyViewHolder viewHolder = new MyViewHolder(view);
-        return viewHolder;
+        MyViewHolder myViewHolder = new MyViewHolder(view);
+        return myViewHolder;
     }
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        TextView tvHeadRclBasis = holder.tvHeadRclBasis;
+
+        TextView tvHeadRclFunctional = holder.tvHeadRclFunctional;
         final CheckBox cbRclSelect = holder.cbRclSelect;
-        LinearLayout llRclBasis = holder.llRclBasis;
-        final LinearLayout llRclBasisData = holder.llRclBasisData;
+        LinearLayout llRclFunctional = holder.llRclFunctional;
+        final LinearLayout llRclFunctionalData = holder.llRclFunctionalData;
         final TextView tvRclStatusCode = holder.tvRclStatusCode;
 
-        tvHeadRclBasis.setText(dataset.get(position).toString());
-        tvHeadRclBasis.setOnClickListener(new View.OnClickListener() {
+        tvHeadRclFunctional.setText(dataset.get(position).toString());
+
+        tvHeadRclFunctional.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (llRclBasisData.getVisibility() == View.GONE) {
-                    llRclBasisData.setVisibility(View.VISIBLE);
+                if (llRclFunctionalData.getVisibility() == View.GONE) {
+                    llRclFunctionalData.setVisibility(View.VISIBLE);
 
                     cbRclSelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
@@ -100,7 +98,7 @@ public class BasisDataAdapter extends RecyclerView.Adapter<BasisDataAdapter.MyVi
                     });
 
                 } else {
-                    llRclBasisData.setVisibility(View.GONE);
+                    llRclFunctionalData.setVisibility(View.GONE);
                 }
             }
         });
@@ -114,20 +112,18 @@ public class BasisDataAdapter extends RecyclerView.Adapter<BasisDataAdapter.MyVi
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvHeadRclBasis;
+        TextView tvHeadRclFunctional;
         CheckBox cbRclSelect;
-        LinearLayout llRclBasis;
-        LinearLayout llRclBasisData;
+        LinearLayout llRclFunctional;
+        LinearLayout llRclFunctionalData;
         TextView tvRclStatusCode;
-
 
         public MyViewHolder(View itemView) {
             super(itemView);
-
-            this.tvHeadRclBasis = itemView.findViewById(R.id.tvRclBasisHead);
+            this.tvHeadRclFunctional = itemView.findViewById(R.id.tvRclBasisHead);
             this.cbRclSelect = itemView.findViewById(R.id.cbRclSelect);
-            this.llRclBasis = itemView.findViewById(R.id.llRclBasis);
-            this.llRclBasisData = itemView.findViewById(R.id.llRclBasisData);
+            this.llRclFunctional = itemView.findViewById(R.id.llRclBasis);
+            this.llRclFunctionalData = itemView.findViewById(R.id.llRclBasisData);
             this.tvRclStatusCode = itemView.findViewById(R.id.tvRclStatusCode);
         }
     }
