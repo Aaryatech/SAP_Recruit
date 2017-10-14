@@ -53,8 +53,11 @@ public class ABAPFragment extends Fragment {
         Bundle bundle = getArguments();
         selectedSpecialised = bundle.getString("selectedItem");
 
+
         tvTitle.setText("SAP Profile - ABAP");
         tvTitle.setTypeface(myTypeface);
+        tvAbapHead.setText("ABAP" + selectedSpecialised + " Experience");
+
         data.clear();
         data.add("Test");
         data.add("Normal");

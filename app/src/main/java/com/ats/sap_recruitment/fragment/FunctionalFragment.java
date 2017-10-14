@@ -56,6 +56,7 @@ public class FunctionalFragment extends Fragment {
 
         tvTitle.setText("SAP Profile - Functional");
         tvTitle.setTypeface(myTypeface);
+        tvHeadFunctional.setText("Functional - " + selectedSpecialised + " Experience");
 
 
         data.clear();
