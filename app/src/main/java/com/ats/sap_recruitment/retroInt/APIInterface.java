@@ -1,6 +1,8 @@
 package com.ats.sap_recruitment.retroInt;
 
 import com.ats.sap_recruitment.bean.Categories;
+import com.ats.sap_recruitment.bean.DashBoardProfile;
+import com.ats.sap_recruitment.bean.EduStatusCode;
 import com.ats.sap_recruitment.bean.EducationalProfile;
 import com.ats.sap_recruitment.bean.LoginBean;
 import com.ats.sap_recruitment.bean.PersonProfile;
@@ -27,5 +29,44 @@ public interface APIInterface {
     @FormUrlEncoded
     @POST("Ser_specilization/get_categories")
     Call<Categories> getSpecialisedCategories(@Field("frm_mode") String frm_mode, @Field("user_type") String user_type, @Field("user_id") String user_id);
+
+    @FormUrlEncoded
+    @POST("Ser_profile/get_dashboard")
+    Call<DashBoardProfile> getDashBpardDetials(@Field("frm_mode") String frm_mode, @Field("user_type") String user_type, @Field("user_id") String user_id);
+
+    @FormUrlEncoded
+    @POST("Ser_profile/save_rec_educational")
+    Call<EduStatusCode> saveEducationalDetails(@Field("frm_mode") String frm_mode,
+                                               @Field("user_type") String user_type,
+                                               @Field("user_id") String user_id,
+                                               @Field("prof_edu_course_detail") String prof_edu_course_detail,
+                                               @Field("prof_specilalzation") String prof_specilalzation,
+                                               @Field("prof_edu_university") String prof_edu_university,
+                                               @Field("prof_edu_passing_year") String prof_edu_passing_year,
+                                               @Field("prof_edu_grade_range") String prof_edu_grade_range,
+                                               @Field("prof_edu_misc_skill_details") String prof_edu_misc_skill_details);
+
+    @FormUrlEncoded
+    @POST("Ser_profile/save_rec_personal")
+    Call<EduStatusCode> savePersonalDetails(@Field("frm_mode") String frm_mode,
+                                            @Field("user_type") String user_type,
+                                            @Field("user_id") String user_id,
+                                            @Field("prof_fname") String prof_fname,
+                                            @Field("prof_mname") String prof_mname,
+                                            @Field("prof_lname") String prof_lname,
+                                            @Field("prof_dob") String prof_dob,
+                                            @Field("prof_curr_location") String prof_curr_location,
+                                            @Field("prof_w_status") String prof_w_status,
+                                            @Field("prof_w_exp_year") String prof_w_exp_year,
+                                            @Field("prof_w_exp_month") String prof_w_exp_month,
+                                            @Field("prof_w_like") String prof_w_like,
+                                            @Field("prof_full_part_time") String prof_full_part_time,
+                                            @Field("prof_curr_salary") String prof_curr_salary,
+                                            @Field("prof_company_name") String prof_company_name,
+                                            @Field("prof_company_email") String prof_company_email,
+                                            @Field("prof_profile_flag") String prof_profile_flag,
+                                            @Field("prof_mobile") String prof_mobile,
+                                            @Field("prof_alternet_mobile") String prof_alternet_mobile,
+                                            @Field("prof_email") String prof_email);
 
 }

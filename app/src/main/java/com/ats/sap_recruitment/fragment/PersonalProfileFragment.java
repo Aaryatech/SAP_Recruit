@@ -235,7 +235,7 @@ public class PersonalProfileFragment extends Fragment {
         String empWorkLike = perProfile.getProfWStatus();
         Log.e(TAG, "setBindData: WorkLike " + empWorkLike);
 
-        if (empWorkLike.equalsIgnoreCase("EMP")) {
+        if (empWorkLike.equalsIgnoreCase("EXP")) {
             rbEmployee.setChecked(true);
             llEmployee.setVisibility(View.VISIBLE);
             edCurrentSal.setText(perProfile.getProfCurrSalary());

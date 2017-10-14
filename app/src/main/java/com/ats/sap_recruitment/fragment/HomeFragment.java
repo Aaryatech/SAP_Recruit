@@ -13,10 +13,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ats.sap_recruitment.R;
+import com.ats.sap_recruitment.bean.DashBoardPerProfile;
+import com.ats.sap_recruitment.bean.DashBoardProfile;
 import com.ats.sap_recruitment.bean.EduPerProfile;
 import com.ats.sap_recruitment.bean.EducationalProfile;
 import com.ats.sap_recruitment.bean.LoginBean;
@@ -27,6 +30,8 @@ import com.ats.sap_recruitment.retroInt.APIInterface;
 import com.ats.sap_recruitment.utils.Constants;
 import com.google.gson.Gson;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,23 +43,31 @@ import static com.ats.sap_recruitment.activity.HomeActivity.tvTitle;
 
 public class HomeFragment extends Fragment {
 
+
     private static final String TAG = "HomeFragment";
+    @BindView(R.id.rtbNumRating)
+    RatingBar rtbNumRating;
+
+
     LoginBean loginBean;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
-    String userId = "NA", userType = "NA";
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     Gson gson;
+    private String userId = "NA";
+    private String userType = "NA";
     private TextView tvPersonName, tvPersonDegree, tvPersonExp, tvProfileStatus, tvProfileLastUpdate, tvTestLastDate, tvTestScore, tvLabelStatus, tvLabelCompleted, tvLabelScore, tvLabelLastProfile, tvLabelLastTest, tvLabelRating, tvNotifyHead, tvNotifyText;
     private Button btnProfileUpdate, btnTest;
     private ImageView ivProfileImage;
     private LinearLayout llTestHistory;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        ButterKnife.bind(this, view);
 
         Typeface myTypeface = Typeface.createFromAsset(getContext().getAssets(), "Free_Serif.ttf");
         Typeface myTypefaceBold = Typeface.createFromAsset(getContext().getAssets(), "Free_Serif.ttf");
@@ -120,8 +133,10 @@ public class HomeFragment extends Fragment {
 
         llTestHistory = view.findViewById(R.id.llHomeTestScore);
 
+        getDashBoardDetails();
         getProfileDetails();
         getEducationalDetails();
+
 
         btnProfileUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,11 +172,55 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+
+    public void getDashBoardDetails() {
+        final AlertDialog dialog = new SpotsDialog(getActivity());
+        dialog.show();
+        final Call<DashBoardProfile> dashBoardProfileCall = apiInterface.getDashBpardDetials("get_dash", userType, userId);
+        dashBoardProfileCall.enqueue(new Callback<DashBoardProfile>() {
+            @Override
+            public void onResponse(Call<DashBoardProfile> call, Response<DashBoardProfile> response) {
+                dialog.dismiss();
+                if (response.body() != null) {
+                    DashBoardProfile dashBoardProfile = response.body();
+                    if (dashBoardProfile.getDashPerProfile().size() > 0) {
+                        DashBoardPerProfile dashBoardPerProfile = dashBoardProfile.getDashPerProfile().get(0);
+                        Log.e(TAG, "onResponse: dashBoardPerProfile : " + dashBoardPerProfile);
+                        if (dashBoardPerProfile != null) {
+                            tvPersonName.setText(dashBoardPerProfile.getProfFname() + " " + dashBoardPerProfile.getProfMname() + " " + dashBoardPerProfile.getProfLname());
+                            tvPersonDegree.setText(dashBoardPerProfile.getProfEduCourseDetail());
+                            tvPersonExp.setText(dashBoardPerProfile.getProfExp());
+                            tvProfileStatus.setText(dashBoardPerProfile.getProfileCompleted()+" %");
+                            tvProfileLastUpdate.setText(dashBoardPerProfile.getProfLstUpdate());
+                            tvTestScore.setText(dashBoardPerProfile.getProfileScore()+" %");
+                            rtbNumRating.setRating(Float.parseFloat(dashBoardPerProfile.getProfileRating().toString()));
+                        }
+                    }
+
+                } else {
+                    dialog.dismiss();
+                    Log.e(TAG, "onResponse: DashBoardProfile" + response.body());
+                    Toast.makeText(getContext(), "No DashBoard Details Found", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<DashBoardProfile> call, Throwable t) {
+                Log.e(TAG, "onFailure: DashBoardProfile " + t.getMessage());
+                Toast.makeText(getActivity().getApplicationContext(), " Server Error", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+    }
+
     public void getProfileDetails() {
         final AlertDialog dialog = new SpotsDialog(getActivity());
         dialog.show();
 
-        Call<PersonProfile> personProfileCall = apiInterface.getPersonalDetail("get_personal", loginBean.getUserType(), loginBean.getUserId());
+        Call<PersonProfile> personProfileCall = apiInterface.getPersonalDetail("get_personal", userType, userId);
         personProfileCall.enqueue(new Callback<PersonProfile>() {
             @Override
             public void onResponse(Call<PersonProfile> call, Response<PersonProfile> response) {
@@ -174,13 +233,13 @@ public class HomeFragment extends Fragment {
                         PerProfile perProfile = personProfile.getPerProfile().get(0);
                         Log.e(TAG, "onResponse: perProfile Data " + perProfile);
                         if (perProfile != null) {
-                            tvPersonName.setText(perProfile.getProfFname() + " " + perProfile.getProfMname() + " " + perProfile.getProfLname());
-                            String exp = perProfile.getProfWExpYear() + " year " + perProfile.getProfWExpMonth() + " month";
-                            Log.e(TAG, "onResponse: Experience" + exp);
-                            if (exp.equalsIgnoreCase(" "))
-                                tvPersonExp.setText("Fresher");
-                            else
-                                tvPersonExp.setText(exp);
+//                            tvPersonName.setText(perProfile.getProfFname() + " " + perProfile.getProfMname() + " " + perProfile.getProfLname());
+//                            String exp = perProfile.getProfWExpYear() + " year " + perProfile.getProfWExpMonth() + " month";
+//                            Log.e(TAG, "onResponse: Experience" + exp);
+//                            if (exp.equalsIgnoreCase(" "))
+//                                tvPersonExp.setText("Fresher");
+//                            else
+//                                tvPersonExp.setText(exp);
 
 
                             pref = getActivity().getApplicationContext().getSharedPreferences(Constants.myPref, MODE_PRIVATE);
@@ -211,7 +270,7 @@ public class HomeFragment extends Fragment {
         final AlertDialog dialog = new SpotsDialog(getActivity());
         dialog.show();
 
-        Call<EducationalProfile> educationalProfileCall = apiInterface.getEducationalDetails("get_education", loginBean.getUserType(), loginBean.getUserId());
+        Call<EducationalProfile> educationalProfileCall = apiInterface.getEducationalDetails("get_education", userType, userId);
         educationalProfileCall.enqueue(new Callback<EducationalProfile>() {
             @Override
             public void onResponse(Call<EducationalProfile> call, Response<EducationalProfile> response) {
@@ -224,7 +283,7 @@ public class HomeFragment extends Fragment {
                         EduPerProfile eduPerProfile = educationalProfile.getPerProfile().get(0);
                         Log.e(TAG, "onResponse: " + eduPerProfile);
                         if (eduPerProfile != null) {
-                            tvPersonDegree.setText(eduPerProfile.getProfEduCourseDetail());
+//                            tvPersonDegree.setText(eduPerProfile.getProfEduCourseDetail());
 
                             pref = getActivity().getApplicationContext().getSharedPreferences(Constants.myPref, MODE_PRIVATE);
                             editor = pref.edit();
