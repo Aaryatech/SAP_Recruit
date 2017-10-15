@@ -53,15 +53,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp">
 
-                <EditText
+                <AutoCompleteTextView
                     android:id="@+id/edCourseDetails"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:editable="false"
                     android:hint="Course Details"
                     android:inputType="none"
                     android:maxLines="1"
-                    android:singleLine="true"
+                    android:completionThreshold="1"
                     android:textColor="@color/colorText2"
                     android:textColorHint="@color/colorText2" />
 
@@ -74,15 +73,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp">
 
-                <EditText
+                <AutoCompleteTextView
                     android:id="@+id/edSpecialisation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:editable="false"
                     android:hint="Specialisation"
                     android:inputType="none"
                     android:maxLines="1"
-                    android:singleLine="true"
+                    android:completionThreshold="1"
                     android:textColor="@color/colorText2"
                     android:textColorHint="@color/colorText2" />
 
@@ -95,15 +93,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp">
 
-                <EditText
+                <AutoCompleteTextView
                     android:id="@+id/edInstitute"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:editable="false"
                     android:hint="University / Institute"
                     android:inputType="none"
                     android:maxLines="1"
-                    android:singleLine="true"
+                    android:completionThreshold="1"
                     android:textColor="@color/colorText2"
                     android:textColorHint="@color/colorText2" />
 
@@ -123,7 +120,6 @@
                     android:hint="Passing Out Year"
                     android:inputType="number"
                     android:maxLines="1"
-                    android:singleLine="true"
                     android:textColor="@color/colorText2"
                     android:textColorHint="@color/colorText2" />
 
@@ -143,7 +139,6 @@
                     android:hint="Grade / Percentage"
                     android:inputType="number"
                     android:maxLines="1"
-                    android:singleLine="true"
                     android:textColor="@color/colorText2"
                     android:textColorHint="@color/colorText2" />
 
