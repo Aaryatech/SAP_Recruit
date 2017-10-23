@@ -57,7 +57,7 @@ public class HomeEmployerFragment extends Fragment {
     @OnClick(R.id.llEmprMatchProfile)
     public void matchProfile() {
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_frame, new MacthProfileFragment());
+        ft.replace(R.id.content_frame, new RecruiteeProfileFragment());
         ft.addToBackStack("backtoProfile");
         ft.commit();
     }

@@ -2,6 +2,7 @@ package com.ats.sap_recruitment.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.ats.sap_recruitment.R;
+import com.ats.sap_recruitment.bean.LoginBean;
 import com.ats.sap_recruitment.fragment.ABAPFragment;
 import com.ats.sap_recruitment.fragment.AssesmentHistoryFragment;
 import com.ats.sap_recruitment.fragment.AssesmentStartFragment;
@@ -34,9 +36,11 @@ import com.ats.sap_recruitment.fragment.TestFeedbackFragment;
 import com.ats.sap_recruitment.fragment.TestResultFragment;
 import com.ats.sap_recruitment.fragment.UpdateProfileFragment;
 import com.ats.sap_recruitment.fragment.ViewJobFragment;
+import com.ats.sap_recruitment.utils.Constants;
 import com.ats.sap_recruitment.utils.CounterClass;
 import com.ats.sap_recruitment.utils.PermissionsUtil;
 import com.ats.sap_recruitment.utils.TimerCounter;
+import com.google.gson.Gson;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -53,6 +57,10 @@ public class HomeActivity extends AppCompatActivity
     int count = 0;
     Handler handler;
     Runnable runnable;
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+    Gson gson;
+    String userType = "-1", userId = "-1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +72,15 @@ public class HomeActivity extends AppCompatActivity
 
         tvTitle = (TextView) toolbar.findViewById(R.id.tvTitle);
         tvTitle.setText("SAP Recruitment");
+
+        pref = getApplicationContext().getSharedPreferences(Constants.myPref, MODE_PRIVATE);
+        gson = new Gson();
+        String json2 = pref.getString("loginBean", "");
+        LoginBean loginBean = gson.fromJson(json2, LoginBean.class);
+        if (loginBean != null) {
+            userId = loginBean.getUserId();
+            userType = loginBean.getUserType();
+        }
 
         if (PermissionsUtil.checkAndRequestPermissions(HomeActivity.this)) {
 
@@ -96,13 +113,23 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         if (savedInstanceState == null) {
+
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, new HomeFragment(), "Home");
+            ft.replace(R.id.content_frame, new HomeEmployerFragment(), "HomeEmployer");
             ft.commit();
 
-//            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//            ft.replace(R.id.content_frame, new HomeEmployerFragment(), "HomeEmployer");
-//            ft.commit();
+//            if (userType.equalsIgnoreCase("1")) {
+//                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//                ft.replace(R.id.content_frame, new HomeFragment(), "Home");
+//                ft.commit();
+//            } else {
+//
+//                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//                ft.replace(R.id.content_frame, new HomeEmployerFragment(), "HomeEmployer");
+//                ft.commit();
+//
+//            }
+
         }
 
     }
@@ -254,15 +281,20 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-//            Fragment fragment = new HomeFragment();
-//            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//            ft.replace(R.id.content_frame, fragment);
-//            ft.commit();
 
-            Fragment fragment = new HomeEmployerFragment();
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, fragment, "HomeEmployer");
-            ft.commit();
+
+            if (userType.equalsIgnoreCase("1")) {
+                Fragment fragment = new HomeFragment();
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, fragment);
+                ft.commit();
+
+            } else {
+                Fragment fragment = new HomeEmployerFragment();
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, fragment, "HomeEmployer");
+                ft.commit();
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -15,12 +15,12 @@
         app:tabTextAppearance="@style/MyTabLayoutTextAppearance" />
 
 
-    <com.ats.sap_recruitment.utils.CustomViewPager
+    <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
         android:id="@+id/vpMatchProfile"
         android:layout_height="match_parent">
 
-    </com.ats.sap_recruitment.utils.CustomViewPager>
+    </android.support.v4.view.ViewPager>
     <!--<android.support.v4.view.ViewPager-->
        <!---->
         <!--android:layout_width="match_parent"-->

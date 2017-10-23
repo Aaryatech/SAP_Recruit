@@ -1,0 +1,35 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ats.sap_recruitment.fragment.RecruiteeProfileFragment">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.astuetz.PagerSlidingTabStrip
+            android:id="@+id/sliding_strip"
+            style="@style/PagerTabStripText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:background="@mipmap/action_bar"
+            app:pstsDividerColor="#000000"
+            app:pstsIndicatorColor="#6fc3f7"
+            app:pstsShouldExpand="true"
+            app:pstsTabPaddingLeftRight="14dip"
+            app:pstsUnderlineColor="#dfdfdf" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vpRecruiteeProfile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+        </android.support.v4.view.ViewPager>
+    </LinearLayout>
+</FrameLayout>

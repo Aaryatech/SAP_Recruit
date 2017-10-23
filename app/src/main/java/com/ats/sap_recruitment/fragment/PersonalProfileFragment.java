@@ -1,6 +1,7 @@
 package com.ats.sap_recruitment.fragment;
 
 
+import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -20,11 +21,22 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ats.sap_recruitment.R;
+import com.ats.sap_recruitment.bean.EduStatusCode;
+import com.ats.sap_recruitment.bean.LoginBean;
 import com.ats.sap_recruitment.bean.PerProfile;
+import com.ats.sap_recruitment.bean.PersonProfile;
+import com.ats.sap_recruitment.retroInt.APIClient;
+import com.ats.sap_recruitment.retroInt.APIInterface;
 import com.ats.sap_recruitment.utils.Constants;
 import com.google.gson.Gson;
+
+import dmax.dialog.SpotsDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.ats.sap_recruitment.activity.HomeActivity.tvTitle;
@@ -35,6 +47,8 @@ public class PersonalProfileFragment extends Fragment {
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     Gson gson;
+    APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
+    String userType = "NA", userId = "NA";
     private RadioButton rbFresher, rbExp, rbFreelancer, rbEmployee, rbFullTime, rbPartTime;
     private LinearLayout llExp, llFreelancer, llPartTime, llEmployee;
     private RadioGroup rgWorkStatus;
@@ -42,6 +56,8 @@ public class PersonalProfileFragment extends Fragment {
     private CheckBox cbExperience, cbFreelancer;
     private TextView tvLabelWorkStatus, tvLabelWilling;
     private TextInputLayout textFirstName, textMiddleName, textLastName, textDOB, textLocation, textCurrentSal, textCompName, textCompEmail, textMobile1, textMobile2, textEmail;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -146,13 +162,17 @@ public class PersonalProfileFragment extends Fragment {
 
         pref = getActivity().getApplicationContext().getSharedPreferences(Constants.myPref, MODE_PRIVATE);
         gson = new Gson();
-        String json = pref.getString("perProfile", "");
-        PerProfile perProfile = gson.fromJson(json, PerProfile.class);
 
-        if (perProfile != null) {
-            Log.e(TAG, "onCreateView: Personal Profile " + perProfile);
-            setBindData(perProfile);
+
+        String json2 = pref.getString("loginBean", "");
+        LoginBean loginBean = gson.fromJson(json2, LoginBean.class);
+        if (loginBean != null) {
+            userId = loginBean.getUserId();
+            userType = loginBean.getUserType();
         }
+
+
+        setBindData();
 
 
 //        if (rbExp.isChecked()) {
@@ -215,46 +235,262 @@ public class PersonalProfileFragment extends Fragment {
         return view;
     }
 
-    private void setBindData(PerProfile perProfile) {
-        edFirstName.setText(perProfile.getProfFname());
-        edMiddleName.setText(perProfile.getProfMname());
-        edLastName.setText(perProfile.getProfLname());
-        edDOB.setText(perProfile.getProfDob());
-        edLocation.setText(perProfile.getProfCurrLocation());
-        String exp = perProfile.getProfWExpMonth() + " " + perProfile.getProfWExpYear();
-        Log.e(TAG, "setBindData: Experience " + exp);
+    private void setBindData() {
 
-        if (exp.equalsIgnoreCase(" ")) {
-            rbFresher.setChecked(true);
-        } else {
-            rbExp.setChecked(true);
-            llExp.setVisibility(View.VISIBLE);
-            edMonth.setText(perProfile.getProfWExpMonth());
-            edYear.setText(perProfile.getProfWExpYear());
-        }
-        String empWorkLike = perProfile.getProfWStatus();
-        Log.e(TAG, "setBindData: WorkLike " + empWorkLike);
 
-        if (empWorkLike.equalsIgnoreCase("EXP")) {
-            rbEmployee.setChecked(true);
-            llEmployee.setVisibility(View.VISIBLE);
-            edCurrentSal.setText(perProfile.getProfCurrSalary());
-            edCompName.setText(perProfile.getProfCompanyName());
-            edCompEmail.setText(perProfile.getProfCompanyEmail());
-            cbExperience.setChecked(true);
-        } else {
-            rbFreelancer.setChecked(true);
-            llFreelancer.setVisibility(View.VISIBLE);
-            if (perProfile.getProfFullPartTime().equals("0")) {
-                rbFullTime.setChecked(true);
+        String json = pref.getString("perProfile", "");
+        PerProfile perProfile = gson.fromJson(json, PerProfile.class);
+        if (perProfile != null) {
+            edFirstName.setText(perProfile.getProfFname());
+            edMiddleName.setText(perProfile.getProfMname());
+            edLastName.setText(perProfile.getProfLname());
+            edDOB.setText(perProfile.getProfDob());
+            edLocation.setText(perProfile.getProfCurrLocation());
+            String exp = perProfile.getProfWExpMonth() + " " + perProfile.getProfWExpYear();
+            Log.e(TAG, "setBindData: Experience " + exp);
+
+            if (exp.equalsIgnoreCase(" ")) {
+                rbFresher.setChecked(true);
             } else {
-                rbPartTime.setChecked(true);
+                rbExp.setChecked(true);
+                llExp.setVisibility(View.VISIBLE);
+                edMonth.setText(perProfile.getProfWExpMonth());
+                edYear.setText(perProfile.getProfWExpYear());
             }
-        }
-        edMobile1.setText(perProfile.getProfMobile());
-        edMobile2.setText(perProfile.getProfAlternetMobile());
-        edEmail.setText(perProfile.getProfEmail());
+            String empWorkLike = perProfile.getProfWStatus();
+            Log.e(TAG, "setBindData: WorkLike " + empWorkLike);
 
+            if (empWorkLike.equalsIgnoreCase("EXP")) {
+                rbEmployee.setChecked(true);
+                llEmployee.setVisibility(View.VISIBLE);
+                edCurrentSal.setText(perProfile.getProfCurrSalary());
+                edCompName.setText(perProfile.getProfCompanyName());
+                edCompEmail.setText(perProfile.getProfCompanyEmail());
+                cbExperience.setChecked(true);
+            } else {
+                rbFreelancer.setChecked(true);
+                llFreelancer.setVisibility(View.VISIBLE);
+                if (perProfile.getProfFullPartTime().equals("0")) {
+                    rbFullTime.setChecked(true);
+                } else {
+                    rbPartTime.setChecked(true);
+                }
+            }
+            edMobile1.setText(perProfile.getProfMobile());
+            edMobile2.setText(perProfile.getProfAlternetMobile());
+            edEmail.setText(perProfile.getProfEmail());
+        } else {
+            Log.e(TAG, "onCreateView: No educational details found yet");
+        }
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_save:
+
+                String workstatus = "FRS";
+                String month = "NA";
+                String year = "NA";
+                String worklike = "NA";
+                String currSal = "0";
+                String companyName = "NA";
+                String companyEmail = "NA";
+                String fullPartTime = "-1";
+                String profileFlag = "0";
+
+
+                boolean validData = true;
+                if (edFirstName.getText().toString().equals("")) {
+                    Log.e(TAG, "onOptionsItemSelected: First Name empty");
+                    validData = false;
+                    edFirstName.setError("please enter first name");
+                    edFirstName.requestFocus();
+                }
+                if (edMiddleName.getText().toString().equals("")) {
+                    validData = false;
+                    edMiddleName.setError("please enter middel name");
+                    edMiddleName.requestFocus();
+                }
+                if (edLastName.getText().toString().equals("")) {
+                    validData = false;
+                    edLastName.setError("please enter last name");
+                    edLastName.requestFocus();
+                }
+                if (edDOB.getText().toString().equals("")) {
+                    validData = false;
+                    edDOB.setError("please enter birthdate");
+                    edDOB.requestFocus();
+                }
+                if (edLocation.getText().toString().equals("")) {
+                    validData = false;
+                    edLocation.setError("please enter your location");
+                    edLocation.requestFocus();
+                }
+                // radio button click experience of fresher
+                if (rbFreelancer.isChecked()) {
+                    worklike = "FRS";
+
+                } else if (rbExp.isChecked()) {
+                    worklike = "EMP";
+                    if (edMonth.getText().toString().equals("")) {
+                        validData = false;
+                        edMonth.setError("please enter experince of month");
+                        edMonth.requestFocus();
+                    } else {
+                        month = edMonth.getText().toString();
+                    }
+                    if (edYear.getText().toString().equals("")) {
+                        validData = false;
+                        edYear.setError("please enter experince of year");
+                        edYear.requestFocus();
+                    } else {
+                        year = edYear.getText().toString();
+                    }
+
+                } else {
+                    validData = false;
+                    Toast.makeText(getContext(), "Please select either Fresher or Experience", Toast.LENGTH_SHORT).show();
+                }
+                // radio button check work like employee or freelancer
+                if (rbEmployee.isChecked()) {
+                    worklike = "EMP";
+                    if (edCurrentSal.getText().toString().equals("")) {
+                        validData = false;
+                        edCurrentSal.setError("please enter current salary");
+                        edCurrentSal.requestFocus();
+                    } else {
+                        currSal = edCurrentSal.getText().toString();
+                    }
+                    if (edCompName.getText().toString().equals("")) {
+                        validData = false;
+                        edCompName.setError("Please enter company name");
+                        edCompName.requestFocus();
+                    } else {
+                        companyName = edCompName.getText().toString();
+                    }
+                    if (edCompEmail.getText().toString().equals("")) {
+                        validData = false;
+                        edCompEmail.setError("please enter company email");
+                        edCompEmail.requestFocus();
+                    } else {
+                        companyEmail = edCompEmail.getText().toString();
+                    }
+                } else if (rbFreelancer.isChecked()) {
+                    worklike = "FLR";
+                    if (rbFullTime.isChecked()) {
+                        fullPartTime = "0";
+                    } else if (rbPartTime.isChecked()) {
+                        fullPartTime = "1";
+                    } else {
+                        validData = false;
+                        Toast.makeText(getContext(), "Please select either FullTime or PartTime", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    validData = false;
+                    Toast.makeText(getContext(), "Please select either Employee or Freelancer", Toast.LENGTH_SHORT).show();
+                }
+//
+                if (edMobile1.getText().toString().equals("")) {
+                    validData = false;
+                    edMobile1.setError("please enter mobile no.");
+                    edMobile1.requestFocus();
+                }
+                if (edMobile2.getText().toString().equals("")) {
+                    validData = false;
+                    edMobile2.setError("pleae enter mobile no.");
+                    edMobile2.requestFocus();
+                }
+                if (edEmail.getText().toString().equals("")) {
+                    validData = false;
+                    edEmail.setError("please enter email Id");
+                    edEmail.requestFocus();
+                }
+
+                if (cbFreelancer.isChecked() || cbExperience.isChecked()) {
+                    profileFlag = "1";
+                }
+                if (validData) {
+                    final AlertDialog dialog = new SpotsDialog(getActivity());
+                    dialog.show();
+
+                    Call<EduStatusCode> eduStatusCodeCall = apiInterface.savePersonalDetails("sav_perso", userType, userId, edFirstName.getText().toString(), edMiddleName.getText().toString(), edLastName.getText().toString(), edDOB.getText().toString(), edLocation.getText().toString(), workstatus, year, month, worklike, fullPartTime, currSal, companyName, companyEmail, profileFlag, edMobile1.getText().toString(), edMobile2.getText().toString(), edEmail.getText().toString());
+                    eduStatusCodeCall.enqueue(new Callback<EduStatusCode>() {
+                        @Override
+                        public void onResponse(Call<EduStatusCode> call, Response<EduStatusCode> response) {
+                            dialog.dismiss();
+                            if (response.body() != null) {
+                                EduStatusCode eduStatusCode = response.body();
+                                if (eduStatusCode.getStatus().equalsIgnoreCase("successs")) {
+                                    Toast.makeText(getContext(), "Personal Inforamation save successfully", Toast.LENGTH_SHORT).show();
+                                    getProfileDetails();
+                                } else
+                                    Toast.makeText(getContext(), "can't save record", Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                Toast.makeText(getContext(), "Not Valid Response from server", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<EduStatusCode> call, Throwable t) {
+                            dialog.dismiss();
+                            Log.e(TAG, "onFailure: " + t.getMessage());
+
+                        }
+                    });
+
+                }
+
+                return true;
+            default:
+
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    public void getProfileDetails() {
+        final AlertDialog dialog = new SpotsDialog(getActivity());
+        dialog.show();
+
+        Call<PersonProfile> personProfileCall = apiInterface.getPersonalDetail("get_personal", userType, userId);
+        personProfileCall.enqueue(new Callback<PersonProfile>() {
+            @Override
+            public void onResponse(Call<PersonProfile> call, Response<PersonProfile> response) {
+                dialog.dismiss();
+                if (response.body() != null) {
+
+                    PersonProfile personProfile = response.body();
+                    Log.e(TAG, "onResponse: getProfileDetails" + personProfile.getPerProfile());
+                    if (personProfile.getPerProfile().size() > 0) {
+                        PerProfile perProfile = personProfile.getPerProfile().get(0);
+                        Log.e(TAG, "onResponse: perProfile Data " + perProfile);
+                        if (perProfile != null) {
+
+                            pref = getActivity().getApplicationContext().getSharedPreferences(Constants.myPref, MODE_PRIVATE);
+                            editor = pref.edit();
+                            gson = new Gson();
+                            String json = gson.toJson(perProfile);
+                            editor.putString("perProfile", json);
+                            editor.apply();
+                        }
+                    }
+                } else {
+                    Log.e(TAG, "onResponse: getProfileDetails " + response.body());
+                    Toast.makeText(getActivity().getApplicationContext(), "No personal Detail Updated Since", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PersonProfile> call, Throwable t) {
+                dialog.dismiss();
+                Log.e(TAG, "onFailure:getProfileDetails" + t.getMessage());
+
+            }
+        });
     }
 
 

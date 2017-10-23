@@ -28,4 +28,10 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="PagerTabStripText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
 </resources>

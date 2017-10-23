@@ -1,6 +1,7 @@
 package com.ats.sap_recruitment.fragment;
 
 
+import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -23,6 +24,11 @@ import android.widget.Toast;
 
 import com.ats.sap_recruitment.R;
 import com.ats.sap_recruitment.bean.EduPerProfile;
+import com.ats.sap_recruitment.bean.EduStatusCode;
+import com.ats.sap_recruitment.bean.EducationalProfile;
+import com.ats.sap_recruitment.bean.LoginBean;
+import com.ats.sap_recruitment.retroInt.APIClient;
+import com.ats.sap_recruitment.retroInt.APIInterface;
 import com.ats.sap_recruitment.utils.Constants;
 import com.google.gson.Gson;
 
@@ -31,6 +37,10 @@ import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dmax.dialog.SpotsDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.ats.sap_recruitment.activity.HomeActivity.tvTitle;
@@ -77,6 +87,8 @@ public class EducationalProfileFragment extends Fragment {
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     Gson gson;
+    APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
+    String userType = "NA", userId = "NA";
 
 
     @Override
@@ -114,14 +126,14 @@ public class EducationalProfileFragment extends Fragment {
 
         pref = getActivity().getApplicationContext().getSharedPreferences(Constants.myPref, MODE_PRIVATE);
         gson = new Gson();
-        String json = pref.getString("eduPerProfile", "");
-        EduPerProfile eduPerProfile = gson.fromJson(json, EduPerProfile.class);
 
-        if (eduPerProfile != null) {
-            Log.e(TAG, "onCreateView: Educational Profile  " + eduPerProfile);
-            setBinData(eduPerProfile);
-        } else
-            Log.e(TAG, "onCreateView: No educational details found yet");
+        String json2 = pref.getString("loginBean", "");
+        LoginBean loginBean = gson.fromJson(json2, LoginBean.class);
+        if (loginBean != null) {
+            userId = loginBean.getUserId();
+            userType = loginBean.getUserType();
+        }
+        setBinData();
 
         ArrayAdapter<String> uniArrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, uniArrayList);
         edInstitute.setAdapter(uniArrayAdapter);
@@ -185,23 +197,37 @@ public class EducationalProfileFragment extends Fragment {
         return view;
     }
 
-    private void setBinData(EduPerProfile eduPerProfile) {
-        String eduHighest = eduPerProfile.getProfEduHighest();
-        if (eduHighest.equalsIgnoreCase("0")) {
-            rbBachelor.setChecked(true);
-        }
-        edCourse.setText(eduPerProfile.getProfEduCourseDetail());
-        edSpecialisation.setText(eduPerProfile.getProfSpecilalzation());
-        edInstitute.setText(eduPerProfile.getProfEduUniversity());
-        edPassYear.setText(eduPerProfile.getProfEduPassingYear());
-        edGrade.setText(eduPerProfile.getProfEduGradeRange());
-        edMiscSkills.setText(eduPerProfile.getProfEduMiscSkillDetails());
+    private void setBinData() {
 
+
+        String json = pref.getString("eduPerProfile", "");
+        EduPerProfile eduPerProfile = gson.fromJson(json, EduPerProfile.class);
+
+        if (eduPerProfile != null) {
+            String eduHighest = eduPerProfile.getProfEduHighest();
+            if (eduHighest.equalsIgnoreCase("0")) {
+                rbBachelor.setChecked(true);
+            }
+            edCourse.setText(eduPerProfile.getProfEduCourseDetail());
+            edSpecialisation.setText(eduPerProfile.getProfSpecilalzation());
+            edInstitute.setText(eduPerProfile.getProfEduUniversity());
+            edPassYear.setText(eduPerProfile.getProfEduPassingYear());
+            edGrade.setText(eduPerProfile.getProfEduGradeRange());
+            edMiscSkills.setText(eduPerProfile.getProfEduMiscSkillDetails());
+            Log.e(TAG, "onCreateView: Educational Profile  " + eduPerProfile);
+        } else
+            Log.e(TAG, "onCreateView: No educational details found yet");
     }
 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        Log.e(TAG, "onOptionsItemSelected: " + edCourse.getText());
+        Log.e(TAG, "onOptionsItemSelected: " + edMiscSkills.getText());
+        Log.e(TAG, "onOptionsItemSelected: " + edGrade.getText());
+        Log.e(TAG, "onOptionsItemSelected: " + edSpecialisation.getText());
+        Log.e(TAG, "onOptionsItemSelected: " + edInstitute.getText());
 
         switch (item.getItemId()) {
             case R.id.action_save:
@@ -218,42 +244,123 @@ public class EducationalProfileFragment extends Fragment {
                     Toast.makeText(getContext(), "select your Degree ", Toast.LENGTH_SHORT).show();
                 }
 
-                if (edCourse.equals("")) {
+                if (edCourse.getText().toString().equals("")) {
+
                     validData = false;
+                    Log.e(TAG, "onOptionsItemSelected: ValidData  " + validData);
                     edCourse.setError("field required");
                 }
-                if (edSpecialisation.equals("")) {
+                if (edSpecialisation.getText().toString().equals("")) {
                     validData = false;
-                    edCourse.setError("field required");
+                    Log.e(TAG, "onOptionsItemSelected: ValidData  " + validData);
+                    edSpecialisation.setError("field required");
                 }
-                if (edInstitute.equals("")) {
+                if (edInstitute.getText().toString().equals("")) {
                     validData = false;
+                    Log.e(TAG, "onOptionsItemSelected: ValidData  " + validData);
                     edInstitute.setError("field required");
                 }
-                if (edPassYear.equals("")) {
+                if (edPassYear.getText().toString().equals("")) {
                     validData = false;
                     edPassYear.requestFocus();
+                    Log.e(TAG, "onOptionsItemSelected: ValidData  " + validData);
                     edPassYear.setError("field required");
                 }
-                if (edGrade.equals("")) {
+                if (edGrade.getText().toString().equals("")) {
                     validData = false;
                     edGrade.requestFocus();
+                    Log.e(TAG, "onOptionsItemSelected: ValidData  " + validData);
                     edGrade.setError("field required");
                 }
-                if (edMiscSkills.equals("")) {
+                if (edMiscSkills.getText().toString().equals("")) {
                     validData = false;
                     edMiscSkills.requestFocus();
+                    Log.e(TAG, "onOptionsItemSelected: ValidData  " + validData);
                     edMiscSkills.setError("field required");
                 }
-
                 Log.e(TAG, "onOptionsItemSelected: Validation " + validData);
                 if (validData) {
+                    final AlertDialog dialog = new SpotsDialog(getActivity());
+                    dialog.show();
+
+                    Call<EduStatusCode> eduStatusCodeCall = apiInterface.saveEducationalDetails("sav_educa", userType, userId, edCourse.getText().toString(), edSpecialisation.getText().toString(), edInstitute.getText().toString(), edPassYear.getText().toString(), edGrade.getText().toString(), edMiscSkills.getText().toString());
+                    eduStatusCodeCall.enqueue(new Callback<EduStatusCode>() {
+                        @Override
+                        public void onResponse(Call<EduStatusCode> call, Response<EduStatusCode> response) {
+                            dialog.dismiss();
+                            if (response.body() != null) {
+                                EduStatusCode eduStatusCode = response.body();
+                                if (eduStatusCode.getStatus().equalsIgnoreCase("successs")) {
+                                    Toast.makeText(getContext(), "Educational Information Save Successfully", Toast.LENGTH_SHORT).show();
+                                    getEducationalDetails();
+                                } else {
+                                    Toast.makeText(getContext(), "can't save record", Toast.LENGTH_SHORT).show();
+                                }
+
+                            } else {
+                                Toast.makeText(getContext(), "No valid Response from server", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<EduStatusCode> call, Throwable t) {
+                            dialog.dismiss();
+                            Log.e(TAG, "onFailure: " + t.getMessage());
+
+                        }
+                    });
 
                 }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+
+    public void getEducationalDetails() {
+        final AlertDialog dialog = new SpotsDialog(getActivity());
+        dialog.show();
+
+        Call<EducationalProfile> educationalProfileCall = apiInterface.getEducationalDetails("get_education", userType, userId);
+        educationalProfileCall.enqueue(new Callback<EducationalProfile>() {
+            @Override
+            public void onResponse(Call<EducationalProfile> call, Response<EducationalProfile> response) {
+                dialog.dismiss();
+                Log.e(TAG, "onResponse: " + response.body());
+                if (response.body() != null) {
+                    EducationalProfile educationalProfile = response.body();
+                    Log.e(TAG, "onResponse: Educational Profile " + educationalProfile);
+                    if (educationalProfile.getPerProfile().size() > 0) {
+                        EduPerProfile eduPerProfile = educationalProfile.getPerProfile().get(0);
+                        Log.e(TAG, "onResponse: " + eduPerProfile);
+                        if (eduPerProfile != null) {
+//                            tvPersonDegree.setText(eduPerProfile.getProfEduCourseDetail());
+
+                            pref = getActivity().getApplicationContext().getSharedPreferences(Constants.myPref, MODE_PRIVATE);
+                            editor = pref.edit();
+                            gson = new Gson();
+                            String json = gson.toJson(eduPerProfile);
+                            editor.putString("eduPerProfile", json);
+                            editor.apply();
+
+                        }
+                    }
+
+                } else {
+                    Log.e(TAG, "onResponse: " + response.body());
+                    Toast.makeText(getActivity(), "No Educational details Updated Since", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<EducationalProfile> call, Throwable t) {
+                dialog.dismiss();
+                Log.e(TAG, "onFailure: getEducationalDetails" + t.getMessage());
+
+            }
+        });
     }
 
     @Override
