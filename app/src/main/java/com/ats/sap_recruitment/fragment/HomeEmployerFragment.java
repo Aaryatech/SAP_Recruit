@@ -2,6 +2,7 @@ package com.ats.sap_recruitment.fragment;
 
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -25,6 +26,8 @@ public class HomeEmployerFragment extends Fragment {
     @BindView(R.id.llEmprMatchProfile)
     LinearLayout llEmprMatchProfile;
     private static String TAG = "HomeEmployerFragment";
+    @BindView(R.id.fab_post_job)
+    FloatingActionButton postJobFab;
 
     public HomeEmployerFragment() {
 
@@ -61,5 +64,11 @@ public class HomeEmployerFragment extends Fragment {
         ft.addToBackStack("backtoProfile");
         ft.commit();
     }
+
+    @OnClick(R.id.fab_post_job)
+    public void postJob() {
+
+    }
+
 
 }

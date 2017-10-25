@@ -6,6 +6,7 @@ import com.ats.sap_recruitment.bean.EduStatusCode;
 import com.ats.sap_recruitment.bean.EducationalProfile;
 import com.ats.sap_recruitment.bean.LoginBean;
 import com.ats.sap_recruitment.bean.PersonProfile;
+import com.ats.sap_recruitment.bean.SaveJobBaens;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -69,4 +70,11 @@ public interface APIInterface {
                                             @Field("prof_alternet_mobile") String prof_alternet_mobile,
                                             @Field("prof_email") String prof_email);
 
+    @FormUrlEncoded
+    @POST("Ser_profile_recu/get_categories")
+    Call<Categories> getCategoryRecruiter(@Field("frm_mode") String frm_mode);
+
+    @FormUrlEncoded
+    @POST("Ser_profile_recu/save_job")
+    Call<SaveJobBaens> saveJobProfile(@Field("frm_mode") String frm_mode, @Field("user_type") String user_type, @Field("user_id") String user_id, @Field("job_title") String job_title, @Field("job_desc") String job_desc, @Field("job_exp_year") String job_exp_year, @Field("job_exp_month") String job_exp_month);
 }
