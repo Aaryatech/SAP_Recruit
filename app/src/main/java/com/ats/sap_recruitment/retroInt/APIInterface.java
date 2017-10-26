@@ -1,6 +1,7 @@
 package com.ats.sap_recruitment.retroInt;
 
 import com.ats.sap_recruitment.bean.Categories;
+import com.ats.sap_recruitment.bean.CompanyProfile;
 import com.ats.sap_recruitment.bean.DashBoardProfile;
 import com.ats.sap_recruitment.bean.EduStatusCode;
 import com.ats.sap_recruitment.bean.EducationalProfile;
@@ -77,4 +78,8 @@ public interface APIInterface {
     @FormUrlEncoded
     @POST("Ser_profile_recu/save_job")
     Call<SaveJobBaens> saveJobProfile(@Field("frm_mode") String frm_mode, @Field("user_type") String user_type, @Field("user_id") String user_id, @Field("job_title") String job_title, @Field("job_desc") String job_desc, @Field("job_exp_year") String job_exp_year, @Field("job_exp_month") String job_exp_month);
+
+    @FormUrlEncoded
+    @POST
+    Call<CompanyProfile> getCompanyProfile(@Field("frm_mode") String frm_mode, @Field("user_type") String user_type, @Field("user_id") String user_id);
 }

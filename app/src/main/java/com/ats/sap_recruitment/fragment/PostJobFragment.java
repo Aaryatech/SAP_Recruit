@@ -1,6 +1,7 @@
 package com.ats.sap_recruitment.fragment;
 
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -45,6 +46,15 @@ public class PostJobFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_post_job, container, false);
         ButterKnife.bind(this, view);
+        Typeface myTypeface = Typeface.createFromAsset(getContext().getAssets(), "Free_Serif.ttf");
+        textJobDescription.setTypeface(myTypeface);
+        textJobExpMonth.setTypeface(myTypeface);
+        textJobExpYear.setTypeface(myTypeface);
+        textJobTitle.setTypeface(myTypeface);
+        edJobDescription.setTypeface(myTypeface);
+        edJobMonth.setTypeface(myTypeface);
+        edJobYear.setTypeface(myTypeface);
+        edJobTitle.setTypeface(myTypeface);
 
         return view;
     }

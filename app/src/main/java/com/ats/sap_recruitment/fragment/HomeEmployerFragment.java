@@ -12,25 +12,33 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.ats.sap_recruitment.R;
+import com.ats.sap_recruitment.bean.CompanyPerProfile;
+import com.ats.sap_recruitment.bean.CompanyProfile;
+import com.ats.sap_recruitment.retroInt.APIClient;
+import com.ats.sap_recruitment.retroInt.APIInterface;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class HomeEmployerFragment extends Fragment {
 
 
+    private static String TAG = "HomeEmployerFragment";
     @BindView(R.id.llEmprViewPost)
     LinearLayout llEmprViewPost;
     @BindView(R.id.llEmprMatchProfile)
     LinearLayout llEmprMatchProfile;
-    private static String TAG = "HomeEmployerFragment";
     @BindView(R.id.fab_post_job)
     FloatingActionButton postJobFab;
+    String userType = "2", userId = "2";
+    APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
 
     public HomeEmployerFragment() {
-
     }
 
 
@@ -67,6 +75,35 @@ public class HomeEmployerFragment extends Fragment {
 
     @OnClick(R.id.fab_post_job)
     public void postJob() {
+
+
+    }
+
+    public void getCompanyProfile() {
+
+        Call<CompanyProfile> companyProfileCall = apiInterface.getCompanyProfile("get_cpmo", userType, userId);
+        companyProfileCall.enqueue(new Callback<CompanyProfile>() {
+            @Override
+            public void onResponse(Call<CompanyProfile> call, Response<CompanyProfile> response) {
+                if (response.body() != null) {
+                    CompanyProfile companyProfile = response.body();
+                    if (companyProfile != null) {
+                        CompanyPerProfile companyPerProfile = companyProfile.getPerProfile().get(0);
+                        Log.e(TAG, "onResponse: " + companyPerProfile);
+                    }
+
+                } else {
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CompanyProfile> call, Throwable t) {
+                Log.e(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+
 
     }
 
