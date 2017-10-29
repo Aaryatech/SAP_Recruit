@@ -1,5 +1,6 @@
 package com.ats.sap_recruitment.retroInt;
 
+import com.ats.sap_recruitment.bean.ActvityInformation;
 import com.ats.sap_recruitment.bean.Categories;
 import com.ats.sap_recruitment.bean.CompanyProfile;
 import com.ats.sap_recruitment.bean.DashBoardProfile;
@@ -82,4 +83,8 @@ public interface APIInterface {
     @FormUrlEncoded
     @POST
     Call<CompanyProfile> getCompanyProfile(@Field("frm_mode") String frm_mode, @Field("user_type") String user_type, @Field("user_id") String user_id);
+
+    @FormUrlEncoded
+    @POST("Ser_specilization/get_activity_data")
+    Call<ActvityInformation> getActivityInformation(@Field("frm_mode") String frm_mode, @Field("user_type") String user_type, @Field("user_id") String user_id, @Field("prof_cat_id") String prof_cat_id);
 }

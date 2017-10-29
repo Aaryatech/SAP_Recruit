@@ -39,7 +39,7 @@ public class AbapDataAdapter extends RecyclerView.Adapter<AbapDataAdapter.MyView
         final CheckBox cbRclSelect = holder.cbRclSelect;
         LinearLayout llRclAbap = holder.llRclAbap;
         final LinearLayout llRclAbapData = holder.llRclAbapData;
-        final TextView tvRclStatusCode = holder.tvRclStatusCode;
+  //      final TextView tvRclStatusCode = holder.tvRclStatusCode;
 
         tvHeadRclAbap.setText(dataset.get(position).toString());
 
@@ -49,51 +49,51 @@ public class AbapDataAdapter extends RecyclerView.Adapter<AbapDataAdapter.MyView
                 if (llRclAbapData.getVisibility() == View.GONE) {
                     llRclAbapData.setVisibility(View.VISIBLE);
 
-                    cbRclSelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                            if (b) {
-                                PopupMenu popup = new PopupMenu(context, cbRclSelect);
-                                popup.getMenuInflater()
-                                        .inflate(R.menu.popup_menu_status, popup.getMenu());
-
-                                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                                    @Override
-                                    public boolean onMenuItemClick(MenuItem menuItem) {
-                                        if (menuItem.getTitle().equals("Strong")) {
-                                            tvRclStatusCode.setVisibility(View.VISIBLE);
-                                            tvRclStatusCode.setText("Strong");
-                                            tvRclStatusCode.setTextColor(context.getResources().getColor(R.color.colorWhite));
-                                            tvRclStatusCode.setBackgroundColor(context.getResources().getColor(R.color.color_bg_strong));
-                                        } else if (menuItem.getTitle().equals("Average")) {
-                                            tvRclStatusCode.setVisibility(View.VISIBLE);
-                                            tvRclStatusCode.setText("Average");
-                                            tvRclStatusCode.setTextColor(context.getResources().getColor(R.color.colorWhite));
-                                            tvRclStatusCode.setBackgroundColor(context.getResources().getColor(R.color.color_bg_average));
-                                        } else if (menuItem.getTitle().equals("Poor")) {
-
-                                            tvRclStatusCode.setVisibility(View.VISIBLE);
-                                            tvRclStatusCode.setText("Poor");
-                                            tvRclStatusCode.setTextColor(context.getResources().getColor(R.color.colorText2));
-                                            tvRclStatusCode.setBackgroundColor(context.getResources().getColor(R.color.color_bg_poor));
-                                        } else if (menuItem.getTitle().equals("NA")) {
-                                            tvRclStatusCode.setVisibility(View.VISIBLE);
-                                            tvRclStatusCode.setText("NA");
-                                            tvRclStatusCode.setTextColor(context.getResources().getColor(R.color.colorText3));
-                                            tvRclStatusCode.setBackgroundColor(context.getResources().getColor(R.color.color_bg_na));
-                                        } else {
-                                            tvRclStatusCode.setVisibility(View.GONE);
-                                        }
-                                        return true;
-                                    }
-                                });
-                                popup.show();
-
-                            } else {
-                                tvRclStatusCode.setVisibility(View.GONE);
-                            }
-                        }
-                    });
+//                    cbRclSelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                        @Override
+//                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                            if (b) {
+//                                PopupMenu popup = new PopupMenu(context, cbRclSelect);
+//                                popup.getMenuInflater()
+//                                        .inflate(R.menu.popup_menu_status, popup.getMenu());
+//
+//                                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                                    @Override
+//                                    public boolean onMenuItemClick(MenuItem menuItem) {
+//                                        if (menuItem.getTitle().equals("Strong")) {
+//                                            tvRclStatusCode.setVisibility(View.VISIBLE);
+//                                            tvRclStatusCode.setText("Strong");
+//                                            tvRclStatusCode.setTextColor(context.getResources().getColor(R.color.colorWhite));
+//                                            tvRclStatusCode.setBackgroundColor(context.getResources().getColor(R.color.color_bg_strong));
+//                                        } else if (menuItem.getTitle().equals("Average")) {
+//                                            tvRclStatusCode.setVisibility(View.VISIBLE);
+//                                            tvRclStatusCode.setText("Average");
+//                                            tvRclStatusCode.setTextColor(context.getResources().getColor(R.color.colorWhite));
+//                                            tvRclStatusCode.setBackgroundColor(context.getResources().getColor(R.color.color_bg_average));
+//                                        } else if (menuItem.getTitle().equals("Poor")) {
+//
+//                                            tvRclStatusCode.setVisibility(View.VISIBLE);
+//                                            tvRclStatusCode.setText("Poor");
+//                                            tvRclStatusCode.setTextColor(context.getResources().getColor(R.color.colorText2));
+//                                            tvRclStatusCode.setBackgroundColor(context.getResources().getColor(R.color.color_bg_poor));
+//                                        } else if (menuItem.getTitle().equals("NA")) {
+//                                            tvRclStatusCode.setVisibility(View.VISIBLE);
+//                                            tvRclStatusCode.setText("NA");
+//                                            tvRclStatusCode.setTextColor(context.getResources().getColor(R.color.colorText3));
+//                                            tvRclStatusCode.setBackgroundColor(context.getResources().getColor(R.color.color_bg_na));
+//                                        } else {
+//                                            tvRclStatusCode.setVisibility(View.GONE);
+//                                        }
+//                                        return true;
+//                                    }
+//                                });
+//                                popup.show();
+//
+//                            } else {
+//                                tvRclStatusCode.setVisibility(View.GONE);
+//                            }
+//                        }
+//                    });
 
                 } else {
                     llRclAbapData.setVisibility(View.GONE);
@@ -113,7 +113,7 @@ public class AbapDataAdapter extends RecyclerView.Adapter<AbapDataAdapter.MyView
         CheckBox cbRclSelect;
         LinearLayout llRclAbap;
         LinearLayout llRclAbapData;
-        TextView tvRclStatusCode;
+        //TextView tvRclStatusCode;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -121,7 +121,7 @@ public class AbapDataAdapter extends RecyclerView.Adapter<AbapDataAdapter.MyView
             this.cbRclSelect = itemView.findViewById(R.id.cbRclSelect);
             this.llRclAbap = itemView.findViewById(R.id.llRclBasis);
             this.llRclAbapData = itemView.findViewById(R.id.llRclBasisData);
-            this.tvRclStatusCode = itemView.findViewById(R.id.tvRclStatusCode);
+//            this.tvRclStatusCode = itemView.findViewById(R.id.tvRclStatusCode);
         }
     }
 }

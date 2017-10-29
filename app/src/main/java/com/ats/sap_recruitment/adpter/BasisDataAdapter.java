@@ -1,18 +1,27 @@
 package com.ats.sap_recruitment.adpter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Typeface;
+import android.support.design.widget.TextInputLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.ats.sap_recruitment.R;
+import com.ats.sap_recruitment.bean.Activity;
+import com.ats.sap_recruitment.bean.ActvityInformation;
+import com.ats.sap_recruitment.bean.RekArray;
+import com.ats.sap_recruitment.bean.SubSubCat;
+import com.ats.sap_recruitment.utils.Constants;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -22,12 +31,27 @@ import java.util.ArrayList;
 
 public class BasisDataAdapter extends RecyclerView.Adapter<BasisDataAdapter.MyViewHolder> {
 
-    ArrayList<String> dataset;
-    private Context context;
+    private static String TAG = "BasisDataAdapter";
+    ArrayList<SubSubCat> dataset;
+    Typeface myTypeface;
+    Typeface myTypefaceBold;
 
-    public BasisDataAdapter(ArrayList<String> dataset, Context context) {
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+    private Gson gson;
+    private Context context;
+    private ActvityInformation actvityInformation;
+
+//    public BasisDataAdapter(ArrayList<String> dataset, Context context) {
+//        this.dataset = dataset;
+//        this.context = context;
+//    }
+
+    public BasisDataAdapter(ArrayList<SubSubCat> dataset, Context context, Typeface myTypeface, Typeface myTypefaceBold) {
         this.dataset = dataset;
         this.context = context;
+        this.myTypeface = myTypeface;
+        this.myTypefaceBold = myTypefaceBold;
     }
 
     @Override
@@ -39,68 +63,85 @@ public class BasisDataAdapter extends RecyclerView.Adapter<BasisDataAdapter.MyVi
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
+
+
         TextView tvHeadRclBasis = holder.tvHeadRclBasis;
-        final CheckBox cbRclSelect = holder.cbRclSelect;
         LinearLayout llRclBasis = holder.llRclBasis;
         final LinearLayout llRclBasisData = holder.llRclBasisData;
-        final TextView tvRclStatusCode = holder.tvRclStatusCode;
+        final LinearLayout llRclBasisNoData = holder.llRclBasisNoData;
+        TextInputLayout textInputBasisYear = holder.textInputBasisYear;
+        TextInputLayout textInputBasisMonth = holder.textInputBasisMonth;
+        final EditText edBasisMonth = holder.edBasisMonth;
+        final EditText edBasisYear = holder.edBasisYear;
+        final RecyclerView recyclerView = holder.rclActSelection;
 
-        tvHeadRclBasis.setText(dataset.get(position).toString());
+        tvHeadRclBasis.setTypeface(myTypefaceBold);
+        textInputBasisMonth.setTypeface(myTypeface);
+        textInputBasisYear.setTypeface(myTypeface);
+        edBasisMonth.setTypeface(myTypeface);
+        edBasisYear.setTypeface(myTypeface);
+
+
+        tvHeadRclBasis.setText(dataset.get(position).getProfCatName().toString());
+
         tvHeadRclBasis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (llRclBasisData.getVisibility() == View.GONE) {
-                    llRclBasisData.setVisibility(View.VISIBLE);
+                RecyclerView.Adapter childAdapter;
+                RecyclerView.LayoutManager layoutManager;
 
-                    cbRclSelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                            if (b) {
-                                PopupMenu popup = new PopupMenu(context, cbRclSelect);
-                                popup.getMenuInflater()
-                                        .inflate(R.menu.popup_menu_status, popup.getMenu());
 
-                                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                                    @Override
-                                    public boolean onMenuItemClick(MenuItem menuItem) {
-                                        if (menuItem.getTitle().equals("Strong")) {
-                                            tvRclStatusCode.setVisibility(View.VISIBLE);
-                                            tvRclStatusCode.setText("Strong");
-                                            tvRclStatusCode.setTextColor(context.getResources().getColor(R.color.colorWhite));
-                                            tvRclStatusCode.setBackgroundColor(context.getResources().getColor(R.color.color_bg_strong));
-                                        } else if (menuItem.getTitle().equals("Average")) {
-                                            tvRclStatusCode.setVisibility(View.VISIBLE);
-                                            tvRclStatusCode.setText("Average");
-                                            tvRclStatusCode.setTextColor(context.getResources().getColor(R.color.colorWhite));
-                                            tvRclStatusCode.setBackgroundColor(context.getResources().getColor(R.color.color_bg_average));
-                                        } else if (menuItem.getTitle().equals("Poor")) {
+                String catId = dataset.get(position).getProfCatId();
+                Log.e(TAG, "onClick: " + catId);
+                pref = context.getSharedPreferences(Constants.myPref, Context.MODE_PRIVATE);
+                editor = pref.edit();
+                gson = new Gson();
 
-                                            tvRclStatusCode.setVisibility(View.VISIBLE);
-                                            tvRclStatusCode.setText("Poor");
-                                            tvRclStatusCode.setTextColor(context.getResources().getColor(R.color.colorText2));
-                                            tvRclStatusCode.setBackgroundColor(context.getResources().getColor(R.color.color_bg_poor));
-                                        } else if (menuItem.getTitle().equals("NA")) {
-                                            tvRclStatusCode.setVisibility(View.VISIBLE);
-                                            tvRclStatusCode.setText("NA");
-                                            tvRclStatusCode.setTextColor(context.getResources().getColor(R.color.colorText3));
-                                            tvRclStatusCode.setBackgroundColor(context.getResources().getColor(R.color.color_bg_na));
-                                        } else {
-                                            tvRclStatusCode.setVisibility(View.GONE);
-                                        }
-                                        return true;
-                                    }
-                                });
-                                popup.show();
+                String json = pref.getString("actvityInformation" + catId, "");
+                actvityInformation = gson.fromJson(json, ActvityInformation.class);
+                Log.e(TAG, "onClick: ActInfo : " + actvityInformation);
 
-                            } else {
-                                tvRclStatusCode.setVisibility(View.GONE);
-                            }
+                if (actvityInformation != null) {
+                    if (actvityInformation.getActivities().isEmpty()) {
+                        if (llRclBasisNoData.getVisibility() == View.GONE) {
+                            llRclBasisNoData.setVisibility(View.VISIBLE);
+                        } else {
+                            llRclBasisNoData.setVisibility(View.GONE);
                         }
-                    });
 
-                } else {
-                    llRclBasisData.setVisibility(View.GONE);
+                    } else {
+
+                        ArrayList<Activity> data = new ArrayList<>();
+                        ArrayList<RekArray> rekArrays = new ArrayList<>();
+                        rekArrays.clear();
+                        data.clear();
+                        for (int i = 0; i < actvityInformation.getActivities().size(); i++) {
+                            data.add(i, actvityInformation.getActivities().get(i));
+                        }
+
+                        for (int i = 0; i < actvityInformation.getRekArray().size(); i++) {
+                            rekArrays.add(i, actvityInformation.getRekArray().get(i));
+                        }
+
+
+                        if (llRclBasisData.getVisibility() == View.GONE) {
+                            llRclBasisData.setVisibility(View.VISIBLE);
+
+                            edBasisMonth.setText(actvityInformation.getCatIds().get(0).getExpMonth());
+                            edBasisYear.setText(actvityInformation.getCatIds().get(0).getExpYear());
+                            childAdapter = new BasisChildDataAdapter(data, rekArrays, context);
+                            recyclerView.setAdapter(childAdapter);
+                            recyclerView.setHasFixedSize(true);
+                            layoutManager = new LinearLayoutManager(context);
+                            recyclerView.setLayoutManager(layoutManager);
+                            recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+                        } else {
+                            llRclBasisData.setVisibility(View.GONE);
+                        }
+                    }
+
                 }
             }
         });
@@ -115,20 +156,28 @@ public class BasisDataAdapter extends RecyclerView.Adapter<BasisDataAdapter.MyVi
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvHeadRclBasis;
-        CheckBox cbRclSelect;
         LinearLayout llRclBasis;
         LinearLayout llRclBasisData;
-        TextView tvRclStatusCode;
+        LinearLayout llRclBasisNoData;
+        TextInputLayout textInputBasisYear;
+        EditText edBasisYear;
+        TextInputLayout textInputBasisMonth;
+        EditText edBasisMonth;
+        RecyclerView rclActSelection;
 
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
             this.tvHeadRclBasis = itemView.findViewById(R.id.tvRclBasisHead);
-            this.cbRclSelect = itemView.findViewById(R.id.cbRclSelect);
             this.llRclBasis = itemView.findViewById(R.id.llRclBasis);
             this.llRclBasisData = itemView.findViewById(R.id.llRclBasisData);
-            this.tvRclStatusCode = itemView.findViewById(R.id.tvRclStatusCode);
+            this.textInputBasisMonth = itemView.findViewById(R.id.textInputBasisMonth);
+            this.textInputBasisYear = itemView.findViewById(R.id.textInputBasisYear);
+            this.edBasisMonth = itemView.findViewById(R.id.edBasisMonth);
+            this.edBasisYear = itemView.findViewById(R.id.edBasisYear);
+            this.llRclBasisNoData = itemView.findViewById(R.id.llRclBasisNoData);
+            this.rclActSelection = itemView.findViewById(R.id.rcl_act_selection);
         }
     }
 }

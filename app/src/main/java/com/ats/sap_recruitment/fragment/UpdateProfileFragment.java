@@ -55,8 +55,8 @@ public class UpdateProfileFragment extends Fragment {
     private PerProfile perProfile;
     private EduPerProfile eduPerProfile;
     private LoginBean loginBean;
-    private String userId = "NA";
-    private String usrType = "NA";
+    private String userId = "0";
+    private String usrType = "0";
     private ArrayList<String> arrayBasisList = new ArrayList<>();
     private ArrayList<String> arrayABAPList = new ArrayList<>();
     private ArrayList<String> arrayFunctionalList = new ArrayList<>();

@@ -119,6 +119,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(Call<LoginBean> call, Throwable t) {
+                           dialog.dismiss();
                             Log.e(TAG, "onFailure: " + t.getMessage());
                             Toast.makeText(LoginActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
                         }

@@ -114,21 +114,21 @@ public class HomeActivity extends AppCompatActivity
 
         if (savedInstanceState == null) {
 
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, new HomeEmployerFragment(), "HomeEmployer");
-            ft.commit();
+//            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//            ft.replace(R.id.content_frame, new HomeEmployerFragment(), "HomeEmployer");
+//            ft.commit();
 
-//            if (userType.equalsIgnoreCase("1")) {
-//                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//                ft.replace(R.id.content_frame, new HomeFragment(), "Home");
-//                ft.commit();
-//            } else {
-//
-//                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//                ft.replace(R.id.content_frame, new HomeEmployerFragment(), "HomeEmployer");
-//                ft.commit();
-//
-//            }
+            if (userType.equalsIgnoreCase("1")) {
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, new HomeFragment(), "Home");
+                ft.commit();
+            } else {
+
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, new HomeEmployerFragment(), "HomeEmployer");
+                ft.commit();
+
+            }
 
         }
 

@@ -34,43 +34,84 @@
         android:orientation="vertical"
         android:visibility="gone">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:orientation="horizontal">
 
-            <CheckBox
-                android:id="@+id/cbRclSelect"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInputBasisYear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="select choice" />
+                android:layout_weight="1">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_weight="2.5"
-                android:gravity="end">
-
-                <TextView
-                    android:id="@+id/tvRclStatusCode"
-                    android:layout_width="70dp"
+                <EditText
+                    android:id="@+id/edBasisYear"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/color_bg_strong"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="Strong"
-                    android:textColor="@color/colorWhite"
-                    android:visibility="gone" />
+                    android:layout_margin="10dp"
+                    android:background="@mipmap/year_month"
+                    android:hint="Years"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:padding="10dp"
+                    android:textAlignment="center" />
+            </android.support.design.widget.TextInputLayout>
 
-            </RelativeLayout>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInputBasisMonth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/edBasisMonth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@mipmap/year_month"
+                    android:hint="Months"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:padding="10dp"
+                    android:textAlignment="center" />
+            </android.support.design.widget.TextInputLayout>
         </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rcl_act_selection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/llRclBasisNoData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:padding="10dp"
+            android:text="No activities found ..."
+            android:textColor="@color/colorText2"
+            android:textSize="18sp" />
+
     </LinearLayout>
 
 
