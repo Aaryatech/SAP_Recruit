@@ -27,6 +27,10 @@ public class BasisChildDataAdapter extends RecyclerView.Adapter<BasisChildDataAd
     ArrayList<RekArray> rekArrayArrayList;
     private Context context;
 
+
+    public BasisChildDataAdapter() {
+    }
+
     public BasisChildDataAdapter(ArrayList<Activity> dataset, ArrayList<RekArray> rekArrayArrayList, Context context) {
         this.dataset = dataset;
         this.rekArrayArrayList = rekArrayArrayList;

@@ -190,9 +190,9 @@ public class HomeFragment extends Fragment {
                             tvPersonName.setText(dashBoardPerProfile.getProfFname() + " " + dashBoardPerProfile.getProfMname() + " " + dashBoardPerProfile.getProfLname());
                             tvPersonDegree.setText(dashBoardPerProfile.getProfEduCourseDetail());
                             tvPersonExp.setText(dashBoardPerProfile.getProfExp());
-                            tvProfileStatus.setText(dashBoardPerProfile.getProfileCompleted()+" %");
+                            tvProfileStatus.setText(dashBoardPerProfile.getProfileCompleted() + " %");
                             tvProfileLastUpdate.setText(dashBoardPerProfile.getProfLstUpdate());
-                            tvTestScore.setText(dashBoardPerProfile.getProfileScore()+" %");
+                            tvTestScore.setText(dashBoardPerProfile.getProfileScore() + " %");
                             rtbNumRating.setRating(Float.parseFloat(dashBoardPerProfile.getProfileRating().toString()));
                         }
                     }
@@ -207,6 +207,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(Call<DashBoardProfile> call, Throwable t) {
+                dialog.dismiss();
                 Log.e(TAG, "onFailure: DashBoardProfile " + t.getMessage());
                 Toast.makeText(getActivity().getApplicationContext(), " Server Error", Toast.LENGTH_SHORT).show();
 

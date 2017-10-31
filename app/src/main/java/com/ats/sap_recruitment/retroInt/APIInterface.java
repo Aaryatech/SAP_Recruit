@@ -87,4 +87,9 @@ public interface APIInterface {
     @FormUrlEncoded
     @POST("Ser_specilization/get_activity_data")
     Call<ActvityInformation> getActivityInformation(@Field("frm_mode") String frm_mode, @Field("user_type") String user_type, @Field("user_id") String user_id, @Field("prof_cat_id") String prof_cat_id);
+
+    @FormUrlEncoded
+    @POST("Ser_profile/save_sap_profile")
+    Call<EduStatusCode> saveSapProfile(@Field("frm_mode") String frm_mode, @Field("user_type") String user_type, @Field("user_id") String user_id, @Field("main_cat_id") String main_cat_id, @Field("sub_cat_id") String sub_cat_id, @Field("sub_sub_cat_id") String sub_sub_cat_id, @Field("act_id") String act_id, @Field("remrk_id") String remrk_id, @Field("exp_year") String exp_year, @Field("exp_month") String exp_month);
+
 }

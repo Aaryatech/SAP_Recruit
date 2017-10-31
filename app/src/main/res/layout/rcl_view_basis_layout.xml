@@ -92,6 +92,31 @@
 
             </android.support.v7.widget.RecyclerView>
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="100">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="40" />
+
+            <Button
+                android:id="@+id/btnRclBasisUpdate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="60"
+                android:background="@color/color_bg_strong"
+                android:padding="10dp"
+                android:text="Update"
+                android:textColor="@color/colorWhite"
+                android:textSize="16sp" />
+
+        </LinearLayout>
     </LinearLayout>
 
 
