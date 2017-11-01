@@ -52,6 +52,7 @@ import static com.ats.sap_recruitment.activity.HomeActivity.tvTitle;
  */
 public class UpdateProfileFragment extends Fragment {
 
+    public static final String TAG = "UpdateProfileFragment";
     private PerProfile perProfile;
     private EduPerProfile eduPerProfile;
     private LoginBean loginBean;
@@ -69,7 +70,6 @@ public class UpdateProfileFragment extends Fragment {
     private ArrayList<MainCat> mainCatArrayList = new ArrayList<>();
     private ArrayList<SubCat> subCatBasisArrayList = new ArrayList<>();
     private ArrayList<SubSubCat> subSubBasisCatArrayList = new ArrayList<>();
-    public static final String TAG = "UpdateProfileFragment";
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private Gson gson;
@@ -158,9 +158,10 @@ public class UpdateProfileFragment extends Fragment {
         perProfile = gson.fromJson(json, PerProfile.class);
         if (perProfile != null) {
             tvName.setText(perProfile.getProfFname() + " " + perProfile.getProfMname() + " " + perProfile.getProfLname());
+
             String exp = perProfile.getProfWExpYear() + " year " + perProfile.getProfWExpMonth() + " month";
 
-            if (exp.equalsIgnoreCase(" "))
+            if (exp.equalsIgnoreCase(" ") || perProfile.getProfWStatus().toString().equalsIgnoreCase("FRS"))
                 tvExp.setText("Fresher");
             else
                 tvExp.setText(exp);

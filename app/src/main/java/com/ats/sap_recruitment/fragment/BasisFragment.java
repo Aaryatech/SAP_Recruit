@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ats.sap_recruitment.R;
+import com.ats.sap_recruitment.activity.HomeActivity;
 import com.ats.sap_recruitment.adpter.BasisDataAdapter;
 import com.ats.sap_recruitment.bean.ActvityInformation;
 import com.ats.sap_recruitment.bean.Categories;
@@ -85,9 +86,13 @@ public class BasisFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_basis, container, false);
         ButterKnife.bind(this, view);
+
+        HomeActivity.tvTitle.setText("SAP Specialization");
         Typeface myTypeface = Typeface.createFromAsset(getContext().getAssets(), "Free_Serif.ttf");
         Typeface myTypefaceBold = Typeface.createFromAsset(getContext().getAssets(), "Free_Serif.ttf");
         Bundle bundle = getArguments();
+
+
         selectedSpecialised = bundle.getString("selectedItem");
         selectedMainCat = bundle.getString("BASIS");
         tvBasisHead.setText("Core Basis - " + selectedSpecialised + " Experience");

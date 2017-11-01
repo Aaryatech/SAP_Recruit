@@ -58,7 +58,6 @@ public class PersonalProfileFragment extends Fragment {
     private TextInputLayout textFirstName, textMiddleName, textLastName, textDOB, textLocation, textCurrentSal, textCompName, textCompEmail, textMobile1, textMobile2, textEmail;
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -249,7 +248,7 @@ public class PersonalProfileFragment extends Fragment {
             String exp = perProfile.getProfWExpMonth() + " " + perProfile.getProfWExpYear();
             Log.e(TAG, "setBindData: Experience " + exp);
 
-            if (exp.equalsIgnoreCase(" ")) {
+            if (perProfile.getProfWStatus().toString().equalsIgnoreCase("FRS")) {
                 rbFresher.setChecked(true);
             } else {
                 rbExp.setChecked(true);
@@ -260,20 +259,32 @@ public class PersonalProfileFragment extends Fragment {
             String empWorkLike = perProfile.getProfWStatus();
             Log.e(TAG, "setBindData: WorkLike " + empWorkLike);
 
-            if (empWorkLike.equalsIgnoreCase("EXP")) {
+            if (empWorkLike.equalsIgnoreCase("EMP")) {
                 rbEmployee.setChecked(true);
                 llEmployee.setVisibility(View.VISIBLE);
                 edCurrentSal.setText(perProfile.getProfCurrSalary());
                 edCompName.setText(perProfile.getProfCompanyName());
                 edCompEmail.setText(perProfile.getProfCompanyEmail());
-                cbExperience.setChecked(true);
+
+                if(perProfile.getProfProfileFlag().toString().equalsIgnoreCase("0")){
+                    cbExperience.setChecked(true);
+                }else
+                    cbExperience.setChecked(false);
+
             } else {
                 rbFreelancer.setChecked(true);
                 llFreelancer.setVisibility(View.VISIBLE);
                 if (perProfile.getProfFullPartTime().equals("0")) {
                     rbFullTime.setChecked(true);
+                    llPartTime.setVisibility(View.GONE);
                 } else {
                     rbPartTime.setChecked(true);
+                    llPartTime.setVisibility(View.VISIBLE);
+                    if(perProfile.getProfProfileFlag().toString().equalsIgnoreCase("0")){
+                        cbFreelancer.setChecked(true);
+                    }else
+                        cbFreelancer.setChecked(false);
+
                 }
             }
             edMobile1.setText(perProfile.getProfMobile());
