@@ -10,7 +10,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
@@ -176,6 +176,7 @@
                 </LinearLayout>
             </LinearLayout>
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -202,6 +203,8 @@
                     android:textColor="@color/colorText2" />
 
             </LinearLayout>
+
+
 
             <LinearLayout
                 android:id="@+id/llUpdateBasis"
@@ -359,7 +362,50 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/llViewSapProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/colorWhite"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvLabelViewSAP"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="View SAP Profile"
+                    android:textColor="@color/colorText2"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tvLabelViewSAPText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Click here check Save SAP Profile"
+                    android:textColor="@color/colorText2" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llLsvViewSAP"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:visibility="gone">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rclVeiwSap"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
+
+
 </FrameLayout>

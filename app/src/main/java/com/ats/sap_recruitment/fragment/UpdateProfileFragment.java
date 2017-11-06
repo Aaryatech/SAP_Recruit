@@ -9,7 +9,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,11 +27,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ats.sap_recruitment.R;
+import com.ats.sap_recruitment.adpter.SavedSapProfileAdapter;
 import com.ats.sap_recruitment.bean.Categories;
 import com.ats.sap_recruitment.bean.EduPerProfile;
 import com.ats.sap_recruitment.bean.LoginBean;
 import com.ats.sap_recruitment.bean.MainCat;
 import com.ats.sap_recruitment.bean.PerProfile;
+import com.ats.sap_recruitment.bean.SapProfile;
+import com.ats.sap_recruitment.bean.SapProfileList;
 import com.ats.sap_recruitment.bean.SubCat;
 import com.ats.sap_recruitment.bean.SubSubCat;
 import com.ats.sap_recruitment.retroInt.APIClient;
@@ -37,6 +44,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dmax.dialog.SpotsDialog;
@@ -53,6 +61,20 @@ import static com.ats.sap_recruitment.activity.HomeActivity.tvTitle;
 public class UpdateProfileFragment extends Fragment {
 
     public static final String TAG = "UpdateProfileFragment";
+    private static RecyclerView.Adapter adapter;
+    @BindView(R.id.llViewSapProfile)
+    LinearLayout llViewSapProfile;
+    @BindView(R.id.llLsvViewSAP)
+    LinearLayout llLsvViewSAP;
+    @BindView(R.id.rclVeiwSap)
+    RecyclerView rclVeiwSap;
+    @BindView(R.id.tvLabelViewSAP)
+    TextView tvLabelViewSAP;
+    @BindView(R.id.tvLabelViewSAPText)
+    TextView tvLabelViewSAPText;
+    private RecyclerView.LayoutManager layoutManager;
+
+    private ArrayList<SapProfileList> sapProfileLists = new ArrayList<>();
     private PerProfile perProfile;
     private EduPerProfile eduPerProfile;
     private LoginBean loginBean;
@@ -94,6 +116,28 @@ public class UpdateProfileFragment extends Fragment {
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
+    }
+
+    public static void getTotalHeightofRecyclerView(RecyclerView recyclerView) {
+
+        RecyclerView.Adapter mAdapter = recyclerView.getAdapter();
+
+        int totalHeight = 0;
+
+        for (int i = 0; i < mAdapter.getItemCount(); i++) {
+            View mView = recyclerView.findViewHolderForAdapterPosition(i).itemView;
+
+            mView.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+
+            totalHeight += mView.getMeasuredHeight();
+        }
+
+        if (totalHeight > 100) {
+            ViewGroup.LayoutParams params = recyclerView.getLayoutParams();
+            params.height = 100;
+            recyclerView.setLayoutParams(params);
+        }
     }
 
     @Override
@@ -181,17 +225,11 @@ public class UpdateProfileFragment extends Fragment {
 
 
         getAllCategories();
-        //        ArrayList for Basis Specialisation
-//        arrayBasisList.add("OS");
-//        arrayBasisList.add("DB");
-//        arrayBasisList.add("SAP Product");
-
-//        ArrayList for Basis Specialisation
+        getAllSapProfileList();
 
         arrayABAPList.add("SampleABAP");
         arrayABAPList.add("TestABAP");
 
-//         ArrayList for Basis Specialisation
         arrayFunctionalList.add("SampleFunctional");
         arrayFunctionalList.add("TestFunctional");
 
@@ -329,6 +367,35 @@ public class UpdateProfileFragment extends Fragment {
         return view;
     }
 
+    @OnClick(R.id.llViewSapProfile)
+    public void getVeiwSapClick() {
+        if (llLsvViewSAP.getVisibility() == View.GONE) {
+            llLsvViewSAP.setVisibility(View.VISIBLE);
+            if (!sapProfileLists.isEmpty()) {
+                adapter = new SavedSapProfileAdapter(sapProfileLists, getActivity());
+                rclVeiwSap.setAdapter(adapter);
+
+
+                DisplayMetrics displaymetrics = new DisplayMetrics();
+                getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+                int a = (displaymetrics.heightPixels * 90) / 100;
+                rclVeiwSap.getLayoutParams().height = a;
+
+
+                rclVeiwSap.setHasFixedSize(true);
+                layoutManager = new LinearLayoutManager(getContext());
+                rclVeiwSap.setLayoutManager(layoutManager);
+                rclVeiwSap.setItemAnimator(new DefaultItemAnimator());
+                //  getTotalHeightofRecyclerView(rclVeiwSap);
+            }
+
+
+        } else {
+            llLsvViewSAP.setVisibility(View.GONE);
+
+        }
+    }
+
     @OnClick(R.id.llUpdateBasis)
     public void getBasisSelected() {
         if (llLsvBasis.getVisibility() == View.GONE) {
@@ -353,7 +420,6 @@ public class UpdateProfileFragment extends Fragment {
             llLsvBasis.setVisibility(View.GONE);
         }
     }
-
 
     @OnClick(R.id.btnEditBasis)
     public void getEditBasis() {
@@ -480,6 +546,36 @@ public class UpdateProfileFragment extends Fragment {
             public void onFailure(Call<Categories> call, Throwable t) {
                 dialog.dismiss();
                 Log.e(TAG, "onFailure: Errot Occur in getAllCategories :  " + t.getMessage());
+            }
+        });
+    }
+
+    public void getAllSapProfileList() {
+        sapProfileLists.clear();
+        final AlertDialog dialog = new SpotsDialog(getActivity());
+        dialog.show();
+        Call<SapProfile> sapProfileCall = apiInterface.getSapProfile("get_mysap_prof_list", usrType, userId, "1");
+        sapProfileCall.enqueue(new Callback<SapProfile>() {
+            @Override
+            public void onResponse(Call<SapProfile> call, Response<SapProfile> response) {
+                dialog.dismiss();
+                if (response.body() != null) {
+                    SapProfile sapProfile = response.body();
+                    Log.e(TAG, "onResponse: Sap Profile : " + sapProfile);
+                    for (int i = 0; i < sapProfile.getSapProfileList().size(); i++) {
+                        sapProfileLists.add(i, sapProfile.getSapProfileList().get(i));
+                    }
+                    Log.e(TAG, "onResponse: Sap Profile List : " + sapProfileLists);
+                } else {
+                    Log.e(TAG, "onResponse: SapProfile Data Not Found");
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<SapProfile> call, Throwable t) {
+                dialog.dismiss();
+                Log.e(TAG, "onFailure: " + t.getMessage());
             }
         });
     }
