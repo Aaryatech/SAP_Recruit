@@ -6,6 +6,7 @@ import com.ats.sap_recruitment.bean.CompanyProfile;
 import com.ats.sap_recruitment.bean.DashBoardProfile;
 import com.ats.sap_recruitment.bean.EduStatusCode;
 import com.ats.sap_recruitment.bean.EducationalProfile;
+import com.ats.sap_recruitment.bean.JobProfileDetails;
 import com.ats.sap_recruitment.bean.LoginBean;
 import com.ats.sap_recruitment.bean.PersonProfile;
 import com.ats.sap_recruitment.bean.SapProfile;
@@ -82,7 +83,7 @@ public interface APIInterface {
     Call<SaveJobBaens> saveJobProfile(@Field("frm_mode") String frm_mode, @Field("user_type") String user_type, @Field("user_id") String user_id, @Field("job_title") String job_title, @Field("job_desc") String job_desc, @Field("job_exp_year") String job_exp_year, @Field("job_exp_month") String job_exp_month);
 
     @FormUrlEncoded
-    @POST
+    @POST("Ser_profile_recu/get_company")
     Call<CompanyProfile> getCompanyProfile(@Field("frm_mode") String frm_mode, @Field("user_type") String user_type, @Field("user_id") String user_id);
 
     @FormUrlEncoded
@@ -95,6 +96,10 @@ public interface APIInterface {
 
     @FormUrlEncoded
     @POST("Ser_specilization/my_sap_profile_list")
-    Call<SapProfile> getSapProfile(@Field("frm_mode") String frm_mode, @Field("user_type") String user_type, @Field("user_id") String user_id, @Field("prof_cat_id") String prof_cat_id);
+    Call<SapProfile> getSapProfile(@Field("frm_mode") String frm_mode, @Field("user_type") String user_type, @Field("user_id") String user_id);
 
+
+    @FormUrlEncoded
+    @POST("")
+    Call<JobProfileDetails> getJobProfileDetails(@Field("frm_mode") String frm_mode, @Field("user_type") String user_type, @Field("user_id") String user_id);
 }

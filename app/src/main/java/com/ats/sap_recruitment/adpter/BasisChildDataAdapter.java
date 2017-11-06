@@ -27,7 +27,6 @@ public class BasisChildDataAdapter extends RecyclerView.Adapter<BasisChildDataAd
     ArrayList<RekArray> rekArrayArrayList;
     private Context context;
 
-
     public BasisChildDataAdapter() {
     }
 
@@ -36,6 +35,7 @@ public class BasisChildDataAdapter extends RecyclerView.Adapter<BasisChildDataAd
         this.rekArrayArrayList = rekArrayArrayList;
         this.context = context;
     }
+
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -95,7 +95,7 @@ public class BasisChildDataAdapter extends RecyclerView.Adapter<BasisChildDataAd
                 Log.e(TAG, "onCheckedChanged:  check value : " + b);
                 if (b) {
                     rlRelativeSpinner.setVisibility(View.VISIBLE);
-                    if (dataset.get(position).getRemrkId().toString().equalsIgnoreCase("0")) {
+                    if (dataset.get(position).getRemrkId().toString().equalsIgnoreCase("0") || dataset.get(position).getRemrkId().toString() != null) {
                         Log.e(TAG, "onBindViewHolder: no value Still Set for actvity, default will set");
                     } else {
                         for (int i = 0; i < rekArrayArrayList.size(); i++) {

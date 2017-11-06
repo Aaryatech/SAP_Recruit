@@ -93,7 +93,6 @@ public class HomeEmployerFragment extends Fragment {
                     }
 
                 } else {
-
                 }
 
             }
