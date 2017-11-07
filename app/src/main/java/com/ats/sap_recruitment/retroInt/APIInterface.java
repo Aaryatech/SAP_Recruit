@@ -100,6 +100,6 @@ public interface APIInterface {
 
 
     @FormUrlEncoded
-    @POST("")
+    @POST("Ser_profile_recu/get_job_list")
     Call<JobProfileDetails> getJobProfileDetails(@Field("frm_mode") String frm_mode, @Field("user_type") String user_type, @Field("user_id") String user_id);
 }

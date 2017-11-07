@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ats.sap_recruitment.R;
+import com.ats.sap_recruitment.activity.HomeActivity;
 import com.ats.sap_recruitment.bean.EduStatusCode;
 import com.ats.sap_recruitment.bean.LoginBean;
 import com.ats.sap_recruitment.bean.PerProfile;
@@ -65,6 +66,7 @@ public class PersonalProfileFragment extends Fragment {
 
         Typeface myTypeface = Typeface.createFromAsset(getContext().getAssets(), "Free_Serif.ttf");
         Typeface myTypefaceBold = Typeface.createFromAsset(getContext().getAssets(), "Free_Serif.ttf");
+        HomeActivity.tvTitle.setText("Personal Profile");
 
         tvTitle.setText("SAP Profile - Personal");
         tvTitle.setTypeface(myTypeface);
@@ -303,8 +305,8 @@ public class PersonalProfileFragment extends Fragment {
             case R.id.action_save:
 
                 String workstatus = "FRS";
-                String month = "NA";
-                String year = "NA";
+                String month = "0";
+                String year = "0";
                 String worklike = "NA";
                 String currSal = "0";
                 String companyName = "NA";

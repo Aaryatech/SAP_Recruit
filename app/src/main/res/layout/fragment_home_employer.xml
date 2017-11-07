@@ -65,7 +65,7 @@
 
 
                             <TextView
-                                android:id="@+id/tvEmprContactPersonName"
+                                android:id="@+id/tvEmprPersonName"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="7dp"
@@ -93,7 +93,7 @@
 
 
                             <TextView
-                                android:id="@+id/tvOrgnisationName"
+                                android:id="@+id/tvEmprCompanyName"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="7dp"
