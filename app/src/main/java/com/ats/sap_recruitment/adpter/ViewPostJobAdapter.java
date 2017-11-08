@@ -17,16 +17,17 @@ import android.widget.TextView;
 
 import com.ats.sap_recruitment.R;
 import com.ats.sap_recruitment.bean.JobPost;
+import com.ats.sap_recruitment.bean.JobsArry;
 
 import java.util.ArrayList;
 
 public class ViewPostJobAdapter extends RecyclerView.Adapter<ViewPostJobAdapter.MyViewHolder> {
 
 
-    ArrayList<JobPost> dataset;
+    ArrayList<JobsArry> dataset;
     private Context context;
 
-    public ViewPostJobAdapter(ArrayList<JobPost> dataset, Context context) {
+    public ViewPostJobAdapter(ArrayList<JobsArry> dataset, Context context) {
         this.dataset = dataset;
         this.context = context;
     }
@@ -43,17 +44,17 @@ public class ViewPostJobAdapter extends RecyclerView.Adapter<ViewPostJobAdapter.
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         TextView tvViewJobTitle = holder.tvViewJobTitle;
         TextView tvViewJobId = holder.tvViewJobId;
-        TextView tvViewJobType = holder.tvViewJobType;
-        TextView tvViewJobLocation = holder.tvViewJobLocation;
+        TextView tvViewJobDate = holder.tvViewJobDate;
+        TextView tvViewJobDesc = holder.tvViewJobDesc;
         TextView tvViewJobYear = holder.tvViewJobYear;
         TextView tvCardViewoption = holder.tvCardViewoption;
 
 
         tvViewJobTitle.setText(dataset.get(position).getJobTitle().toString());
         tvViewJobId.setText("" + dataset.get(position).getJobId());
-        tvViewJobLocation.setText(dataset.get(position).getJobLocation().toString());
-        tvViewJobType.setText(dataset.get(position).getJobType().toString());
-        tvViewJobYear.setText(dataset.get(position).getJobYear().toString());
+        tvViewJobDesc.setText(dataset.get(position).getJobDesc().toString());
+        tvViewJobDate.setText(dataset.get(position).getJobDate().toString());
+        tvViewJobYear.setText(dataset.get(position).getJobExpMonth().toString() + " month " + dataset.get(position).getJobExpYear().toString() + " year");
 
         tvCardViewoption.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,16 +93,16 @@ public class ViewPostJobAdapter extends RecyclerView.Adapter<ViewPostJobAdapter.
 
         TextView tvViewJobTitle;
         TextView tvViewJobId;
-        TextView tvViewJobType;
-        TextView tvViewJobLocation;
+        TextView tvViewJobDate;
+        TextView tvViewJobDesc;
         TextView tvViewJobYear;
         TextView tvCardViewoption;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            this.tvViewJobLocation = (TextView) itemView.findViewById(R.id.tvViewAllLocation);
+            this.tvViewJobDesc = (TextView) itemView.findViewById(R.id.tvViewAllDescription);
             this.tvViewJobTitle = (TextView) itemView.findViewById(R.id.tvViewAllJobTitle);
-            this.tvViewJobType = (TextView) itemView.findViewById(R.id.tvViewAllJobType);
+            this.tvViewJobDate = (TextView) itemView.findViewById(R.id.tvViewAllPostedDate);
             this.tvViewJobId = (TextView) itemView.findViewById(R.id.tvViewAllJobId);
             this.tvViewJobYear = (TextView) itemView.findViewById(R.id.tvViewAllJobYear);
             this.tvCardViewoption = (TextView) itemView.findViewById(R.id.text_card_option);
