@@ -96,10 +96,28 @@ public interface APIInterface {
 
     @FormUrlEncoded
     @POST("Ser_specilization/my_sap_profile_list")
-    Call<SapProfile> getSapProfile(@Field("frm_mode") String frm_mode, @Field("user_type") String user_type, @Field("user_id") String user_id);
-
+    Call<SapProfile> getSapProfile(@Field("frm_mode") String frm_mode, @Field("user_type") String user_type, @Field("user_id") String user_id, @Field("prof_cat_id") String prof_cat_id);
 
     @FormUrlEncoded
     @POST("Ser_profile_recu/get_job_list")
     Call<JobProfileDetails> getJobProfileDetails(@Field("frm_mode") String frm_mode, @Field("user_type") String user_type, @Field("user_id") String user_id);
+
+    @FormUrlEncoded
+    @POST("Ser_profile_recu/save_rec_company")
+    Call<EduStatusCode> saveCompanyProfile(@Field("frm_mode") String frm_mode,
+                                           @Field("user_type") String user_type,
+                                           @Field("user_id") String user_id,
+                                           @Field("prof_fname") String prof_fname,
+                                           @Field("prof_mname") String prof_mname,
+                                           @Field("prof_lname") String prof_lname,
+                                           @Field("prof_mobile") String prof_mobile,
+                                           @Field("prof_alternet_mobile") String prof_alternet_mobile,
+                                           @Field("prof_email") String prof_email,
+                                           @Field("rec_comp_name") String rec_comp_name,
+                                           @Field("rec_comp_yar_exp") String rec_comp_yar_exp,
+                                           @Field("rec_compamny_desc") String rec_compamny_desc,
+                                           @Field("rec_comp_website") String rec_comp_website,
+                                           @Field("rec_comp_address") String rec_comp_address,
+                                           @Field("rec_comp_state") String rec_comp_state,
+                                           @Field("rec_comp_city") String rec_comp_city);
 }

@@ -30,8 +30,6 @@ import com.ats.sap_recruitment.retroInt.APIInterface;
 import com.ats.sap_recruitment.utils.Constants;
 import com.google.gson.Gson;
 
-import java.util.concurrent.TimeoutException;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -94,21 +92,35 @@ public class HomeEmployerFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_employer, container, false);
         getActivity().setTitle("Profile");
         ButterKnife.bind(this, view);
         Typeface myTypeface = Typeface.createFromAsset(getContext().getAssets(), "Free_Serif.ttf");
+
         Typeface myTypefaceBold = Typeface.createFromAsset(getContext().getAssets(), "Free_Serif.ttf");
         HomeActivity.tvTitle.setText("SAP Employer");
+
+
+        tvEmprPersonName.setTypeface(myTypeface);
+        tvEmprLocation.setTypeface(myTypeface);
+        tvEmprDesignation.setTypeface(myTypeface);
+        tvEmprCompanyName.setTypeface(myTypeface);
+        tvEmprProfileStatus.setTypeface(myTypefaceBold);
+        tvEmprProfileCompleted.setTypeface(myTypefaceBold);
+        tvEmprProfileStatusPercent.setTypeface(myTypeface);
+        tvEmplrMobileNo.setTypeface(myTypeface);
+        tvEmplrMnoVerified.setTypeface(myTypeface);
+        tvEmplrEmailId.setTypeface(myTypeface);
+        tvEmplrEmailVerified.setTypeface(myTypeface);
+        tvEmprLastUpdate.setTypeface(myTypeface);
+
 
         pref = getActivity().getSharedPreferences(Constants.myPref, Context.MODE_PRIVATE);
         editor = pref.edit();
         gson = new Gson();
 
-        String json = pref.getString("", "");
+        String json = pref.getString("loginBean", "");
         LoginBean loginBean = gson.fromJson(json, LoginBean.class);
         if (loginBean != null) {
             userId = loginBean.getUserId();
@@ -116,19 +128,17 @@ public class HomeEmployerFragment extends Fragment {
         }
 
         getCompanyProfile();
-
+        getAllJobDetails();
         return view;
     }
 
     @OnClick(R.id.llEmprViewPost)
     public void viewPostedJob() {
-
         Log.e(TAG, "viewPostedJob: method");
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, new ViewAllPostFragment());
         ft.addToBackStack("View All Post");
         ft.commit();
-
     }
 
 
@@ -143,6 +153,15 @@ public class HomeEmployerFragment extends Fragment {
     @OnClick(R.id.fab_post_job)
     public void postJob() {
 
+
+    }
+
+    @OnClick(R.id.btnEmprHomeProfileUpdate)
+    public void editCompanyProfile() {
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, new CompanyProfileFragment());
+        ft.addToBackStack("backtoProfile");
+        ft.commit();
     }
 
     public void getCompanyProfile() {
@@ -156,6 +175,11 @@ public class HomeEmployerFragment extends Fragment {
                 dialog.dismiss();
                 if (response.body() != null) {
                     CompanyProfile companyProfile = response.body();
+
+                    String json = gson.toJson(companyProfile);
+                    editor.putString("companyProfile", json);
+                    editor.apply();
+
                     if (companyProfile != null) {
                         CompanyPerProfile cpProfile = companyProfile.getPerProfile().get(0);
                         Log.e(TAG, "onResponse: " + cpProfile);
@@ -163,17 +187,15 @@ public class HomeEmployerFragment extends Fragment {
                         tvEmprCompanyName.setText(cpProfile.getRecCompName());
                         tvEmprDesignation.setText(cpProfile.getRecCompYarExp());// Editing required here no designation found
                         tvEmprLocation.setText(cpProfile.getRecCompCity());
-                        tvEmprProfileStatusPercent.setText(cpProfile.getProfileCompleted());
+                        tvEmprProfileStatusPercent.setText("" + cpProfile.getProfileCompleted());
                         tvEmplrMobileNo.setText(cpProfile.getProfMobile());
                         tvEmplrEmailId.setText(cpProfile.getProfEmail());
                         tvEmprLastUpdate.setText(cpProfile.getProfLstUpdate());
                     }
-
                 } else {
                     Log.e(TAG, "onResponse: No valid response from Server");
                     Toast.makeText(getContext(), "no Response from server", Toast.LENGTH_SHORT).show();
                 }
-
             }
 
             @Override
@@ -188,25 +210,22 @@ public class HomeEmployerFragment extends Fragment {
 
 
     public void getAllJobDetails() {
-
         final AlertDialog dialog = new SpotsDialog(getActivity());
         dialog.show();
+
+        Log.e(TAG, "getAllJobDetails: UserId : " + userId + " User Type : " + userType);
         Call<JobProfileDetails> jobProfileDetailsCall = apiInterface.getJobProfileDetails("get_jobs", userType, userId);
         jobProfileDetailsCall.enqueue(new Callback<JobProfileDetails>() {
             @Override
             public void onResponse(Call<JobProfileDetails> call, Response<JobProfileDetails> response) {
                 dialog.dismiss();
                 if (response.body() != null) {
-
                     JobProfileDetails jobProfileDetails = response.body();
                     Log.e(TAG, "onResponse: getAllJobDetails :" + jobProfileDetails);
-
                 } else {
                     Log.e(TAG, "onResponse: getAllJobDetails : No Valid response From Server ");
                     Toast.makeText(getContext(), "No Valid response from Server", Toast.LENGTH_SHORT).show();
                 }
-
-
             }
 
             @Override

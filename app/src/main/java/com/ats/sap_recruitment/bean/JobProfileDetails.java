@@ -1,9 +1,10 @@
 
 package com.ats.sap_recruitment.bean;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class JobProfileDetails {
 
@@ -17,6 +18,13 @@ public class JobProfileDetails {
 
     public void setJobsArry(List<JobsArry> jobsArry) {
         this.jobsArry = jobsArry;
+    }
+
+    public JobProfileDetails(List<JobsArry> jobsArry) {
+        this.jobsArry = jobsArry;
+    }
+
+    public JobProfileDetails() {
     }
 
     @Override

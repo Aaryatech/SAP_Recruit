@@ -24,12 +24,9 @@ public class APIClient {
                 .addInterceptor(httpLoggingInterceptor)
                 .build();
 
-
         retrofit = new Retrofit.Builder().baseUrl(Constants.LOCAL_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(httpClient).build();
-
-
         return retrofit;
     }
 }

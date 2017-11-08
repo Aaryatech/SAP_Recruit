@@ -23,6 +23,17 @@ public class LoginBean {
     @Expose
     private String userType;
 
+    public LoginBean() {
+    }
+
+    public LoginBean(String status, String userId, String profName, String studPicture, String userType) {
+        this.status = status;
+        this.userId = userId;
+        this.profName = profName;
+        this.studPicture = studPicture;
+        this.userType = userType;
+    }
+
     public String getStatus() {
         return status;
     }

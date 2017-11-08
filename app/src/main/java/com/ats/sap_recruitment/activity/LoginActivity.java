@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
                                     Gson gson = new Gson();
                                     String json = gson.toJson(loginBean);
                                     editor.putString("loginBean", json);
-                                    editor.commit();
+                                    editor.apply();
 
                                     startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                                     finish();
@@ -119,7 +119,11 @@ public class LoginActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(Call<LoginBean> call, Throwable t) {
-                           dialog.dismiss();
+                            dialog.dismiss();
+
+                            Log.e(TAG, "onFailure: Cause: " + t.getCause());
+                            Log.e(TAG, "onFailure: StackTrace : " + t.getStackTrace().toString());
+                            t.getCause();
                             Log.e(TAG, "onFailure: " + t.getMessage());
                             Toast.makeText(LoginActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
                         }

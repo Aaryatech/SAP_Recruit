@@ -71,7 +71,10 @@ public class BasisChildDataAdapter extends RecyclerView.Adapter<BasisChildDataAd
 
         if (cbSelectChoice.isChecked()) {
             rlRelativeSpinner.setVisibility(View.VISIBLE);
-            if (dataset.get(position).getRemrkId().toString().equalsIgnoreCase("0")) {
+
+            if (dataset.get(position).getRemrkId() == null) {
+                Log.e(TAG, "onBindViewHolder: Null Value Response");
+            } else if (dataset.get(position).getRemrkId().toString().equalsIgnoreCase("0")) {
                 Log.e(TAG, "onBindViewHolder: no value Still Set for actvity, default will set");
             } else {
                 for (int i = 0; i < rekArrayArrayList.size(); i++) {
@@ -84,6 +87,7 @@ public class BasisChildDataAdapter extends RecyclerView.Adapter<BasisChildDataAd
                     }
                 }
             }
+
 
         } else {
             rlRelativeSpinner.setVisibility(View.INVISIBLE);
