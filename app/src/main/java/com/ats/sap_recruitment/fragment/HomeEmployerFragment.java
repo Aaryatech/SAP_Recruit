@@ -152,8 +152,10 @@ public class HomeEmployerFragment extends Fragment {
 
     @OnClick(R.id.fab_post_job)
     public void postJob() {
-
-
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, new PostJobFragment());
+        ft.addToBackStack("backtoProfile");
+        ft.commit();
     }
 
     @OnClick(R.id.btnEmprHomeProfileUpdate)
@@ -233,8 +235,6 @@ public class HomeEmployerFragment extends Fragment {
                 dialog.dismiss();
             }
         });
-
-
     }
 
 }

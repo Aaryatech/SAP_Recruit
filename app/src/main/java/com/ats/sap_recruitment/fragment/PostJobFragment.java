@@ -188,16 +188,12 @@ public class PostJobFragment extends Fragment {
             dialog.show();
             Call<SaveJobBaens> saveJobBaensCall = apiInterface.saveJobProfile("", userType, userId, "", "", "", "");
             saveJobBaensCall.enqueue(new Callback<SaveJobBaens>() {
-
-
                 @Override
                 public void onResponse(Call<SaveJobBaens> call, Response<SaveJobBaens> response) {
                     dialog.dismiss();
 
                     if (response.body() != null) {
                         Log.e(TAG, "onResponse: " + response.body());
-
-
                     } else {
                         Log.e(TAG, "onResponse: ");
                     }

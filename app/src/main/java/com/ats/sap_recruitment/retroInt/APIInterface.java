@@ -120,4 +120,10 @@ public interface APIInterface {
                                            @Field("rec_comp_address") String rec_comp_address,
                                            @Field("rec_comp_state") String rec_comp_state,
                                            @Field("rec_comp_city") String rec_comp_city);
+
+
+    @FormUrlEncoded
+    @POST("Ser_profile_recu/edit_job")
+    Call<EduStatusCode> editJobProfileDetails(@Field("frm_mode") String frm_mode, @Field("user_type") String user_type, @Field("user_id") String user_id, @Field("job_id") String job_id, @Field("job_title") String job_title, @Field("job_desc") String job_desc, @Field("job_exp_year") String job_exp_year, @Field("job_exp_month") String job_exp_month);
+
 }
