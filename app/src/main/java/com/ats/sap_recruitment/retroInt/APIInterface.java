@@ -9,6 +9,7 @@ import com.ats.sap_recruitment.bean.EducationalProfile;
 import com.ats.sap_recruitment.bean.JobProfileDetails;
 import com.ats.sap_recruitment.bean.LoginBean;
 import com.ats.sap_recruitment.bean.PersonProfile;
+import com.ats.sap_recruitment.bean.RegistratinBean;
 import com.ats.sap_recruitment.bean.SapProfile;
 import com.ats.sap_recruitment.bean.SaveJobBaens;
 
@@ -126,4 +127,8 @@ public interface APIInterface {
     @POST("Ser_profile_recu/edit_job")
     Call<EduStatusCode> editJobProfileDetails(@Field("frm_mode") String frm_mode, @Field("user_type") String user_type, @Field("user_id") String user_id, @Field("job_id") String job_id, @Field("job_title") String job_title, @Field("job_desc") String job_desc, @Field("job_exp_year") String job_exp_year, @Field("job_exp_month") String job_exp_month);
 
+
+    @FormUrlEncoded
+    @POST("Ser_authen/get_register")
+    Call<RegistratinBean> getRegister(@Field("frm_mode") String frm_mode, @Field("prof_fname") String prof_fname, @Field("prof_lname") String prof_lname, @Field("user_mobile") String user_mobile, @Field("user_email") String user_email, @Field("user_password") String user_password, @Field("user_type") String user_type);
 }

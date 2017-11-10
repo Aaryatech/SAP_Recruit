@@ -18,22 +18,44 @@
             android:layout_marginTop="50dp"
             android:orientation="vertical">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/textFirstName"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="100">
 
-                <EditText
-                    android:id="@+id/edRegisterName"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/textRegFirstName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="First Name"
-                    android:maxLines="1"
-                    android:paddingLeft="10dp"
-                    android:singleLine="true"
-                    android:textColor="@color/colorText2"
-                    android:textColorHint="@color/colorText2" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_weight="50">
+
+                    <EditText
+                        android:id="@+id/edRegFirstName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="First Name"
+                        android:paddingLeft="10dp"
+                        android:textColor="@color/colorText2"
+                        android:textColorHint="@color/colorText2" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/textRegLastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50">
+
+                    <EditText
+                        android:id="@+id/edRegLastName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Last Name"
+                        android:paddingLeft="10dp"
+                        android:textColor="@color/colorText2"
+                        android:textColorHint="@color/colorText2" />
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/textMobile"
@@ -100,15 +122,17 @@
                 android:weightSum="100">
 
                 <RadioButton
+                    android:id="@+id/rbRecruiter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="50"
+                    android:layout_weight="40"
                     android:text="Recruiter/Job Posting" />
 
                 <RadioButton
+                    android:id="@+id/rbJobSeeker"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="50"
+                    android:layout_weight="60"
                     android:text="Job Seeker" />
             </RadioGroup>
 
