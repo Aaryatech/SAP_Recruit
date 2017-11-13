@@ -34,6 +34,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class PostJobFragment extends Fragment {
     public static final String TAG = "PostJobFragment";
 
@@ -124,8 +126,16 @@ public class PostJobFragment extends Fragment {
                 dialog.dismiss();
                 if (response.body() != null) {
 
-                    Categories categories = response.body();
-                    Log.e(TAG, "onResponse: All Categories:  " + categories);
+                    Categories allCategories = response.body();
+
+                    pref = getActivity().getApplicationContext().getSharedPreferences(Constants.myPref, MODE_PRIVATE);
+                    editor = pref.edit();
+                    gson = new Gson();
+                    String json = gson.toJson(allCategories);
+                    editor.putString("allCategories", json);
+                    editor.apply();
+
+                    Log.e(TAG, "onResponse: All Categories:  " + allCategories);
 
                 } else {
                     Toast.makeText(getContext(), "No valid Response from server", Toast.LENGTH_SHORT).show();
