@@ -541,7 +541,6 @@ public class UpdateProfileFragment extends Fragment {
                             arrayBasisList.add(i, subCatBasisArrayList.get(i).getProfCatName());
                         }
                     }
-
                     if (!mainCatArrayList.isEmpty()) {
                         for (int i = 0; i < mainCatArrayList.size(); i++) {
                             MainCat mainCat = mainCatArrayList.get(i);
@@ -566,8 +565,6 @@ public class UpdateProfileFragment extends Fragment {
                             }
                         }
                     }
-
-
                 } else {
                     Log.e(TAG, "onResponse: Category Data Not Found");
                 }

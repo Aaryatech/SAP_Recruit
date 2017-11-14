@@ -5,17 +5,24 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,10 +32,14 @@ import com.ats.sap_recruitment.bean.CompanyPerProfile;
 import com.ats.sap_recruitment.bean.CompanyProfile;
 import com.ats.sap_recruitment.bean.JobProfileDetails;
 import com.ats.sap_recruitment.bean.LoginBean;
+import com.ats.sap_recruitment.bean.Notice;
 import com.ats.sap_recruitment.retroInt.APIClient;
 import com.ats.sap_recruitment.retroInt.APIInterface;
 import com.ats.sap_recruitment.utils.Constants;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -77,10 +88,12 @@ public class HomeEmployerFragment extends Fragment {
     Button btnEmprHomeProfileUpdate;
     @BindView(R.id.tvEmprLastUpdate)
     TextView tvEmprLastUpdate;
+    @BindView(R.id.lsvNoticEmplr)
+    ListView lsvNoticEmplr;
 
 
     private String userType = "0", userId = "0";
-
+    private ArrayList<Notice> noticeArrayList = new ArrayList<>();
     private static String TAG = "HomeEmployerFragment";
     private APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
     private SharedPreferences pref;
@@ -127,6 +140,7 @@ public class HomeEmployerFragment extends Fragment {
             userType = loginBean.getUserType();
         }
 
+        getCompanyInformation();
         getCompanyProfile();
         getAllJobDetails();
         return view;
@@ -193,6 +207,16 @@ public class HomeEmployerFragment extends Fragment {
                         tvEmplrMobileNo.setText(cpProfile.getProfMobile());
                         tvEmplrEmailId.setText(cpProfile.getProfEmail());
                         tvEmprLastUpdate.setText(cpProfile.getProfLstUpdate());
+
+                        try {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                Picasso.with(getContext()).load("" + cpProfile.getProfPhoto()).error(getContext().getResources().getDrawable(R.drawable.noprofile, null)).into(imageView);
+                            } else {
+                                Picasso.with(getContext()).load("" + cpProfile.getProfPhoto()).placeholder(getContext().getResources().getDrawable(R.drawable.noprofile)).into(imageView);
+                            }
+                        } catch (Exception ex) {
+                            Log.e("Error:", "Exception in image getting" + ex);
+                        }
                     }
                 } else {
                     Log.e(TAG, "onResponse: No valid response from Server");
@@ -235,6 +259,92 @@ public class HomeEmployerFragment extends Fragment {
                 dialog.dismiss();
             }
         });
+    }
+
+    public void getCompanyInformation() {
+        final AlertDialog dialog = new SpotsDialog(getActivity());
+        dialog.show();
+
+        Call<CompanyProfile> companyProfileCall = apiInterface.getCompanyProfile("get_cpmo", userType, userId);
+        companyProfileCall.enqueue(new Callback<CompanyProfile>() {
+            @Override
+            public void onResponse(Call<CompanyProfile> call, Response<CompanyProfile> response) {
+                dialog.dismiss();
+
+                if (response.body() != null) {
+                    Log.e(TAG, "onResponse: getCompanyInformation : " + response.body());
+                    CompanyProfile companyProfile = response.body();
+                    for (int i = 0; i < companyProfile.getNotice().size(); i++) {
+                        noticeArrayList.add(i, companyProfile.getNotice().get(i));
+                    }
+                    setAdapter();
+                } else {
+                    Toast.makeText(getContext(), "", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<CompanyProfile> call, Throwable t) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    public void setAdapter() {
+        if (!noticeArrayList.isEmpty()) {
+            ArrayList<String> noticeText = new ArrayList<>();
+            for (int i = 0; i < noticeArrayList.size(); i++) {
+                noticeText.add(i, noticeArrayList.get(i).getNotText());
+            }
+
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, noticeText) {
+                @NonNull
+                @Override
+                public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                    String noticeText = noticeArrayList.get(position).getNotText();
+                    String noticeId = noticeArrayList.get(position).getNotId();
+                    String noticeDate = noticeArrayList.get(position).getNotDate();
+
+                    LayoutInflater inflater1 = getActivity().getLayoutInflater();
+                    View view1 = inflater1.inflate(R.layout.list_view_notice, null);
+                    TextView tvLsvNoticeHead = view1.findViewById(R.id.tvLsvNoticeHead);
+                    TextView tvLsvNoticeText = view1.findViewById(R.id.tvLsvNoticeText);
+                    TextView tvLsvNoticeTime = view1.findViewById(R.id.tvLsvNoticeTime);
+                    TextView tvLsvNoticeNo = view1.findViewById(R.id.tvLsvNoticeNo);
+                    ImageView ivLogoNoticeImage = view1.findViewById(R.id.ivLogoNoticeImage);
+
+                    tvLsvNoticeHead.setText(noticeText);
+                    tvLsvNoticeText.setText(noticeText);
+                    tvLsvNoticeTime.setText(noticeDate);
+                    tvLsvNoticeNo.setText(noticeId);
+                    return view1;
+                }
+            };
+            lsvNoticEmplr.setAdapter(arrayAdapter);
+            setListViewHeightBasedOnChildren(lsvNoticEmplr);
+
+        }
+
+    }
+
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null)
+            return;
+
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            view = listAdapter.getView(i, view, listView);
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
     }
 
 }

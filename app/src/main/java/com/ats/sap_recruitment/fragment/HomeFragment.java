@@ -4,15 +4,21 @@ import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,12 +29,15 @@ import com.ats.sap_recruitment.bean.DashBoardProfile;
 import com.ats.sap_recruitment.bean.EduPerProfile;
 import com.ats.sap_recruitment.bean.EducationalProfile;
 import com.ats.sap_recruitment.bean.LoginBean;
+import com.ats.sap_recruitment.bean.Notice;
 import com.ats.sap_recruitment.bean.PerProfile;
 import com.ats.sap_recruitment.bean.PersonProfile;
 import com.ats.sap_recruitment.retroInt.APIClient;
 import com.ats.sap_recruitment.retroInt.APIInterface;
 import com.ats.sap_recruitment.utils.Constants;
 import com.google.gson.Gson;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,6 +57,9 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.rtbNumRating)
     RatingBar rtbNumRating;
 
+    @BindView(R.id.lsvNoticJobSeeker)
+    ListView lsvNoticJobSeeker;
+
 
     LoginBean loginBean;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
@@ -56,10 +68,11 @@ public class HomeFragment extends Fragment {
     Gson gson;
     private String userId = "NA";
     private String userType = "NA";
-    private TextView tvPersonName, tvPersonDegree, tvPersonExp, tvProfileStatus, tvProfileLastUpdate, tvTestLastDate, tvTestScore, tvLabelStatus, tvLabelCompleted, tvLabelScore, tvLabelLastProfile, tvLabelLastTest, tvLabelRating, tvNotifyHead, tvNotifyText;
+    private TextView tvPersonName, tvPersonDegree, tvPersonExp, tvProfileStatus, tvProfileLastUpdate, tvTestLastDate, tvTestScore, tvLabelStatus, tvLabelCompleted, tvLabelScore, tvLabelLastProfile, tvLabelLastTest, tvLabelRating;
     private Button btnProfileUpdate, btnTest;
     private ImageView ivProfileImage;
     private LinearLayout llTestHistory;
+    private ArrayList<Notice> noticeArrayList = new ArrayList<>();
 
 
     @Override
@@ -105,8 +118,6 @@ public class HomeFragment extends Fragment {
         tvLabelLastProfile = view.findViewById(R.id.tvHomeProfileLastUpdate);
         tvLabelLastTest = view.findViewById(R.id.tvHomeLastTestDate);
         tvLabelRating = view.findViewById(R.id.tvLabelRating);
-        tvNotifyHead = view.findViewById(R.id.tvNotifyHead);
-        tvNotifyText = view.findViewById(R.id.tvNotifyText);
 
         tvPersonName.setTypeface(myTypeface);
         tvPersonDegree.setTypeface(myTypeface);
@@ -121,8 +132,6 @@ public class HomeFragment extends Fragment {
         tvLabelLastProfile.setTypeface(myTypefaceBold);
         tvLabelLastTest.setTypeface(myTypefaceBold);
         tvLabelRating.setTypeface(myTypefaceBold);
-        tvNotifyText.setTypeface(myTypeface);
-        tvNotifyHead.setTypeface(myTypefaceBold);
 
 
         btnProfileUpdate = view.findViewById(R.id.btnHomeProfileUpdate);
@@ -183,6 +192,13 @@ public class HomeFragment extends Fragment {
                 dialog.dismiss();
                 if (response.body() != null) {
                     DashBoardProfile dashBoardProfile = response.body();
+
+                    Log.e(TAG, "onResponse: DashBoardProfile : " + dashBoardProfile);
+                    for (int i = 0; i < dashBoardProfile.getNotice().size(); i++) {
+                        noticeArrayList.add(i, dashBoardProfile.getNotice().get(i));
+                    }
+
+
                     if (dashBoardProfile.getDashPerProfile().size() > 0) {
                         DashBoardPerProfile dashBoardPerProfile = dashBoardProfile.getDashPerProfile().get(0);
                         Log.e(TAG, "onResponse: dashBoardPerProfile : " + dashBoardPerProfile);
@@ -196,6 +212,7 @@ public class HomeFragment extends Fragment {
                             rtbNumRating.setRating(Float.parseFloat(dashBoardPerProfile.getProfileRating().toString()));
                         }
                     }
+                    setAdapter();
 
                 } else {
                     dialog.dismiss();
@@ -266,7 +283,6 @@ public class HomeFragment extends Fragment {
         });
     }
 
-
     public void getEducationalDetails() {
         final AlertDialog dialog = new SpotsDialog(getActivity());
         dialog.show();
@@ -292,10 +308,8 @@ public class HomeFragment extends Fragment {
                             String json = gson.toJson(eduPerProfile);
                             editor.putString("eduPerProfile", json);
                             editor.apply();
-
                         }
                     }
-
                 } else {
                     Log.e(TAG, "onResponse: " + response.body());
                     Toast.makeText(getActivity(), "No Educational details Updated Since", Toast.LENGTH_SHORT).show();
@@ -309,6 +323,65 @@ public class HomeFragment extends Fragment {
 
             }
         });
+    }
+
+    public void setAdapter() {
+        if (!noticeArrayList.isEmpty()) {
+            ArrayList<String> noticeText = new ArrayList<>();
+            for (int i = 0; i < noticeArrayList.size(); i++) {
+                noticeText.add(i, noticeArrayList.get(i).getNotText());
+            }
+
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, noticeText) {
+                @NonNull
+                @Override
+                public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                    String noticeText = noticeArrayList.get(position).getNotText();
+                    String noticeId = noticeArrayList.get(position).getNotId();
+                    String noticeDate = noticeArrayList.get(position).getNotDate();
+
+                    LayoutInflater inflater1 = getActivity().getLayoutInflater();
+                    View view1 = inflater1.inflate(R.layout.list_view_notice, null);
+                    TextView tvLsvNoticeHead = view1.findViewById(R.id.tvLsvNoticeHead);
+                    TextView tvLsvNoticeText = view1.findViewById(R.id.tvLsvNoticeText);
+                    TextView tvLsvNoticeTime = view1.findViewById(R.id.tvLsvNoticeTime);
+                    TextView tvLsvNoticeNo = view1.findViewById(R.id.tvLsvNoticeNo);
+                    ImageView ivLogoNoticeImage = view1.findViewById(R.id.ivLogoNoticeImage);
+
+                    tvLsvNoticeHead.setText(noticeText);
+                    tvLsvNoticeText.setText(noticeText);
+                    tvLsvNoticeTime.setText(noticeDate);
+                    tvLsvNoticeNo.setText(noticeId);
+
+                    return view1;
+                }
+            };
+            lsvNoticJobSeeker.setAdapter(arrayAdapter);
+            setListViewHeightBasedOnChildren(lsvNoticJobSeeker);
+
+        }
+
+    }
+
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null)
+            return;
+
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            view = listAdapter.getView(i, view, listView);
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
     }
 
 

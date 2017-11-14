@@ -40,4 +40,13 @@ public class Notice {
         this.notDate = notDate;
     }
 
+
+    @Override
+    public String toString() {
+        return "Notice{" +
+                "notId='" + notId + '\'' +
+                ", notText='" + notText + '\'' +
+                ", notDate='" + notDate + '\'' +
+                '}';
+    }
 }
