@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ats.sap_recruitment.R;
+import com.ats.sap_recruitment.adpter.BindCategoryAdapter;
 import com.ats.sap_recruitment.bean.Categories;
 import com.ats.sap_recruitment.bean.LoginBean;
 import com.ats.sap_recruitment.bean.MainCat;
@@ -43,7 +44,7 @@ public class JobCategoryFragment extends Fragment {
     private SharedPreferences.Editor editor;
     private Gson gson;
     private APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
-
+    private int jobId;
     ArrayList<MainCat> mainCats = new ArrayList<>();
 
     public JobCategoryFragment() {
@@ -57,6 +58,10 @@ public class JobCategoryFragment extends Fragment {
         pref = getActivity().getSharedPreferences(Constants.myPref, Context.MODE_PRIVATE);
         editor = pref.edit();
         gson = new Gson();
+
+        Bundle bundle = getArguments();
+        jobId = bundle.getInt("jobId");
+        Log.e(TAG, "onCreateView: JobId : " + jobId);
 
         String jsonLogin = pref.getString("loginBean", "");
         LoginBean loginBean = gson.fromJson(jsonLogin, LoginBean.class);
@@ -75,6 +80,9 @@ public class JobCategoryFragment extends Fragment {
                 mainCats.add(i, allCategories.getMainCats().get(i));
                 Log.e(TAG, "onCreateView: Main Category : " + allCategories.getMainCats().get(i));
             }
+
+            adapter = new BindCategoryAdapter(mainCats, getContext(), jobId);
+            rclJobCatMain.setAdapter(adapter);
         }
 
         rclJobCatMain.setHasFixedSize(true);

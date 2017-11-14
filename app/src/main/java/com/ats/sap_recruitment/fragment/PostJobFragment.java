@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -196,7 +197,7 @@ public class PostJobFragment extends Fragment {
         if (validData) {
             final AlertDialog dialog = new SpotsDialog(getActivity());
             dialog.show();
-            Call<SaveJobBaens> saveJobBaensCall = apiInterface.saveJobProfile("", userType, userId, "", "", "", "");
+            Call<SaveJobBaens> saveJobBaensCall = apiInterface.saveJobProfile("", userType, userId, jobTitle, jobDesc, year, month);
             saveJobBaensCall.enqueue(new Callback<SaveJobBaens>() {
                 @Override
                 public void onResponse(Call<SaveJobBaens> call, Response<SaveJobBaens> response) {
@@ -204,6 +205,17 @@ public class PostJobFragment extends Fragment {
 
                     if (response.body() != null) {
                         Log.e(TAG, "onResponse: " + response.body());
+                        SaveJobBaens saveJobBaens = response.body();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("jobId", saveJobBaens.getJobId());
+                        Log.e(TAG, "onCreateView: JobId : " + saveJobBaens.getJobId());
+                        Fragment fragment = new JobCategoryFragment();
+                        fragment.setArguments(bundle);
+                        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                        ft.replace(R.id.content_frame, fragment);
+                        ft.addToBackStack("backToProfile");
+                        ft.commit();
+
                     } else {
                         Log.e(TAG, "onResponse: ");
                     }

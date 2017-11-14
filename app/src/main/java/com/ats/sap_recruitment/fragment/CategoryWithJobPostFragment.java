@@ -1,19 +1,15 @@
 package com.ats.sap_recruitment.fragment;
 
-
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -21,7 +17,7 @@ import android.widget.Toast;
 
 import com.ats.sap_recruitment.R;
 import com.ats.sap_recruitment.activity.HomeActivity;
-import com.ats.sap_recruitment.adpter.BasisDataAdapter;
+import com.ats.sap_recruitment.adpter.CatJobPostAdapter;
 import com.ats.sap_recruitment.bean.ActvityInformation;
 import com.ats.sap_recruitment.bean.Categories;
 import com.ats.sap_recruitment.bean.LoginBean;
@@ -45,12 +41,14 @@ import retrofit2.Response;
 import static android.content.Context.MODE_PRIVATE;
 
 
-public class BasisFragment extends Fragment {
+public class CategoryWithJobPostFragment extends Fragment {
 
-    @BindView(R.id.rcl_view_basis)
-    RecyclerView recyclerBasis;
-    @BindView(R.id.tvBasisHead)
-    TextView tvBasisHead;
+
+    @BindView(R.id.rcl_view_JobCat)
+    RecyclerView recyclerJobCat;
+    @BindView(R.id.tvJobCatHead)
+    TextView tvJobCatHead;
+
 
     private static RecyclerView.Adapter adapter;
     private static ArrayList<SubSubCat> data = new ArrayList<>();
@@ -65,7 +63,7 @@ public class BasisFragment extends Fragment {
     private String mainCatId;
     private String subCatId;
     private ArrayList<String> subSubCatIdArrayList = new ArrayList<>();
-    private Categories categories;
+    private Categories allCategories;
     private LoginBean loginBean;
     private ArrayList<MainCat> mainCatArrayList = new ArrayList<>();
     private ArrayList<SubCat> subCatBasisArrayList = new ArrayList<>();
@@ -75,34 +73,36 @@ public class BasisFragment extends Fragment {
     private SharedPreferences.Editor editor;
     private Gson gson;
     private APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
+    private int jobId;
 
-    public BasisFragment() {
+    public CategoryWithJobPostFragment() {
 
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_basis, container, false);
+        View view = inflater.inflate(R.layout.fragment_category_with_job_post, container, false);
         ButterKnife.bind(this, view);
-
-        HomeActivity.tvTitle.setText("SAP Specialization");
+        HomeActivity.tvTitle.setText("Post Job Specialization");
         Typeface myTypeface = Typeface.createFromAsset(getContext().getAssets(), "Free_Serif.ttf");
         Typeface myTypefaceBold = Typeface.createFromAsset(getContext().getAssets(), "Free_Serif.ttf");
         Bundle bundle = getArguments();
 
 
-        selectedSpecialised = bundle.getString("selectedItem");
+        selectedSpecialised = bundle.getString("subCat");
         selectedMainCat = bundle.getString("mainCat");
-        tvBasisHead.setText("Core Basis - " + selectedSpecialised + " Experience");
+        jobId = bundle.getInt("jobId");
+        Log.e(TAG, "onCreateView: JobId : " + jobId);
+        tvJobCatHead.setText("Core Basis - " + selectedSpecialised + " Experience");
 
 
         pref = getActivity().getApplicationContext().getSharedPreferences(Constants.myPref, MODE_PRIVATE);
         editor = pref.edit();
         gson = new Gson();
-        String json = pref.getString("categories", "");
-        categories = gson.fromJson(json, Categories.class);
+        String json = pref.getString("allCategories", "");
+        allCategories = gson.fromJson(json, Categories.class);
 
         String jsonLogin = pref.getString("loginBean", "");
         loginBean = gson.fromJson(jsonLogin, LoginBean.class);
@@ -112,13 +112,11 @@ public class BasisFragment extends Fragment {
         }
 
 
-        Log.e(TAG, "onCreateView: " + categories);
-
-        if (categories != null) {
+        if (allCategories != null) {
             data.clear();
-            for (int i = 0; i < categories.getMainCats().size(); i++) {
-                Log.e(TAG, "MainCategory List: " + categories.getMainCats().get(i));
-                mainCatArrayList.add(categories.getMainCats().get(i));
+            for (int i = 0; i < allCategories.getMainCats().size(); i++) {
+                Log.e(TAG, "MainCategory List: " + allCategories.getMainCats().get(i));
+                mainCatArrayList.add(allCategories.getMainCats().get(i));
             }
 
             if (!mainCatArrayList.isEmpty()) {
@@ -162,28 +160,16 @@ public class BasisFragment extends Fragment {
             }
         }
 
-        adapter = new BasisDataAdapter(data, getContext(), myTypeface, myTypefaceBold);
-        recyclerBasis.setAdapter(adapter);
 
-        recyclerBasis.setHasFixedSize(true);
+        adapter = new CatJobPostAdapter(data, myTypeface, myTypefaceBold, getContext(), jobId);
+        recyclerJobCat.setAdapter(adapter);
+
+        recyclerJobCat.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
-        recyclerBasis.setLayoutManager(layoutManager);
-        recyclerBasis.setItemAnimator(new DefaultItemAnimator());
+        recyclerJobCat.setLayoutManager(layoutManager);
+        recyclerJobCat.setItemAnimator(new DefaultItemAnimator());
         return view;
     }
-
-//    @Override
-//    public void onPrepareOptionsMenu(Menu menu) {
-//        super.onPrepareOptionsMenu(menu);
-//        MenuItem item = menu.findItem(R.id.action_save);
-//        item.setVisible(true);
-//    }
-//
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setHasOptionsMenu(true);
-//    }
 
 
     public void getActivityInformationData(ArrayList<String> subSubCategoryId) {
@@ -218,5 +204,4 @@ public class BasisFragment extends Fragment {
             });
         }
     }
-
 }

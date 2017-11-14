@@ -131,4 +131,9 @@ public interface APIInterface {
     @FormUrlEncoded
     @POST("Ser_authen/get_register")
     Call<RegistratinBean> getRegister(@Field("frm_mode") String frm_mode, @Field("prof_fname") String prof_fname, @Field("prof_lname") String prof_lname, @Field("user_mobile") String user_mobile, @Field("user_email") String user_email, @Field("user_password") String user_password, @Field("user_type") String user_type);
+
+    @FormUrlEncoded
+    @POST("Ser_profile_recu/save_job_profile")
+    Call<EduStatusCode> saveJobWithCat(@Field("frm_mode") String frm_mode, @Field("user_type") String user_type, @Field("user_id") String user_id, @Field("job_id") String job_id, @Field("main_cat_id") String main_cat_id, @Field("sub_cat_id") String sub_cat_id, @Field("sub_sub_cat_id") String sub_sub_cat_id, @Field("act_id") String act_id, @Field("remrk_id") String remrk_id, @Field("exp_year") String exp_year, @Field("exp_month") String exp_month);
+
 }

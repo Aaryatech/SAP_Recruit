@@ -227,12 +227,12 @@ public class UpdateProfileFragment extends Fragment {
         getAllCategories();
         getAllSapProfileList();
 
-        arrayABAPList.add("SampleABAP");
+        /*arrayABAPList.add("SampleABAP");
         arrayABAPList.add("TestABAP");
 
         arrayFunctionalList.add("SampleFunctional");
         arrayFunctionalList.add("TestFunctional");
-
+*/
        /* cdPersonal = (CircleDisplay) view.findViewById(R.id.circleDisplayPersonal);
         cdPersonal.setAnimDuration(3000);
         cdPersonal.setValueWidthPercent(33f);
@@ -317,7 +317,7 @@ public class UpdateProfileFragment extends Fragment {
                 String basis = "BASIS";
                 Bundle bundle = new Bundle();
                 bundle.putString("selectedItem", selectedItem);
-                bundle.putString("BASIS", basis);
+                bundle.putString("mainCat", basis);
                 //Fragment fragment = new OsBasisFragment();
                 Fragment fragment = new BasisFragment();
                 fragment.setArguments(bundle);
@@ -335,8 +335,8 @@ public class UpdateProfileFragment extends Fragment {
                 String abap = "ABAP";
                 Bundle bundle = new Bundle();
                 bundle.putString("selectedItem", selectedItem);
-                bundle.putString("ABAP", abap);
-                Fragment fragment = new ABAPFragment();
+                bundle.putString("mainCat", abap);
+                Fragment fragment = new BasisFragment();
                 fragment.setArguments(bundle);
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, fragment, "UpdateProfile");
@@ -353,8 +353,8 @@ public class UpdateProfileFragment extends Fragment {
                 String functional = "Functional";
                 Bundle bundle = new Bundle();
                 bundle.putString("selectedItem", selectedItem);
-                bundle.putString("Functional", functional);
-                Fragment fragment = new FunctionalFragment();
+                bundle.putString("mainCat", functional);
+                Fragment fragment = new BasisFragment();
                 fragment.setArguments(bundle);
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame, fragment, "UpdateProfile");
@@ -495,6 +495,10 @@ public class UpdateProfileFragment extends Fragment {
     }
 
     public void getAllCategories() {
+
+        arrayABAPList.clear();
+        arrayFunctionalList.clear();
+        arrayBasisList.clear();
         final AlertDialog dialog = new SpotsDialog(getActivity());
         dialog.show();
         Call<Categories> categoriesCall = apiInterface.getSpecialisedCategories("get_specilic", usrType, userId);
@@ -537,6 +541,33 @@ public class UpdateProfileFragment extends Fragment {
                             arrayBasisList.add(i, subCatBasisArrayList.get(i).getProfCatName());
                         }
                     }
+
+                    if (!mainCatArrayList.isEmpty()) {
+                        for (int i = 0; i < mainCatArrayList.size(); i++) {
+                            MainCat mainCat = mainCatArrayList.get(i);
+                            Log.e(TAG, "onResponse: size of array" + mainCat.getSubCats().size());
+                            if (mainCat.getProfCatName().equalsIgnoreCase("ABAP")) {
+                                for (int j = 0; j < mainCat.getSubCats().size(); j++) {
+                                    arrayABAPList.add(j, mainCat.getSubCats().get(j).getProfCatName());
+                                    Log.e(TAG, "onResponse: SubCat List Abap: " + arrayABAPList);
+                                }
+                            }
+                        }
+                    }
+                    if (!mainCatArrayList.isEmpty()) {
+                        for (int i = 0; i < mainCatArrayList.size(); i++) {
+                            MainCat mainCat = mainCatArrayList.get(i);
+                            Log.e(TAG, "onResponse: size of array" + mainCat.getSubCats().size());
+                            if (mainCat.getProfCatName().equalsIgnoreCase("Functional")) {
+                                for (int j = 0; j < mainCat.getSubCats().size(); j++) {
+                                    arrayFunctionalList.add(j, mainCat.getSubCats().get(j).getProfCatName());
+                                    Log.e(TAG, "onResponse: SubCat List Functional : " + arrayFunctionalList);
+                                }
+                            }
+                        }
+                    }
+
+
                 } else {
                     Log.e(TAG, "onResponse: Category Data Not Found");
                 }
